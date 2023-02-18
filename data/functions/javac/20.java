@@ -1,0 +1,9 @@
+public JSONWriter array() throws JSONException {
+    if (this.mode == 'i' || this.mode == 'o' || this.mode == 'a') {
+      this.push(null);
+      this.append("[");
+      this.comma = false;
+      return this;
+    }
+    throw new JSONException("Misplaced array.");
+  }
