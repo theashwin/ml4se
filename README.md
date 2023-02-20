@@ -9,3 +9,4 @@ Maahi Patel <maahidp2@illinois.edu>
 ```
 # Milestone-1
  - [submission](https://github.com/theashwin/ml4se/tree/main/milestone-1)
+ - [report](https://github.com/theashwin/ml4se/blob/main/milestone-1/milestone_1.pdf)
