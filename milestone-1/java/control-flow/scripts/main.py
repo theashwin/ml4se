@@ -79,6 +79,5 @@ class JavaRSExtractor:
 
 
 if __name__ == '__main__':
-    jrx = JavaRSExtractor('/Users/kedarsmac/Documents/My Docs/Your\'s truely!/2023/Spring '
-                          '2023/CS598/OurRepo/ml4se/codeql-generated-data/Java/control-flow.csv')
+    jrx = JavaRSExtractor('<PATH_TO_CSV_DATA>/control-flow.csv')
     jrx.generateControlFlowGraph()
