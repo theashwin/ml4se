@@ -11,9 +11,9 @@ Which can be found at ml4se->data->python.json & ml4se->data->java.json<br>
 
 ## Dataset used for Code Analysis:
 1. Python
-... 
-2. Java⋅⋅
-...https://github.com/hazelcast/hazelcast
+...
+2. Java
+https://github.com/hazelcast/hazelcast
 
 ## Code for Data flow:
 ## Code for Control flow:
