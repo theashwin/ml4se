@@ -65,41 +65,214 @@ On VS Code's CodeQL window, through **Command Palette**, open **CodeQL: Quick Qu
 
 #### Python
 - Control Flow - <br/>
-    a. Copy content from [control_flow.ql]() and paste it in ``quick-query.ql``. <br/>
+    a. Copy multiple query files from [control_flow](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/) and paste it in ``quick-query.ql`` and run individually. <br/>
     b. Right Click on Editor and select **CodeQL: Run Query on Selected Database**. <br/>
+    c. These queries will extract different parts of code for CFG generation.
+    d. Code for this is given in [python.ipynb](https://github.com/theashwin/ml4se/blob/main/notebooks/python.ipynb)
 
 - Data Flow - <br/>
-    a. Copy content from [data_flow.ql]() and paste it in ``quick-query.ql``. <br/>
+    a. Copy multiple query files from [data_flow](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/) and paste it in ``quick-query.ql`` and run individually. <br/>
     b. Right Click on Editor and select **CodeQL: Run Query on Selected Database**. <br/>
+    c. These queries will extract different parts of code for DFG generation.
+    d. Code for this is given in [python.ipynb](https://github.com/theashwin/ml4se/blob/main/notebooks/python.ipynb)
 
 ## Results
 
+
 ### Python
+To map python code snippet with the Control Flow and Data Flow Graphs: For each ```n.py``` file from [folder](https://github.com/theashwin/ml4se/tree/main/data/functions/py), check [control-flow](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/) and [data-flow](https://github.com/theashwin/ml4se/tree/main/milestone-1/python/data-flow/graphs/) with name ```n.svg```
+
 - Code Snippet #1
     1. Code Snippet
-    ```
-    ```
-    2. Data Flow Graph - [link]()
-    3. Control Flow Graph - [link]()
+        ```
+        def attach_pipeline(self, pipeline, name, chunks=None, eager=True):
+            """Register a pipeline to be computed at the start of each day.
+
+            Parameters
+            ----------
+            pipeline : Pipeline
+                The pipeline to have computed.
+            name : str
+                The name of the pipeline.
+            chunks : int or iterator, optional
+                The number of days to compute pipeline results for. Increasing
+                this number will make it longer to get the first results but
+                may improve the total runtime of the simulation. If an iterator
+                is passed, we will run in chunks based on values of the iterator.
+                Default is True.
+            eager : bool, optional
+                Whether or not to compute this pipeline prior to
+                before_trading_start.
+
+            Returns
+            -------
+            pipeline : Pipeline
+                Returns the pipeline that was attached unchanged.
+
+            See Also
+            --------
+            :func:`zipline.api.pipeline_output`
+            """
+            if chunks is None:
+                # Make the first chunk smaller to get more immediate results:
+                # (one week, then every half year)
+                chunks = chain([5], repeat(126))
+            elif isinstance(chunks, int):
+                chunks = repeat(chunks)
+
+            if name in self._pipelines:
+                raise DuplicatePipelineName(name=name)
+
+            self._pipelines[name] = AttachedPipeline(pipeline, iter(chunks), eager)
+
+            # Return the pipeline to allow expressions like
+            # p = attach_pipeline(Pipeline(), 'name')
+            return pipeline
+        ```
+    <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/15.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/15.svg" width="250"> <br/>
 
 - Code Snippet #2
     1. Code Snippet
-    ```
-    ```
-    2. Data Flow Graph - [link]()
-    3. Control Flow Graph - [link]()
+     ```
+     def create_alias(FunctionName, Name, FunctionVersion, Description="",
+                 region=None, key=None, keyid=None, profile=None):
+    '''
+    Given a valid config, create an alias to a function.
+
+    Returns {created: true} if the alias was created and returns
+    {created: False} if the alias was not created.
+
+    CLI Example:
+
+    .. code-block:: bash
+
+        salt myminion boto_lamba.create_alias my_function my_alias $LATEST "An alias"
+
+    '''
+    try:
+        conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
+        alias = conn.create_alias(FunctionName=FunctionName, Name=Name,
+                                  FunctionVersion=FunctionVersion, Description=Description)
+        if alias:
+            log.info('The newly created alias name is %s', alias['Name'])
+
+            return {'created': True, 'name': alias['Name']}
+        else:
+            log.warning('Alias was not created')
+            return {'created': False}
+    except ClientError as e:
+        return {'created': False, 'error': __utils__['boto3.get_error'](e)}
+     ```
+    <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/14.svg" width="450"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/14.svg" width="250"> <br/>
 
 ### Java
+To map java code snippet with the Control Flow and Data Flow Graphs: For each ``image_name.svg`` from [control-flow-graphs](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/control-flow/graphs) or [data-flow-graphs](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/data-flow/graphs), please refer to file [java.json](https://github.com/theashwin/ml4se/blob/main/data/java.json). In this file, check for json_object with value of ``label`` as ``image_name``. The json object has details about **function name, link to file containing the function, and code**. 
+
 - Code Snippet #1
     1. Code Snippet
     ```
+    public boolean complete() {
+        if (!emitFromTraverser(traverser)) {
+            return false;
+        }
+        if (reconnectTracker.needsToWait()) {
+            return false;
+        }
+        if (!isConnectionUp()) {
+            return false;
+        }
+        if (snapshotInProgress) {
+            return false;
+        }
+
+        try {
+            if (!snapshotting && commitPeriod > 0) {
+                long currentTime = System.nanoTime();
+                if (currentTime - lastCommitTime > commitPeriod) {
+                    task.commit();
+                    lastCommitTime = currentTime;
+                }
+            }
+
+            List<SourceRecord> records = task.poll();
+            if (records == null || records.isEmpty()) {
+                traverser = eventTimeMapper.flatMapIdle();
+                emitFromTraverser(traverser);
+                return false;
+            }
+
+            for (SourceRecord record : records) {
+                Map<String, ?> partition = record.sourcePartition();
+                Map<String, ?> offset = record.sourceOffset();
+                state.setOffset(partition, offset);
+                task.commitRecord(record, null);
+            }
+
+            if (!snapshotting && commitPeriod == 0) {
+                task.commit();
+            }
+
+            traverser = Traversers.traverseIterable(records)
+                    .flatMap(record -> {
+                        T t = map(record);
+                        return t == null ? Traversers.empty() :
+                                eventTimeMapper.flatMapEvent(t, 0, extractTimestamp(record));
+                    });
+            emitFromTraverser(traverser);
+        } catch (InterruptedException ie) {
+            logger.warning("Interrupted while waiting for data");
+            Thread.currentThread().interrupt();
+        } catch (RuntimeException re) {
+            reconnect(re);
+        }
+
+        return false;
+    }
     ```
-    2. Data Flow Graph - [link]()
-    3. Control Flow Graph - [link]()
+    <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/data-flow/graphs/CdcSourcePcomplete.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/CdcSourcePcomplete.svg" width="100"> <br/>
 
 - Code Snippet #2
     1. Code Snippet
     ```
+    public void modifyOutputStream(JarOutputStream jarOutputStream) throws IOException {
+        if (shadedManifest == null) {
+            shadedManifest = new Manifest();
+        }
+
+        Attributes attributes = shadedManifest.getMainAttributes();
+
+        if (overrideInstructions != null) {
+            precompileOverrideInstructions();
+            attributes.putValue(IMPORT_PACKAGE, join(shadeImports().iterator(), ","));
+            attributes.putValue(EXPORT_PACKAGE, join(shadeExports().iterator(), ","));
+        }
+
+        attributes.putValue("Created-By", "HazelcastManifestTransformer through Shade Plugin");
+
+        if (mainClass != null) {
+            attributes.put(Attributes.Name.MAIN_CLASS, mainClass);
+        }
+
+        if (manifestEntries != null) {
+            for (Map.Entry<String, Object> entry : manifestEntries.entrySet()) {
+                attributes.put(new Attributes.Name(entry.getKey()), entry.getValue());
+            }
+        }
+
+        // the Manifest in hazelcast uberjar won't have the Automatic-Module-Name
+        attributes.remove(AUTOMATIC_MODULE_NAME);
+
+        jarOutputStream.putNextEntry(new JarEntry(JarFile.MANIFEST_NAME));
+        shadedManifest.write(jarOutputStream);
+        jarOutputStream.flush();
+    }
     ```
-    2. Data Flow Graph - [link]()
-    3. Control Flow Graph - [link]()
+    <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/data-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg" width="150"> <br/>
