@@ -74,32 +74,277 @@ On VS Code's CodeQL window, through **Command Palette**, open **CodeQL: Quick Qu
 
 ## Results
 
+
 ### Python
+To map python code snippet with the Control Flow and Data Flow Graphs: For each ```n.py``` file from [folder](https://github.com/theashwin/ml4se/tree/main/data/functions/py), check [control-flow](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/) and [data-flow](https://github.com/theashwin/ml4se/tree/main/milestone-1/python/data-flow/graphs/) with name ```n.svg```
+
 - Code Snippet #1
     1. Code Snippet
-    ```
-    ```
-    2. Data Flow Graph - [link]()
-    3. Control Flow Graph - [link]()
+        ```
+        def attach_pipeline(self, pipeline, name, chunks=None, eager=True):
+            """Register a pipeline to be computed at the start of each day.
+
+            Parameters
+            ----------
+            pipeline : Pipeline
+                The pipeline to have computed.
+            name : str
+                The name of the pipeline.
+            chunks : int or iterator, optional
+                The number of days to compute pipeline results for. Increasing
+                this number will make it longer to get the first results but
+                may improve the total runtime of the simulation. If an iterator
+                is passed, we will run in chunks based on values of the iterator.
+                Default is True.
+            eager : bool, optional
+                Whether or not to compute this pipeline prior to
+                before_trading_start.
+
+            Returns
+            -------
+            pipeline : Pipeline
+                Returns the pipeline that was attached unchanged.
+
+            See Also
+            --------
+            :func:`zipline.api.pipeline_output`
+            """
+            if chunks is None:
+                # Make the first chunk smaller to get more immediate results:
+                # (one week, then every half year)
+                chunks = chain([5], repeat(126))
+            elif isinstance(chunks, int):
+                chunks = repeat(chunks)
+
+            if name in self._pipelines:
+                raise DuplicatePipelineName(name=name)
+
+            self._pipelines[name] = AttachedPipeline(pipeline, iter(chunks), eager)
+
+            # Return the pipeline to allow expressions like
+            # p = attach_pipeline(Pipeline(), 'name')
+            return pipeline
+        ```
+    2. Data Flow Graph - ![Data Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/15.svg)
+    3. Control Flow Graph - ![Control Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/15.svg)
 
 - Code Snippet #2
     1. Code Snippet
     ```
+    def load_data(self, sess, inputs, state_inputs):
+        """Bulk loads the specified inputs into device memory.
+
+        The shape of the inputs must conform to the shapes of the input
+        placeholders this optimizer was constructed with.
+
+        The data is split equally across all the devices. If the data is not
+        evenly divisible by the batch size, excess data will be discarded.
+
+        Args:
+            sess: TensorFlow session.
+            inputs: List of arrays matching the input placeholders, of shape
+                [BATCH_SIZE, ...].
+            state_inputs: List of RNN input arrays. These arrays have size
+                [BATCH_SIZE / MAX_SEQ_LEN, ...].
+
+        Returns:
+            The number of tuples loaded per device.
+        """
+
+        if log_once("load_data"):
+            logger.info(
+                "Training on concatenated sample batches:\n\n{}\n".format(
+                    summarize({
+                        "placeholders": self.loss_inputs,
+                        "inputs": inputs,
+                        "state_inputs": state_inputs
+                    })))
+
+        feed_dict = {}
+        assert len(self.loss_inputs) == len(inputs + state_inputs), \
+            (self.loss_inputs, inputs, state_inputs)
+
+        # Let's suppose we have the following input data, and 2 devices:
+        # 1 2 3 4 5 6 7                              <- state inputs shape
+        # A A A B B B C C C D D D E E E F F F G G G  <- inputs shape
+        # The data is truncated and split across devices as follows:
+        # |---| seq len = 3
+        # |---------------------------------| seq batch size = 6 seqs
+        # |----------------| per device batch size = 9 tuples
+
+        if len(state_inputs) > 0:
+            smallest_array = state_inputs[0]
+            seq_len = len(inputs[0]) // len(state_inputs[0])
+            self._loaded_max_seq_len = seq_len
+        else:
+            smallest_array = inputs[0]
+            self._loaded_max_seq_len = 1
+
+        sequences_per_minibatch = (
+            self.max_per_device_batch_size // self._loaded_max_seq_len * len(
+                self.devices))
+        if sequences_per_minibatch < 1:
+            logger.warn(
+                ("Target minibatch size is {}, however the rollout sequence "
+                 "length is {}, hence the minibatch size will be raised to "
+                 "{}.").format(self.max_per_device_batch_size,
+                               self._loaded_max_seq_len,
+                               self._loaded_max_seq_len * len(self.devices)))
+            sequences_per_minibatch = 1
+
+        if len(smallest_array) < sequences_per_minibatch:
+            # Dynamically shrink the batch size if insufficient data
+            sequences_per_minibatch = make_divisible_by(
+                len(smallest_array), len(self.devices))
+
+        if log_once("data_slicing"):
+            logger.info(
+                ("Divided {} rollout sequences, each of length {}, among "
+                 "{} devices.").format(
+                     len(smallest_array), self._loaded_max_seq_len,
+                     len(self.devices)))
+
+        if sequences_per_minibatch < len(self.devices):
+            raise ValueError(
+                "Must load at least 1 tuple sequence per device. Try "
+                "increasing `sgd_minibatch_size` or reducing `max_seq_len` "
+                "to ensure that at least one sequence fits per device.")
+        self._loaded_per_device_batch_size = (sequences_per_minibatch // len(
+            self.devices) * self._loaded_max_seq_len)
+
+        if len(state_inputs) > 0:
+            # First truncate the RNN state arrays to the sequences_per_minib.
+            state_inputs = [
+                make_divisible_by(arr, sequences_per_minibatch)
+                for arr in state_inputs
+            ]
+            # Then truncate the data inputs to match
+            inputs = [arr[:len(state_inputs[0]) * seq_len] for arr in inputs]
+            assert len(state_inputs[0]) * seq_len == len(inputs[0]), \
+                (len(state_inputs[0]), sequences_per_minibatch, seq_len,
+                 len(inputs[0]))
+            for ph, arr in zip(self.loss_inputs, inputs + state_inputs):
+                feed_dict[ph] = arr
+            truncated_len = len(inputs[0])
+        else:
+            for ph, arr in zip(self.loss_inputs, inputs + state_inputs):
+                truncated_arr = make_divisible_by(arr, sequences_per_minibatch)
+                feed_dict[ph] = truncated_arr
+                truncated_len = len(truncated_arr)
+
+        sess.run([t.init_op for t in self._towers], feed_dict=feed_dict)
+
+        self.num_tuples_loaded = truncated_len
+        tuples_per_device = truncated_len // len(self.devices)
+        assert tuples_per_device > 0, "No data loaded?"
+        assert tuples_per_device % self._loaded_per_device_batch_size == 0
+        return tuples_per_device
     ```
-    2. Data Flow Graph - [link]()
-    3. Control Flow Graph - [link]()
+    2. Data Flow Graph - ![Data Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/82.svg)
+    3. Control Flow Graph - ![Control Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/82.svg)
 
 ### Java
+To map java code snippet with the Control Flow and Data Flow Graphs: For each ``image_name.svg`` from [control-flow-graphs](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/control-flow/graphs) or [data-flow-graphs](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/data-flow/graphs), please refer to file [java.json](https://github.com/theashwin/ml4se/blob/main/data/java.json). In this file, check for json_object with value of ``label`` as ``image_name``. The json object has details about **function name, link to file containing the function, and code**. 
+
 - Code Snippet #1
     1. Code Snippet
     ```
+    public boolean complete() {
+        if (!emitFromTraverser(traverser)) {
+            return false;
+        }
+        if (reconnectTracker.needsToWait()) {
+            return false;
+        }
+        if (!isConnectionUp()) {
+            return false;
+        }
+        if (snapshotInProgress) {
+            return false;
+        }
+
+        try {
+            if (!snapshotting && commitPeriod > 0) {
+                long currentTime = System.nanoTime();
+                if (currentTime - lastCommitTime > commitPeriod) {
+                    task.commit();
+                    lastCommitTime = currentTime;
+                }
+            }
+
+            List<SourceRecord> records = task.poll();
+            if (records == null || records.isEmpty()) {
+                traverser = eventTimeMapper.flatMapIdle();
+                emitFromTraverser(traverser);
+                return false;
+            }
+
+            for (SourceRecord record : records) {
+                Map<String, ?> partition = record.sourcePartition();
+                Map<String, ?> offset = record.sourceOffset();
+                state.setOffset(partition, offset);
+                task.commitRecord(record, null);
+            }
+
+            if (!snapshotting && commitPeriod == 0) {
+                task.commit();
+            }
+
+            traverser = Traversers.traverseIterable(records)
+                    .flatMap(record -> {
+                        T t = map(record);
+                        return t == null ? Traversers.empty() :
+                                eventTimeMapper.flatMapEvent(t, 0, extractTimestamp(record));
+                    });
+            emitFromTraverser(traverser);
+        } catch (InterruptedException ie) {
+            logger.warning("Interrupted while waiting for data");
+            Thread.currentThread().interrupt();
+        } catch (RuntimeException re) {
+            reconnect(re);
+        }
+
+        return false;
+    }
     ```
-    2. Data Flow Graph - [link]()
-    3. Control Flow Graph - [link]()
+    2. Data Flow Graph - ![Data Flow Graph](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/data-flow/graphs/CdcSourcePcomplete.svg)
+    3. Control Flow Graph - ![Control Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/CdcSourcePcomplete.svg)
 
 - Code Snippet #2
     1. Code Snippet
     ```
+    public void modifyOutputStream(JarOutputStream jarOutputStream) throws IOException {
+        if (shadedManifest == null) {
+            shadedManifest = new Manifest();
+        }
+
+        Attributes attributes = shadedManifest.getMainAttributes();
+
+        if (overrideInstructions != null) {
+            precompileOverrideInstructions();
+            attributes.putValue(IMPORT_PACKAGE, join(shadeImports().iterator(), ","));
+            attributes.putValue(EXPORT_PACKAGE, join(shadeExports().iterator(), ","));
+        }
+
+        attributes.putValue("Created-By", "HazelcastManifestTransformer through Shade Plugin");
+
+        if (mainClass != null) {
+            attributes.put(Attributes.Name.MAIN_CLASS, mainClass);
+        }
+
+        if (manifestEntries != null) {
+            for (Map.Entry<String, Object> entry : manifestEntries.entrySet()) {
+                attributes.put(new Attributes.Name(entry.getKey()), entry.getValue());
+            }
+        }
+
+        // the Manifest in hazelcast uberjar won't have the Automatic-Module-Name
+        attributes.remove(AUTOMATIC_MODULE_NAME);
+
+        jarOutputStream.putNextEntry(new JarEntry(JarFile.MANIFEST_NAME));
+        shadedManifest.write(jarOutputStream);
+        jarOutputStream.flush();
+    }
     ```
-    2. Data Flow Graph - [link]()
-    3. Control Flow Graph - [link]()
+    2. Data Flow Graph - ![Data Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/java/data-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg)
+    3. Control Flow Graph - ![Control Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg)
