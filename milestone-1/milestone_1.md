@@ -125,123 +125,45 @@ To map python code snippet with the Control Flow and Data Flow Graphs: For each 
             # p = attach_pipeline(Pipeline(), 'name')
             return pipeline
         ```
-    2. Data Flow Graph - ![Data Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/15.svg)
-    3. Control Flow Graph - ![Control Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/15.svg)
+    <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/15.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/15.svg" width="250"> <br/>
 
 - Code Snippet #2
     1. Code Snippet
-    ```
-    def load_data(self, sess, inputs, state_inputs):
-        """Bulk loads the specified inputs into device memory.
+     ```
+     def create_alias(FunctionName, Name, FunctionVersion, Description="",
+                 region=None, key=None, keyid=None, profile=None):
+    '''
+    Given a valid config, create an alias to a function.
 
-        The shape of the inputs must conform to the shapes of the input
-        placeholders this optimizer was constructed with.
+    Returns {created: true} if the alias was created and returns
+    {created: False} if the alias was not created.
 
-        The data is split equally across all the devices. If the data is not
-        evenly divisible by the batch size, excess data will be discarded.
+    CLI Example:
 
-        Args:
-            sess: TensorFlow session.
-            inputs: List of arrays matching the input placeholders, of shape
-                [BATCH_SIZE, ...].
-            state_inputs: List of RNN input arrays. These arrays have size
-                [BATCH_SIZE / MAX_SEQ_LEN, ...].
+    .. code-block:: bash
 
-        Returns:
-            The number of tuples loaded per device.
-        """
+        salt myminion boto_lamba.create_alias my_function my_alias $LATEST "An alias"
 
-        if log_once("load_data"):
-            logger.info(
-                "Training on concatenated sample batches:\n\n{}\n".format(
-                    summarize({
-                        "placeholders": self.loss_inputs,
-                        "inputs": inputs,
-                        "state_inputs": state_inputs
-                    })))
+    '''
+    try:
+        conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
+        alias = conn.create_alias(FunctionName=FunctionName, Name=Name,
+                                  FunctionVersion=FunctionVersion, Description=Description)
+        if alias:
+            log.info('The newly created alias name is %s', alias['Name'])
 
-        feed_dict = {}
-        assert len(self.loss_inputs) == len(inputs + state_inputs), \
-            (self.loss_inputs, inputs, state_inputs)
-
-        # Let's suppose we have the following input data, and 2 devices:
-        # 1 2 3 4 5 6 7                              <- state inputs shape
-        # A A A B B B C C C D D D E E E F F F G G G  <- inputs shape
-        # The data is truncated and split across devices as follows:
-        # |---| seq len = 3
-        # |---------------------------------| seq batch size = 6 seqs
-        # |----------------| per device batch size = 9 tuples
-
-        if len(state_inputs) > 0:
-            smallest_array = state_inputs[0]
-            seq_len = len(inputs[0]) // len(state_inputs[0])
-            self._loaded_max_seq_len = seq_len
+            return {'created': True, 'name': alias['Name']}
         else:
-            smallest_array = inputs[0]
-            self._loaded_max_seq_len = 1
-
-        sequences_per_minibatch = (
-            self.max_per_device_batch_size // self._loaded_max_seq_len * len(
-                self.devices))
-        if sequences_per_minibatch < 1:
-            logger.warn(
-                ("Target minibatch size is {}, however the rollout sequence "
-                 "length is {}, hence the minibatch size will be raised to "
-                 "{}.").format(self.max_per_device_batch_size,
-                               self._loaded_max_seq_len,
-                               self._loaded_max_seq_len * len(self.devices)))
-            sequences_per_minibatch = 1
-
-        if len(smallest_array) < sequences_per_minibatch:
-            # Dynamically shrink the batch size if insufficient data
-            sequences_per_minibatch = make_divisible_by(
-                len(smallest_array), len(self.devices))
-
-        if log_once("data_slicing"):
-            logger.info(
-                ("Divided {} rollout sequences, each of length {}, among "
-                 "{} devices.").format(
-                     len(smallest_array), self._loaded_max_seq_len,
-                     len(self.devices)))
-
-        if sequences_per_minibatch < len(self.devices):
-            raise ValueError(
-                "Must load at least 1 tuple sequence per device. Try "
-                "increasing `sgd_minibatch_size` or reducing `max_seq_len` "
-                "to ensure that at least one sequence fits per device.")
-        self._loaded_per_device_batch_size = (sequences_per_minibatch // len(
-            self.devices) * self._loaded_max_seq_len)
-
-        if len(state_inputs) > 0:
-            # First truncate the RNN state arrays to the sequences_per_minib.
-            state_inputs = [
-                make_divisible_by(arr, sequences_per_minibatch)
-                for arr in state_inputs
-            ]
-            # Then truncate the data inputs to match
-            inputs = [arr[:len(state_inputs[0]) * seq_len] for arr in inputs]
-            assert len(state_inputs[0]) * seq_len == len(inputs[0]), \
-                (len(state_inputs[0]), sequences_per_minibatch, seq_len,
-                 len(inputs[0]))
-            for ph, arr in zip(self.loss_inputs, inputs + state_inputs):
-                feed_dict[ph] = arr
-            truncated_len = len(inputs[0])
-        else:
-            for ph, arr in zip(self.loss_inputs, inputs + state_inputs):
-                truncated_arr = make_divisible_by(arr, sequences_per_minibatch)
-                feed_dict[ph] = truncated_arr
-                truncated_len = len(truncated_arr)
-
-        sess.run([t.init_op for t in self._towers], feed_dict=feed_dict)
-
-        self.num_tuples_loaded = truncated_len
-        tuples_per_device = truncated_len // len(self.devices)
-        assert tuples_per_device > 0, "No data loaded?"
-        assert tuples_per_device % self._loaded_per_device_batch_size == 0
-        return tuples_per_device
-    ```
-    2. Data Flow Graph - ![Data Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/82.svg)
-    3. Control Flow Graph - ![Control Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/82.svg)
+            log.warning('Alias was not created')
+            return {'created': False}
+    except ClientError as e:
+        return {'created': False, 'error': __utils__['boto3.get_error'](e)}
+     ```
+    <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/14.svg" width="450"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/14.svg" width="250"> <br/>
 
 ### Java
 To map java code snippet with the Control Flow and Data Flow Graphs: For each ``image_name.svg`` from [control-flow-graphs](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/control-flow/graphs) or [data-flow-graphs](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/data-flow/graphs), please refer to file [java.json](https://github.com/theashwin/ml4se/blob/main/data/java.json). In this file, check for json_object with value of ``label`` as ``image_name``. The json object has details about **function name, link to file containing the function, and code**. 
@@ -307,8 +229,9 @@ To map java code snippet with the Control Flow and Data Flow Graphs: For each ``
         return false;
     }
     ```
-    2. Data Flow Graph - ![Data Flow Graph](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/data-flow/graphs/CdcSourcePcomplete.svg)
-    3. Control Flow Graph - ![Control Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/CdcSourcePcomplete.svg)
+    <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/tree/main/milestone-1/java/data-flow/graphs/CdcSourcePcomplete.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/CdcSourcePcomplete.svg" width="100"> <br/>
 
 - Code Snippet #2
     1. Code Snippet
@@ -346,5 +269,6 @@ To map java code snippet with the Control Flow and Data Flow Graphs: For each ``
         jarOutputStream.flush();
     }
     ```
-    2. Data Flow Graph - ![Data Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/java/data-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg)
-    3. Control Flow Graph - ![Control Flow Graph](https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg)
+    <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/data-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg" width="150"> <br/>
