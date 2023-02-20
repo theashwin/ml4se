@@ -230,7 +230,7 @@ To map java code snippet with the Control Flow and Data Flow Graphs: For each ``
     }
     ```
     <br/>
-    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/tree/main/milestone-1/java/data-flow/graphs/CdcSourcePcomplete.svg" width="350"> <br/>
+    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/data-flow/graphs/CdcSourcePcomplete.svg" width="350"> <br/>
     3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/CdcSourcePcomplete.svg" width="100"> <br/>
 
 - Code Snippet #2
