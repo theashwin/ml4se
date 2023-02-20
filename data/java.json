@@ -1,122 +1,206 @@
 [
     {
         "label": "CdcSourcePcomplete",
+        "functionName": "complete",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "public boolean complete() {\n        if (!emitFromTraverser(traverser)) {\n            return false;\n        }\n        if (reconnectTracker.needsToWait()) {\n            return false;\n        }\n        if (!isConnectionUp()) {\n            return false;\n        }\n        if (snapshotInProgress) {\n            return false;\n        }\n\n        try {\n            if (!snapshotting && commitPeriod > 0) {\n                long currentTime = System.nanoTime();\n                if (currentTime - lastCommitTime > commitPeriod) {\n                    task.commit();\n                    lastCommitTime = currentTime;\n                }\n            }\n\n            List<SourceRecord> records = task.poll();\n            if (records == null || records.isEmpty()) {\n                traverser = eventTimeMapper.flatMapIdle();\n                emitFromTraverser(traverser);\n                return false;\n            }\n\n            for (SourceRecord record : records) {\n                Map<String, ?> partition = record.sourcePartition();\n                Map<String, ?> offset = record.sourceOffset();\n                state.setOffset(partition, offset);\n                task.commitRecord(record, null);\n            }\n\n            if (!snapshotting && commitPeriod == 0) {\n                task.commit();\n            }\n\n            traverser = Traversers.traverseIterable(records)\n                    .flatMap(record -> {\n                        T t = map(record);\n                        return t == null ? Traversers.empty() :\n                                eventTimeMapper.flatMapEvent(t, 0, extractTimestamp(record));\n                    });\n            emitFromTraverser(traverser);\n        } catch (InterruptedException ie) {\n            logger.warning(\"Interrupted while waiting for data\");\n            Thread.currentThread().interrupt();\n        } catch (RuntimeException re) {\n            reconnect(re);\n        }\n\n        return false;\n    }"
     },
     {
         "label": "CdcSourcePextractTimestamp",
+        "functionName": "extractTimestamp",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "private static long extractTimestamp(SourceRecord sourceRecord) {\n        Schema valueSchema = sourceRecord.valueSchema();\n        boolean noValueTsMs = valueSchema.field(TIMESTAMP_MS_FIELD_NAME) == null;\n        boolean noSourceTsMs = valueSchema.field(\"source\").schema().field(TIMESTAMP_MS_FIELD_NAME) == null;\n        if (noValueTsMs && noSourceTsMs) {\n            return NO_NATIVE_TIME;\n        }\n        Long timestamp;\n        Struct valueStruct = (Struct) sourceRecord.value();\n        if (noValueTsMs) {\n            timestamp = valueStruct.getStruct(\"source\").getInt64(\"ts_ms\");\n        } else {\n            timestamp = valueStruct.getInt64(\"ts_ms\");\n        }\n        return timestamp == null ? NO_NATIVE_TIME : timestamp;\n    }"
     },
     {
         "label": "CdcSourcePgetCause",
+        "functionName": "getCause",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "private static String getCause(Exception e) {\n        StringBuilder sb = new StringBuilder();\n        if (e.getMessage() != null) {\n            sb.append(\": \").append(e.getMessage());\n        }\n        if (e.getCause() != null && e.getCause().getMessage() != null) {\n            sb.append(\": \").append(e.getCause().getMessage());\n        }\n        return sb.toString();\n    }"
     },
     {
         "label": "CdcSourcePhandleConnectException",
+        "functionName": "handleConnectException",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "private void handleConnectException(RuntimeException ce) {\n        reconnectTracker.attemptFailed();\n        if (reconnectTracker.shouldTryAgain()) {\n            long waitTimeMs = reconnectTracker.getNextWaitTimeMs();\n            logger.warning(\"Failed to initialize the connector task, retrying in \" + waitTimeMs + \"ms\" + getCause(ce));\n        } else {\n            throw shutDownAndThrow(new JetException(\"Failed to connect to database\", peel(ce)));\n        }\n    }"
     },
     {
         "label": "CdcSourcePinit",
+        "functionName": "init",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "protected void init(@Nonnull Context context) {\n        // workaround for https://github.com/hazelcast/hazelcast-jet/issues/2603\n        DriverManager.getDrivers();\n\n        String name = getName(properties);\n        this.logger = context.logger();\n\n        RetryStrategy retryStrategy = getRetryStrategy(properties);\n        log(logger, name, \"retry strategy\", retryStrategy);\n        this.reconnectTracker = new RetryTracker(retryStrategy);\n\n        snapshotting = !NONE.equals(context.processingGuarantee());\n        if (!snapshotting) {\n            this.commitPeriod = getCommitPeriod(properties);\n            log(logger, name, \"commit period\", commitPeriod);\n            if (commitPeriod > 0) {\n                lastCommitTime = System.nanoTime();\n            }\n        }\n\n        this.clearStateOnReconnect = getClearStateOnReconnect(properties);\n        log(logger, name, \"clear state on reconnect\", clearStateOnReconnect);\n    }"
     },
     {
         "label": "CdcSourcePisConnectionUp",
+        "functionName": "isConnectionUp",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "private boolean isConnectionUp() {\n        try {\n            if (connector == null) {\n                connector = startNewConnector();\n                taskConfig = connector.taskConfigs(1).get(0);\n            }\n            if (task == null) {\n                task = startNewTask();\n            }\n            reconnectTracker.reset();\n            return true;\n        } catch (JetException je) {\n            throw shutDownAndThrow(je);\n        } catch (RuntimeException re) {\n            handleConnectException(re);\n            return false;\n        }\n    }"
     },
     {
         "label": "CdcSourcePkillConnection",
+        "functionName": "killConnection",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "private void killConnection() {\n        if (task != null) {\n            task.stop();\n            task = null;\n        }\n        if (connector != null) {\n            connector.stop();\n            connector = null;\n        }\n    }"
     },
     {
         "label": "CdcSourcePlog",
+        "functionName": "log",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "private static void log(ILogger logger, String name, String property, Object value) {\n        if (logger.isInfoEnabled()) {\n            logger.info(name + \" has '\" + property + \"' set to '\" + value + '\\'');\n        }\n    }"
     },
     {
         "label": "CdcSourcePreconnect",
+        "functionName": "reconnect",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "private void reconnect(RuntimeException re) {\n        if (reconnectTracker.shouldTryAgain()) {\n            logger.warning(\"Connection to database lost, will attempt to reconnect and retry operations from \" +\n                    \"scratch\" + getCause(re), re);\n\n            killConnection();\n            reconnectTracker.reset();\n            if (clearStateOnReconnect) {\n                state = new State();\n            }\n        } else {\n            throw shutDownAndThrow(new JetException(\"Failed to connect to database\", peel(re)));\n        }\n    }"
     },
     {
         "label": "CdcSourcePrestoreFromSnapshot",
+        "functionName": "restoreFromSnapshot",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "protected void restoreFromSnapshot(@Nonnull Object key, @Nonnull Object value) {\n        if (!SNAPSHOT_KEY.equals(key)) {\n            throw new RuntimeException(\"Unexpected key received from snapshot: \" + key);\n        }\n        state = (State) value;\n    }"
     },
     {
         "label": "CdcSourcePsaveToSnapshot",
+        "functionName": "saveToSnapshot",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "public boolean saveToSnapshot() {\n        if (!emitFromTraverser(traverser)) {\n            return false;\n        }\n        snapshotInProgress = true;\n        if (snapshotTraverser == null) {\n            snapshotTraverser = Traversers.singleton(entry(SNAPSHOT_KEY, state))\n                    .onFirstNull(() -> {\n                        snapshotTraverser = null;\n                        getLogger().finest(\"Finished saving snapshot.\");\n                    });\n        }\n        return emitFromTraverserToSnapshot(snapshotTraverser);\n    }"
     },
     {
         "label": "CdcSourcePsnapshotCommitFinish",
+        "functionName": "snapshotCommitFinish",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
         "code": "public boolean snapshotCommitFinish(boolean success) {\n        if (success && task != null) {\n            try {\n                task.commit();\n            } catch (InterruptedException e) {\n                logger.warning(\"Interrupted while committing\");\n                Thread.currentThread().interrupt();\n            }\n        }\n        snapshotInProgress = false;\n        return true;\n    }"
     },
     {
+        "label": "CdcSourcePrun",
+        "functionName": "run",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/cdc-debezium/src/main/java/com/hazelcast/jet/cdc/impl/CdcSourceP.java",
+        "code": "public boolean saveToSnapshot() {\n        if (!emitFromTraverser(traverser)) {\n            return false;\n        }\n        snapshotInProgress = true;\n        if (snapshotTraverser == null) {\n            snapshotTraverser = Traversers.singleton(entry(SNAPSHOT_KEY, state))\n                    .onFirstNull(() -> {\n                        snapshotTraverser = null;\n                        getLogger().finest(\"Finished saving snapshot.\");\n                    });\n        }\n        return emitFromTraverserToSnapshot(snapshotTraverser);\n    }"
+    },
+    {
         "label": "HazelcastManifestTransformerbuildDefinition",
+        "functionName": "buildDefinition",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "String buildDefinition(boolean addResolutionConstraint) {\n            StringBuilder sb = new StringBuilder(packageName);\n            if (addResolutionConstraint && resolutionOptional) {\n                sb.append(\";\").append(RESOLUTION_PREFIX).append(\"optional\");\n            }\n            if (version != null) {\n                sb.append(\";\").append(VERSION_PREFIX).append(version);\n            }\n            if (uses != null && !uses.isEmpty()) {\n                sb.append(\";\").append(USES_PREFIX).append('\"').append(join(uses.iterator(), \",\")).append('\"');\n            }\n            return sb.toString();\n        }"
     },
     {
         "label": "HazelcastManifestTransformerequals",
+        "functionName": "equals",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "public boolean equals(Object o) {\n            if (this == o) {\n                return true;\n            }\n            if (o == null || getClass() != o.getClass()) {\n                return false;\n            }\n\n            PackageDefinition that = (PackageDefinition) o;\n            return Objects.equals(packageName, that.packageName);\n        }"
     },
     {
         "label": "HazelcastManifestTransformerfindResolutionConstraint",
+        "functionName": "findResolutionConstraint",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "private boolean findResolutionConstraint(String[] tokens) {\n            for (String token : tokens) {\n                if (token.startsWith(RESOLUTION_PREFIX)) {\n                    return token.toLowerCase(Locale.ROOT).equals(\"resolution:=optional\");\n                }\n            }\n            return false;\n        }"
     },
     {
         "label": "HazelcastManifestTransformerfindStrongerDefinition",
+        "functionName": "findStrongerDefinition",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "private PackageDefinition findStrongerDefinition(PackageDefinition packageDefinition,\n                                                     PackageDefinition oldPackageDefinition) {\n        // if the override is a remove instruction skip all other tests\n        if (packageDefinition.removeImport) {\n            return packageDefinition;\n        }\n\n        // if no old definition or new definition is required import we take the new one\n        if (oldPackageDefinition == null\n                || oldPackageDefinition.resolutionOptional && !packageDefinition.resolutionOptional) {\n            return packageDefinition;\n        }\n\n        // if old definition was required import but new isn't we take the old one\n        if (!oldPackageDefinition.resolutionOptional && packageDefinition.resolutionOptional) {\n            return oldPackageDefinition;\n        }\n\n        if (oldPackageDefinition.version == null && packageDefinition.version != null) {\n            return packageDefinition;\n        }\n\n        if (oldPackageDefinition.version != null && packageDefinition.version == null) {\n            return oldPackageDefinition;\n        }\n\n        return oldPackageDefinition;\n    }"
     },
     {
         "label": "HazelcastManifestTransformerfindUsesConstraint",
+        "functionName": "findUsesConstraint",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "private Set<String> findUsesConstraint(String[] tokens) {\n            for (String token : tokens) {\n                if (token.startsWith(USES_PREFIX)) {\n                    String packages = token.substring(USES_OFFSET, token.length() - 1);\n                    String[] sepPackages = packages.split(\",\");\n                    return new LinkedHashSet<>(asList(sepPackages));\n                }\n            }\n            return emptySet();\n        }"
     },
     {
         "label": "HazelcastManifestTransformerfindVersionConstraint",
+        "functionName": "findVersionConstraint",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "private String findVersionConstraint(String[] tokens) {\n            for (String token : tokens) {\n                if (token.startsWith(VERSION_PREFIX)) {\n                    return token.substring(VERSION_OFFSET);\n                }\n            }\n            return null;\n        }"
     },
     {
         "label": "HazelcastManifestTransformermergeExportUsesConstraint",
+        "functionName": "mergeExportUsesConstraint",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "private PackageDefinition mergeExportUsesConstraint(PackageDefinition packageDefinition,\n                                                        PackageDefinition oldPackageDefinition) {\n        Set<String> uses = new LinkedHashSet<>();\n        if (oldPackageDefinition != null) {\n            uses.addAll(oldPackageDefinition.uses);\n        }\n        uses.addAll(packageDefinition.uses);\n\n        String packageName = packageDefinition.packageName;\n        boolean resolutionOptional = packageDefinition.resolutionOptional;\n        String version = packageDefinition.version;\n        return new PackageDefinition(packageName, resolutionOptional, version, uses);\n    }"
     },
     {
         "label": "HazelcastManifestTransformermodifyOutputStream",
+        "functionName": "modifyOutputStream",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "public void modifyOutputStream(JarOutputStream jarOutputStream) throws IOException {\n        if (shadedManifest == null) {\n            shadedManifest = new Manifest();\n        }\n\n        Attributes attributes = shadedManifest.getMainAttributes();\n\n        if (overrideInstructions != null) {\n            precompileOverrideInstructions();\n            attributes.putValue(IMPORT_PACKAGE, join(shadeImports().iterator(), \",\"));\n            attributes.putValue(EXPORT_PACKAGE, join(shadeExports().iterator(), \",\"));\n        }\n\n        attributes.putValue(\"Created-By\", \"HazelcastManifestTransformer through Shade Plugin\");\n\n        if (mainClass != null) {\n            attributes.put(Attributes.Name.MAIN_CLASS, mainClass);\n        }\n\n        if (manifestEntries != null) {\n            for (Map.Entry<String, Object> entry : manifestEntries.entrySet()) {\n                attributes.put(new Attributes.Name(entry.getKey()), entry.getValue());\n            }\n        }\n\n        // the Manifest in hazelcast uberjar won't have the Automatic-Module-Name\n        attributes.remove(AUTOMATIC_MODULE_NAME);\n\n        jarOutputStream.putNextEntry(new JarEntry(JarFile.MANIFEST_NAME));\n        shadedManifest.write(jarOutputStream);\n        jarOutputStream.flush();\n    }"
     },
     {
         "label": "HazelcastManifestTransformeroverridePackageDefinitionResolution",
+        "functionName": "overridePackageDefinitionResolution",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "private PackageDefinition overridePackageDefinitionResolution(PackageDefinition packageDefinition) {\n        for (InstructionDefinition instructionDefinition : importOverrideInstructions) {\n            Instruction instruction = instructionDefinition.instruction;\n            if (instruction.matches(packageDefinition.packageName)) {\n                // is remove instruction?\n                if (instruction.isNegated()) {\n                    LOGGER.fine(\"Instruction '\" + instruction + \"' -> package '\" + packageDefinition.packageName + \"'\");\n                    return null;\n                }\n\n                LOGGER.fine(\"Instruction '\" + instruction + \"' -> package '\" + packageDefinition.packageName + \"'\");\n\n                PackageDefinition override = instructionDefinition.packageDefinition;\n                String packageName = packageDefinition.packageName;\n                String version = packageDefinition.version;\n                Set<String> uses = packageDefinition.uses;\n                return new PackageDefinition(packageName, override.resolutionOptional, version, uses);\n            }\n        }\n\n        return packageDefinition;\n    }"
     },
     {
         "label": "HazelcastManifestTransformerprecompileOverrideInstructions",
+        "functionName": "precompileOverrideInstructions",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "private void precompileOverrideInstructions() {\n        String importPackageInstructions = overrideInstructions.get(IMPORT_PACKAGE);\n        if (importPackageInstructions != null) {\n            List<String> packageInstructions = ElementParser.parseDelimitedString(importPackageInstructions, ',', true);\n            for (String packageInstruction : packageInstructions) {\n                PackageDefinition packageDefinition = new PackageDefinition(packageInstruction);\n                Instruction instruction = Instruction.getPattern(packageDefinition.packageName);\n                LOGGER.fine(\"Compiled import instruction '\" + packageInstruction + \"' -> \" + instruction);\n                importOverrideInstructions.add(new InstructionDefinition(packageDefinition, instruction));\n            }\n        }\n        String exportPackageInstructions = overrideInstructions.get(EXPORT_PACKAGE);\n        if (exportPackageInstructions != null) {\n            List<String> packageInstructions = ElementParser.parseDelimitedString(exportPackageInstructions, ',', true);\n            for (String packageInstruction : packageInstructions) {\n                PackageDefinition packageDefinition = new PackageDefinition(packageInstruction);\n                Instruction instruction = Instruction.getPattern(packageDefinition.packageName);\n                LOGGER.fine(\"Compiled export instruction '\" + packageInstruction + \"' -> \" + instruction);\n                exportOverrideInstructions.add(new InstructionDefinition(packageDefinition, instruction));\n            }\n        }\n    }"
     },
     {
         "label": "HazelcastManifestTransformerprocessResource",
+        "functionName": "processResource",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "public void processResource(String resource, InputStream inputStream, List<Relocator> relocators, long time)\n            throws IOException {\n        Attributes attributes;\n        if (shadedManifest == null) {\n            shadedManifest = new Manifest(inputStream);\n            attributes = shadedManifest.getMainAttributes();\n        } else {\n            Manifest manifest = new Manifest(inputStream);\n            attributes = manifest.getMainAttributes();\n        }\n\n        String importPackages = attributes.getValue(IMPORT_PACKAGE);\n        if (importPackages != null) {\n            List<String> definitions = ElementParser.parseDelimitedString(importPackages, ',', true);\n            for (String definition : definitions) {\n                PackageDefinition packageDefinition = new PackageDefinition(definition);\n\n                String packageName = packageDefinition.packageName;\n                PackageDefinition oldPackageDefinition = importedPackages.get(packageName);\n                importedPackages.put(packageName, findStrongerDefinition(packageDefinition, oldPackageDefinition));\n            }\n        }\n\n        String exportPackages = attributes.getValue(EXPORT_PACKAGE);\n        if (exportPackages != null) {\n            List<String> definitions = ElementParser.parseDelimitedString(exportPackages, ',', true);\n            for (String definition : definitions) {\n                PackageDefinition packageDefinition = new PackageDefinition(definition);\n\n                String packageName = packageDefinition.packageName;\n                PackageDefinition oldPackageDefinition = exportedPackages.get(packageName);\n                exportedPackages.put(packageName, mergeExportUsesConstraint(packageDefinition, oldPackageDefinition));\n            }\n        }\n\n        close(inputStream);\n    }"
     },
     {
         "label": "HazelcastManifestTransformershadeImports",
+        "functionName": "shadeImports",
         "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
         "code": "private Set<String> shadeImports() {\n        for (String export : exportedPackages.keySet()) {\n            PackageDefinition definition = new PackageDefinition(export);\n            importedPackages.remove(definition.packageName);\n        }\n        Set<String> imports = new LinkedHashSet<>();\n        for (Map.Entry<String, PackageDefinition> entry : importedPackages.entrySet()) {\n            PackageDefinition original = entry.getValue();\n            PackageDefinition overridden = overridePackageDefinitionResolution(original);\n            if (overridden != null) {\n                String definition = overridden.buildDefinition(true);\n                imports.add(definition);\n                LOGGER.fine(\"Adding shaded import -> \" + definition);\n            } else {\n                LOGGER.fine(\"Removing shaded import -> \" + entry.getValue().packageName);\n            }\n        }\n        return imports;\n    }"
+    },
+    {
+        "label": "HazelcastManifestTransformersetOverrideInstructions",
+        "functionName": "setOverrideInstructions",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
+        "code": "public void setOverrideInstructions(Map<String, String> overrideInstructions) {\n        this.overrideInstructions = overrideInstructions;\n    }"
+    },
+    {
+        "label": "HazelcastManifestTransformersetManifestEntries",
+        "functionName": "setManifestEntries",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
+        "code": "public void setManifestEntries(Map<String, Object> manifestEntries) {\n        this.manifestEntries = manifestEntries;\n        super.setManifestEntries(manifestEntries);\n    }"
+    },
+    {
+        "label": "HazelcastManifestTransformersetMainClass",
+        "functionName": "setMainClass",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/hazelcast-build-utils/src/main/java/com/hazelcast/buildutils/HazelcastManifestTransformer.java",
+        "code": "public void setMainClass(String mainClass) {\n        this.mainClass = mainClass;\n        super.setMainClass(mainClass);\n    }"
+    },
+    {
+        "label": "GenericMapStoreinit",
+        "functionName": "init",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/mapstore/src/main/java/com/hazelcast/mapstore/GenericMapStore.java",
+        "code": "public void init(HazelcastInstance instance, Properties properties, String mapName) {\n        verifyMapStoreOffload(instance, mapName);\n\n        logger = instance.getLoggingService().getLogger(GenericMapStore.class);\n\n        this.instance = Util.getHazelcastInstanceImpl(instance);\n        this.properties = new GenericMapStoreProperties(properties, mapName);\n        sql = instance.getSql();\n\n        this.mapName = mapName;\n        this.mapping = MAPPING_PREFIX + mapName;\n\n        HazelcastProperties hzProperties = nodeEngine().getProperties();\n        this.initTimeoutMillis = hzProperties.getMillis(MAPSTORE_INIT_TIMEOUT);\n\n        ManagedExecutorService asyncExecutor = nodeEngine()\n                .getExecutionService()\n                .getExecutor(ExecutionService.MAP_STORE_OFFLOADABLE_EXECUTOR);\n\n        // Init can run on partition thread, creating a mapping uses other maps, so it needs to run elsewhere\n        asyncExecutor.submit(() -> createMappingForMapStore(mapName));\n    }"
+    },
+    {
+        "label": "GenericMapStoreisIntegrityConstraintViolation",
+        "functionName": "isIntegrityConstraintViolation",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/mapstore/src/main/java/com/hazelcast/mapstore/GenericMapStore.java",
+        "code": "static boolean isIntegrityConstraintViolation(Exception exception) {\n        boolean result = false;\n        SQLException sqlException = findSQLException(exception);\n        if (sqlException != null) {\n            String sqlState = sqlException.getSQLState();\n            if (sqlState != null) {\n                result = sqlState.startsWith(\"23\");\n            }\n        }\n        return result;\n    }"
+    },
+    {
+        "label": "GenericMapStorefindSQLException",
+        "functionName": "findSQLException",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/mapstore/src/main/java/com/hazelcast/mapstore/GenericMapStore.java",
+        "code": "static SQLException findSQLException(Throwable throwable) {\n        Throwable rootCause = throwable;\n        while (rootCause.getCause() != null && rootCause.getCause() != rootCause) {\n            rootCause = rootCause.getCause();\n            if (rootCause instanceof SQLException) {\n                return (SQLException) rootCause;\n            }\n        }\n        return null;\n    }"
+    },
+    {
+        "label": "GenericMapStorereadExistingMapping",
+        "functionName": "readExistingMapping",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/mapstore/src/main/java/com/hazelcast/mapstore/GenericMapStore.java",
+        "code": "private void readExistingMapping() {\n        logger.fine(\"Reading existing mapping for map\" + mapName);\n        try (SqlResult mappings = sql.execute(\"SHOW MAPPINGS\")) {\n            for (SqlRow sqlRow : mappings) {\n                String name = sqlRow.getObject(MAPPING_NAME_COLUMN);\n                if (name.equals(this.mapping)) {\n                    SqlRowMetadata rowMetadata = loadMetadataFromMapping(name);\n                    validateColumns(rowMetadata);\n                    columnMetadataList = rowMetadata.getColumns();\n                    queries = new Queries(name, properties.idColumn, columnMetadataList);\n                    break;\n                }\n            }\n        } catch (Exception e) {\n            initFailure = e;\n        }\n    }"
+    },
+    {
+        "label": "GenericMapStoreresolveMappingColumns",
+        "functionName": "resolveMappingColumns",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/mapstore/src/main/java/com/hazelcast/mapstore/GenericMapStore.java",
+        "code": "private String resolveMappingColumns(String tableName, String dataLinkRef) {\n        String tempMapping = \"temp_mapping_\" + UuidUtil.newUnsecureUuidString();\n        createMapping(tempMapping, tableName, dataLinkRef);\n        SqlRowMetadata rowMetadata = loadMetadataFromMapping(tempMapping);\n        columnMetadataList = rowMetadata.getColumns();\n        dropMapping(tempMapping);\n\n        return Stream.concat(of(properties.idColumn), properties.columns.stream())\n                     .distinct() // avoid duplicate id column if present in columns property\n                     .map(columnName -> validateColumn(rowMetadata.findColumn(columnName), columnName))\n                     .map(rowMetadata::getColumn)\n                     .map(columnMetadata1 -> columnMetadata1.getName() + \" \" + columnMetadata1.getType())\n                     .collect(Collectors.joining(\", \"));\n    }"
+    },
+    {
+        "label": "GenericMapStorecreateMappingForMapStore",
+        "functionName": "createMappingForMapStore",
+        "githubFileLink": "https://github.com/hazelcast/hazelcast/blob/master/extensions/mapstore/src/main/java/com/hazelcast/mapstore/GenericMapStore.java",
+        "code": "private void createMappingForMapStore(String mapName) {\n        logger.fine(\"Initializing for map \" + mapName);\n        try {\n            String mappingColumns = null;\n            if (properties.hasColumns()) {\n                mappingColumns = resolveMappingColumns(properties.tableName, properties.dataLinkRef);\n                logger.fine(\"Discovered following mapping columns: \" + mappingColumns);\n            }\n\n            sql.execute(\n                    \"CREATE MAPPING \\\"\" + mapping + \"\\\" \"\n                            + \"EXTERNAL NAME \\\"\" + properties.tableName + \"\\\" \"\n                            + (mappingColumns != null ? \" ( \" + mappingColumns + \" ) \" : \"\")\n                            + \"TYPE \" + deriveMappingType() + \" \"\n                            + \"OPTIONS (\"\n                            + \"    '\" + OPTION_DATA_LINK_REF + \"' = '\" + properties.dataLinkRef + \"' \"\n                            + \")\"\n            ).close();\n\n            if (!properties.hasColumns()) {\n                columnMetadataList = loadMetadataFromMapping(mapping).getColumns();\n            }\n            queries = new Queries(mapping, properties.idColumn, columnMetadataList);\n        } catch (Exception e) {\n            // We create the mapping on the first member initializing the MapStore\n            // Other members trying to concurrently initialize will fail and just read the mapping\n            if (e.getMessage() != null && e.getMessage().startsWith(\"Mapping or view already exists:\")) {\n                readExistingMapping();\n            } else {\n                logger.warning(e);\n                initFailure = e;\n            }\n        } finally {\n            initFinished.countDown();\n        }\n    }"
     }
 ]
