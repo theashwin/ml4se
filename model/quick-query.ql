@@ -19,4 +19,5 @@ select targetClass.toString() as targetJavaClass,
 func.toString() as funcName, 
 stmt.getLocation().toString() as statementLocation, 
 stmt.toString() as stmtType, 
-stmt.getEnclosingStmt().getParent().toString() as parentOfStmt
+stmt.getEnclosingStmt().getParent().toString() as parentOfStmt,
+stmt.getEnclosingStmt().getParent().getLocation().toString() as parentLoc
