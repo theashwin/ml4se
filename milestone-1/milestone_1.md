@@ -130,8 +130,8 @@ To map python code snippet with the Control Flow and Data Flow Graphs: For each 
             return pipeline
         ```
     <br/>
-    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/15.svg" width="350"> <br/>
-    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/15.svg" width="250"> <br/>
+    2. Data Flow Graph - <br/> <img src="https://raw.githubusercontent.com/theashwin/ml4se/main/milestone-1/python/data-flow/graphs/15.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://raw.githubusercontent.com/theashwin/ml4se/main/milestone-1/python/control-flow/graphs/15.svg" width="250"> <br/>
 
 - Code Snippet #2
     1. Code Snippet
@@ -166,8 +166,8 @@ To map python code snippet with the Control Flow and Data Flow Graphs: For each 
         return {'created': False, 'error': __utils__['boto3.get_error'](e)}
      ```
     <br/>
-    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/graphs/14.svg" width="450"> <br/>
-    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/graphs/14.svg" width="250"> <br/>
+    2. Data Flow Graph - <br/> <img src="https://raw.githubusercontent.com/theashwin/ml4se/main/milestone-1/python/data-flow/graphs/14.svg" width="450"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://raw.githubusercontent.com/theashwin/ml4se/main/milestone-1/python/control-flow/graphs/14.svg" width="250"> <br/>
 
 ### Java
 To map java code snippet with the Control Flow and Data Flow Graphs: For each ``image_name.svg`` from [control-flow-graphs](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/control-flow/graphs) or [data-flow-graphs](https://github.com/theashwin/ml4se/tree/main/milestone-1/java/data-flow/graphs), please refer to file [java.json](https://github.com/theashwin/ml4se/blob/main/data/java.json). In this file, check for json_object with value of ``label`` as ``image_name``. The json object has details about **function name, link to file containing the function, and code**. 
@@ -234,8 +234,8 @@ To map java code snippet with the Control Flow and Data Flow Graphs: For each ``
     }
     ```
     <br/>
-    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/data-flow/graphs/CdcSourcePcomplete.svg" width="350"> <br/>
-    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/CdcSourcePcomplete.svg" width="100"> <br/>
+    2. Data Flow Graph - <br/> <img src="https://raw.githubusercontent.com/theashwin/ml4se/main/milestone-1/java/data-flow/graphs/CdcSourcePcomplete.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://raw.githubusercontent.com/theashwin/ml4se/main/milestone-1/java/control-flow/graphs/CdcSourcePcomplete.svg" width="100"> <br/>
 
 - Code Snippet #2
     1. Code Snippet
@@ -274,5 +274,5 @@ To map java code snippet with the Control Flow and Data Flow Graphs: For each ``
     }
     ```
     <br/>
-    2. Data Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/data-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg" width="350"> <br/>
-    3. Control Flow Graph - <br/> <img src="https://github.com/theashwin/ml4se/blob/main/milestone-1/java/control-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg" width="150"> <br/>
+    2. Data Flow Graph - <br/> <img src="https://raw.githubusercontent.com/theashwin/ml4se/main/milestone-1/java/data-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg" width="350"> <br/>
+    3. Control Flow Graph - <br/> <img src="https://raw.githubusercontent.com/theashwin/ml4se/main/milestone-1/java/control-flow/graphs/HazelcastManifestTransformermodifyOutputStream.svg" width="150"> <br/>
