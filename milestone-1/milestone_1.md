@@ -65,12 +65,16 @@ On VS Code's CodeQL window, through **Command Palette**, open **CodeQL: Quick Qu
 
 #### Python
 - Control Flow - <br/>
-    a. Copy content from [control_flow.ql]() and paste it in ``quick-query.ql``. <br/>
+    a. Copy multiple query files from [control_flow](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/control-flow/) and paste it in ``quick-query.ql`` and run individually. <br/>
     b. Right Click on Editor and select **CodeQL: Run Query on Selected Database**. <br/>
+    c. These queries will extract different parts of code for CFG generation.
+    d. Code for this is given in [python.ipynb](https://github.com/theashwin/ml4se/blob/main/notebooks/python.ipynb)
 
 - Data Flow - <br/>
-    a. Copy content from [data_flow.ql]() and paste it in ``quick-query.ql``. <br/>
+    a. Copy multiple query files from [data_flow](https://github.com/theashwin/ml4se/blob/main/milestone-1/python/data-flow/) and paste it in ``quick-query.ql`` and run individually. <br/>
     b. Right Click on Editor and select **CodeQL: Run Query on Selected Database**. <br/>
+    c. These queries will extract different parts of code for DFG generation.
+    d. Code for this is given in [python.ipynb](https://github.com/theashwin/ml4se/blob/main/notebooks/python.ipynb)
 
 ## Results
 
