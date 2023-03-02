@@ -13,7 +13,7 @@ openai.api_key = config["OPENAI_API_KEY"]
 messages = [
 	{
 		"role": "system",
-		"content": "Write five inputs and outputs that for the function given in the variable 'Code' as table " # 'Inputs' - 'Outputs'
+		"content": "Write five inputs and outputs for the function given in the variable 'Code' as table" # 'Inputs' - 'Outputs'
 	}
 ]
 
