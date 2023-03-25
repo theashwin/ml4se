@@ -1,0 +1,7 @@
+{
+	"1": {
+		"code": "epsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    r\"\"\"Log of the pseudo-determinant.\n    It assumes that ``K`` is a positive semi-definite matrix.\n    Args:\n        K (array_like): matrix.\n    Returns:\n        float: log of the pseudo-determinant.\n    \"\"\"\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals > epsilon]))",
+		"raw_link": "https://raw.githubusercontent.com/limix/numpy-sugar/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/det.py",
+		"github_link": "numpy-sugar/numpy_sugar/linalg/det.py"
+	}
+}

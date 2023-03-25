@@ -4,3 +4,4 @@ data/java
 data/python
 .idea
 config.json
+__pycache__

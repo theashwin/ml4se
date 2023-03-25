@@ -1,12 +1,18 @@
+import json
+
 from prompt.prompt import Prompt
 
 
 class Refactor(Prompt):
-	def generate_prompt(self):
-		pass
+	path = "json/refactor.json"
 
-	def parse_response(self):
-		pass
+	def __init__(self):
+		with open(self.path) as file:
+			self.prompt = json.loads(file.read())
+
+	def parse_response(self, response):
+		# Returns True if prompt is parsed else False, give additional prompts if False
+		return True
 
 	def store(self):
 		pass
