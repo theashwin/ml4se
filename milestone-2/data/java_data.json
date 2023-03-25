@@ -400,14 +400,15 @@
   },
   {
     "func_id": 35,
-    "project_repo": "https://github.com/geomajas/geomajas-project-geometry",
-    "location": "jts/src/main/java/org/geomajas/geometry/conversion/jts/GeometryConverterService.java",
-    "function_name": "getGeometryType",
-    "function": "private static String getGeometryType(com.vividsolutions.jts.geom.Geometry geometry) throws JtsConversionException {\n\t\tif (geometry instanceof Point) {\n\t\t\treturn Geometry.POINT;\n\t\t} else if (geometry instanceof LinearRing) {\n\t\t\treturn Geometry.LINEAR_RING;\n\t\t} else if (geometry instanceof LineString) {\n\t\t\treturn Geometry.LINE_STRING;\n\t\t} else if (geometry instanceof Polygon) {\n\t\t\treturn Geometry.POLYGON;\n\t\t} else if (geometry instanceof MultiPoint) {\n\t\t\treturn Geometry.MULTI_POINT;\n\t\t} else if (geometry instanceof MultiLineString) {\n\t\t\treturn Geometry.MULTI_LINE_STRING;\n\t\t} else if (geometry instanceof GeometryCollection) {\n\t\t\t// Multi-polygon and other GeometryCollection implementations\n\t\t\treturn Geometry.MULTI_POLYGON;\n\t\t} else {\n\t\t\tthrow new JtsConversionException(\"Error while converting to Geomajas: Unknown geometry type.\");\n\t\t}\n\t}",
+    "project_repo": "https://github.com/looly/hutool",
+    "location": "src/main/java/cn/hutool/core/util/ArrayUtil.java",
+    "function_name": "hasNull",
+    "function": "public static <T> boolean hasNull(T... array) {\n\t\tif (isNotEmpty(array)) {\n\t\t\tfor (T element : array) {\n\t\t\t\tif (ObjectUtil.isNull(element)) {\n\t\t\t\t\treturn true;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\treturn array == null;\n\t}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 36,
@@ -543,21 +544,22 @@
   },
   {
     "func_id": 48,
-    "project_repo": "https://github.com/hankcs/HanLP",
-    "location": "src/main/java/com/hankcs/hanlp/utility/ByteUtil.java",
-    "function_name": "bytesHighFirstToDouble",
-    "function": "public static double bytesHighFirstToDouble(byte[] bytes, int start)\n    {\n        long l = ((long) bytes[start] << 56) & 0xFF00000000000000L;\n        // 如果不强制转换为long，那么默认会当作int，导致最高32位丢失\n        l |= ((long) bytes[1 + start] << 48) & 0xFF000000000000L;\n        l |= ((long) bytes[2 + start] << 40) & 0xFF0000000000L;\n        l |= ((long) bytes[3 + start] << 32) & 0xFF00000000L;\n        l |= ((long) bytes[4 + start] << 24) & 0xFF000000L;\n        l |= ((long) bytes[5 + start] << 16) & 0xFF0000L;\n        l |= ((long) bytes[6 + start] << 8) & 0xFF00L;\n        l |= (long) bytes[7 + start] & 0xFFL;\n\n        return Double.longBitsToDouble(l);\n    }",
+    "project_repo": "https://github.com/looly/hutool",
+    "location": "src/main/java/cn/hutool/core/util/CreditCodeUtil.java",
+    "function_name": "getParityBit",
+    "function": "\tprivate static int getParityBit(CharSequence creditCode) {\n\t\tint sum = 0;\n\t\tInteger codeIndex;\n\t\tfor (int i = 0; i < 17; i++) {\n\t\t\tcodeIndex = CODE_INDEX_MAP.get(creditCode.charAt(i));\n\t\t\tif (null == codeIndex) {\n\t\t\t\treturn -1;\n\t\t\t}\n\t\t\tsum += codeIndex * WEIGHT[i];\n\t\t}\n\t\tfinal int result = 31 - sum % 31;\n\t\treturn result == 31 ? 0 : result;\n\t}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "medium"
   },
   {
     "func_id": 49,
-    "project_repo": "https://github.com/hankcs/HanLP",
-    "location": "src/main/java/com/hankcs/hanlp/utility/ByteUtil.java",
-    "function_name": "fnvHash",
-    "function": "public static long bytesToLong(byte[] b)\n    {\n        long l = ((long) b[0] << 56) & 0xFF00000000000000L;\n        // 如果不强制转换为long，那么默认会当作int，导致最高32位丢失\n        l |= ((long) b[1] << 48) & 0xFF000000000000L;\n        l |= ((long) b[2] << 40) & 0xFF0000000000L;\n        l |= ((long) b[3] << 32) & 0xFF00000000L;\n        l |= ((long) b[4] << 24) & 0xFF000000L;\n        l |= ((long) b[5] << 16) & 0xFF0000L;\n        l |= ((long) b[6] << 8) & 0xFF00L;\n        l |= (long) b[7] & 0xFFL;\n        return l;\n    }",
+    "project_repo": "https://github.com/looly/hutool",
+    "location": "src/main/java/cn/hutool/core/util/NumberUtil.java",
+    "function_name": "add",
+    "function": "public static BigDecimal add(Number... values) {\n\t\tif (ArrayUtil.isEmpty(values)) {\n\t\t\treturn BigDecimal.ZERO;\n\t\t}\n\n\t\tNumber value = values[0];\n\t\tBigDecimal result = toBigDecimal(value);\n\t\tfor (int i = 1; i < values.length; i++) {\n\t\t\tvalue = values[i];\n\t\t\tif (null != value) {\n\t\t\t\tresult = result.add(toBigDecimal(value));\n\t\t\t}\n\t\t}\n\t\treturn result;\n\t}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
