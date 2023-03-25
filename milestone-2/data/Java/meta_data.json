@@ -1,0 +1,14 @@
+[
+  {
+    "project_repo": "https://github.com/Esri/geometry-api-java",
+    "count": 19
+  },
+  {
+    "project_repo": "https://github.com/locationtech/jts",
+    "count": 16
+  },
+  {
+    "project_repo": "https://github.com/looly/hutool",
+    "count": 15
+  }
+]
