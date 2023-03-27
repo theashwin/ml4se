@@ -308,7 +308,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "medium"
   },
   {
     "func_id": 27,
@@ -319,7 +320,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "hard"
   },
   {
     "func_id": 28,
@@ -330,7 +332,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 29,
@@ -341,7 +344,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "medium"
   },
   {
     "func_id": 30,
@@ -352,7 +356,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "medium"
   },
   {
     "func_id": 31,
@@ -363,7 +368,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 32,
@@ -374,7 +380,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "medium"
   },
   {
     "func_id": 33,
@@ -385,7 +392,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "medium"
   },
   {
     "func_id": 34,
@@ -396,7 +404,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "medium"
   },
   {
     "func_id": 35,
@@ -419,7 +428,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "hard"
   },
   {
     "func_id": 37,
@@ -430,7 +440,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 38,
@@ -441,7 +452,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 39,
@@ -452,7 +464,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 40,
@@ -463,7 +476,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 41,
@@ -474,18 +488,20 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "medium"
   },
   {
     "func_id": 42,
     "project_repo": "https://github.com/looly/hutool",
     "location": "hutool-json/src/main/java/cn/hutool/json/JSONUtil.java",
-    "function_name": "fnvHash",
-    "function": "public static int fnvHash(String data) {\n\t\tfinal int p = 16777619;\n\t\tint hash = (int) 2166136261L;\n\t\tfor (int i = 0; i < data.length(); i++) {\n\t\t\thash = (hash ^ data.charAt(i)) * p;\n\t\t}\n\t\thash += hash << 13;\n\t\thash ^= hash >> 7;\n\t\thash += hash << 3;\n\t\thash ^= hash >> 17;\n\t\thash += hash << 5;\n\t\treturn hash;\n\t}",
+    "function_name": "parse",
+    "function": "public static JSON parse(Object obj) {\n\t\tif (null == obj) {\n\t\t\treturn null;\n\t\t}\n\n\t\tJSON json = null;\n\t\tif (obj instanceof JSON) {\n\t\t\tjson = (JSON) obj;\n\t\t} else if (obj instanceof String) {\n\t\t\tString jsonStr = ((String) obj).trim();\n\t\t\tif (jsonStr.startsWith(\"[\")) {\n\t\t\t\tjson = parseArray(jsonStr);\n\t\t\t} else {\n\t\t\t\tjson = parseObj(jsonStr);\n\t\t\t}\n\t\t} else if (obj instanceof Collection || obj.getClass().isArray()) {// 列表\n\t\t\tjson = new JSONArray(obj);\n\t\t} else {// 对象\n\t\t\tjson = new JSONObject(obj);\n\t\t}\n\n\t\treturn json;\n\t}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "hard"
   },
   {
     "func_id": 43,
@@ -496,7 +512,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 44,
@@ -507,7 +524,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   },
   {
     "func_id": 45,
@@ -518,7 +536,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "hard"
   },
   {
     "func_id": 46,
@@ -529,7 +548,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "hard"
   },
   {
     "func_id": 47,
@@ -540,7 +560,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "hard"
   },
   {
     "func_id": 48,
@@ -563,7 +584,8 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "hard"
   },
   {
     "func_id": 50,
@@ -574,6 +596,7 @@
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
-    "expected_output": ""
+    "expected_output": "",
+    "flag": "easy"
   }
 ]
