@@ -83,4 +83,136 @@
     "expected_output": "",
     "flag": "medium"
   },
+  {
+    "func_id": 8,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lstsq.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/lstsq.py",
+    "function_name": "lstsq",
+    "function": "from numpy import asarray, dot, newaxis, squeeze\nfrom numpy.core import double, finfo\nfrom numpy.linalg import lstsq as npy_lstsq\n\n\ndef lstsq(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n\n    if A.ndim == 1:\n        A = A[:, newaxis]\n\n    if A.shape[1] == 1:\n        return dot(A.T, b) / squeeze(dot(A.T, A))\n\n    rcond = finfo(double).eps * max(*A.shape)\n    return npy_lstsq(A, b, rcond=rcond)[0]",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium"
+  },
+  {
+    "func_id": 9,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lu.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/lu.py",
+    "function_name": "lu_slogdet",
+    "function": "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_slogdet(LU):\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    adet = _sum(log(_abs(LU[0].diagonal())))\n\n    s = prod(sign(LU[0].diagonal()))\n\n    nrows_exchange = LU[1].size - _sum(LU[1] == arange(LU[1].size, dtype=\"int32\"))\n\n    odd = nrows_exchange % 2 == 1\n    if odd:\n        s *= -1.0\n\n    return (s, adet)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 10,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lu.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/lu.py",
+    "function_name": "lu_solve",
+    "function": "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_solve(LU, b):\n    from scipy.linalg import lu_solve as sp_lu_solve\n\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    b = asarray(b, float)\n    return sp_lu_solve(LU, b, check_finite=False)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 11,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/property.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/property.py",
+    "function_name": "check_definite_positiveness",
+    "function": "from numpy import diag_indices_from, empty_like, finfo, sqrt, asanyarray\nfrom numpy.linalg import LinAlgError, cholesky\n\n\ndef check_definite_positiveness(A):\n    try:\n        cholesky(A)\n    except LinAlgError:\n        return False\n    return True",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 12,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/property.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/property.py",
+    "function_name": "check_symmetry",
+    "function": "def check_symmetry(A):\n    A = asanyarray(A)\n    if A.ndim != 2:\n        raise ValueError(\"Checks symmetry only for bi-dimensional arrays.\")\n\n    if A.shape[0] != A.shape[1]:\n        return False\n\n    return abs(A - A.T).max() < sqrt(finfo(float).eps)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 13,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
+    "function_name": "hsolve",
+    "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\nfrom .. import epsilon\n\n_epsilon = sqrt(finfo(float).eps)\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\n\ndef hsolve(A, y):\n    n = _norm(A[0, 0], A[1, 0])\n    u0 = A[0, 0] - n\n    u1 = A[1, 0]\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    B00 = 1 - 2 * v0 * v0\n    B01 = 0 - 2 * v0 * v1\n    B11 = 1 - 2 * v1 * v1\n\n    D00 = B00 * A[0, 0] + B01 * A[1, 0]\n    D01 = B00 * A[0, 1] + B01 * A[1, 1]\n    D11 = B01 * A[0, 1] + B11 * A[1, 1]\n\n    b0 = y[0] - 2 * y[0] * v0 * v0 - 2 * y[1] * v0 * v1\n    b1 = y[1] - 2 * y[0] * v1 * v0 - 2 * y[1] * v1 * v1\n\n    n = _norm(D00, D01)\n    u0 = D00 - n\n    u1 = D01\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    E00 = 1 - 2 * v0 * v0\n    E01 = 0 - 2 * v0 * v1\n    E11 = 1 - 2 * v1 * v1\n\n    F00 = E00 * D00 + E01 * D01\n    F01 = E01 * D11\n    F11 = E11 * D11\n\n    F11 = (npy_abs(F11) > epsilon.small) * F11\n\n    with errstate(divide=\"ignore\", invalid=\"ignore\"):\n        Fi00 = nan_to_num(F00 / F00 / F00)\n        Fi11 = nan_to_num(F11 / F11 / F11)\n        Fi10 = nan_to_num(-(F01 / F00) * Fi11)\n\n    c0 = Fi00 * b0\n    c1 = Fi10 * b0 + Fi11 * b1\n\n    x0 = E00 * c0 + E01 * c1\n    x1 = E01 * c0 + E11 * c1\n\n    return array([x0, x1])\n",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium"
+  },
+  {
+    "func_id": 14
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
+    "function_name": "hsolve",
+    "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 / A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a * d - b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium"
+  },
+  {
+    "func_id": 15
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
+    "function_name": "rsolve",
+    "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef rsolve(A, b, epsilon=_epsilon):\n    r\"\"\"Robust solve for the linear equations.\n    Args:\n        A (array_like): Coefficient matrix.\n        b (array_like): Ordinate values.\n    Returns:\n        :class:`numpy.ndarray`: Solution ``x``.\n    \"\"\"\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] > epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 16
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/qs.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/qs.py",
+    "function_name": "economic_qs",
+    "function": "from numpy import asarray, finfo, logical_not, sqrt\nfrom numpy.linalg import eigh, svd\ndef economic_qs(K, epsilon=sqrt(finfo(float).eps)):\n    (S, Q) = eigh(K)\n\n    nok = abs(max(Q[0].min(), Q[0].max(), key=abs)) < epsilon\n    nok = nok and abs(max(K.min(), K.max(), key=abs)) >= epsilon\n    if nok:\n        from scipy.linalg import eigh as sp_eigh\n\n        (S, Q) = sp_eigh(K)\n\n    ok = S >= epsilon\n    nok = logical_not(ok)\n    S0 = S[ok]\n    Q0 = Q[:, ok]\n    Q1 = Q[:, nok]\n    return ((Q0, Q1), S0)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 17
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/qs.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/qs.py",
+    "function_name": "economic_qs_linear",
+    "function": "def economic_qs_linear(G):\n    import dask.array as da\n\n    if not isinstance(G, da.Array):\n        G = asarray(G, float)\n\n    if G.shape[0] > G.shape[1]:\n        (Q, Ssq, _) = svd(G, full_matrices=True)\n        S0 = Ssq ** 2\n        rank = len(S0)\n        Q0, Q1 = Q[:, :rank], Q[:, rank:]\n        return ((Q0, Q1), S0)\n\n    return economic_qs(G.dot(G.T))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 18
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/tri.py",
+    "location": "numpy-sugar/numpy_sugar/linalg/tri.py",
+    "function_name": "stl",
+    "function": "from numpy import asarray\n\n\ndef stl(A, b):\n    from scipy.linalg import solve_triangular\n\n    A = asarray(A, float)\n    b = asarray(b, float)\n    return solve_triangular(A, b, lower=True, check_finite=False)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
 ]
