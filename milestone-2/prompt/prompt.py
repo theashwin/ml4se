@@ -5,6 +5,7 @@ class Prompt(ABC):
 	prompt = None
 	data = None
 	idx = 1
+	lang = None
 
 	@abstractmethod
 	def parse_response(self, prompt_idx, response):
@@ -24,7 +25,7 @@ class Prompt(ABC):
 
 	# Dataset
 	def get_code(self):
-		return self.data[str(self.idx)]['code']
+		return self.data['function']
 
 	# def get_comment(self):
 	# 	return self.data[str(self.idx)]['comment']

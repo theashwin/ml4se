@@ -1,5 +1,5 @@
 {
-	"init": "For the python function with comments given in the variable 'code' below, write three inputs and outputs in a table and reason about the execution of the function. Step by step. Be as specific as possible. Assume variable's contents as required. ",
+	"init": "For the <LANG> function with comments given in the variable 'code' below, write three inputs and outputs in a table and reason about the execution of the function. Step by step. Be as specific as possible. Assume variable's contents as required. ",
 	"1": "code: ",
 	"2": "Show calculations for each of the three input-output pairs. Step by step. "
 }
