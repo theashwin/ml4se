@@ -1,7 +1,7 @@
 [
   {
     "func_id": 1,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/_kron.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/_kron.py",
     "function_name": "kron_dot",
     "function": "def kron_dot(A, B, C, out=None):\n    \n    from numpy import dot, zeros, asarray\n\n    A = asarray(A)\n    B = asarray(B)\n    C = asarray(C)\n\n    if out is None:\n        out = zeros((B.shape[0], A.shape[0]))\n    dot(B, dot(C, A.T), out=out)\n    return out",
@@ -13,7 +13,7 @@
   },
   {
     "func_id": 2,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/cho.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/cho.py",
     "function_name": "cho_solve",
     "function": "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size != 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
@@ -25,7 +25,7 @@
   },
   {
     "func_id": 3,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/det.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/det.py",
     "function_name": "plogdet",
     "function": "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals > epsilon]))",
@@ -37,7 +37,7 @@
   },
   {
     "func_id": 4,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/diag.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/diag.py",
     "function_name": "sum2diag",
     "function": "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
@@ -49,7 +49,7 @@
   },
   {
     "func_id": 5,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/dot.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/dot.py",
     "function_name": "dotd",
     "function": "from numpy import asarray, copy, dot, einsum, empty, multiply\n\n\ndef dotd(A, B, out=None):\n   \n    A = asarray(A, float)\n    B = asarray(B, float)\n    if A.ndim == 1 and B.ndim == 1:\n        if out is None:\n            return dot(A, B)\n        return dot(A, B, out)\n    if out is None:\n        out = empty((A.shape[0],), float)\n    return einsum(\"ij,ji->i\", A, B, out=out)",
@@ -61,7 +61,7 @@
   },
   {
     "func_id": 6,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/dot.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/dot.py",
     "function_name": "ddot",
     "function": "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef ddot(L, R, left=None, out=None):\n    L = asarray(L, float)\n    R = asarray(R, float)\n    if left is None:\n        ok = min(L.ndim, R.ndim) == 1 and max(L.ndim, R.ndim) == 2\n        if not ok:\n            msg = \"Wrong array layout. One array should have\"\n            msg += \" ndim=1 and the other one ndim=2.\"\n            raise ValueError(msg)\n        left = L.ndim == 1\n    if left:\n        if out is None:\n            out = copy(R)\n        L = L.reshape(list(L.shape) + [1] * (R.ndim - 1))\n        return multiply(L, R, out=out)\n    else:\n        if out is None:\n            out = copy(L)\n        return multiply(L, R, out=out)",
@@ -73,7 +73,7 @@
   },
   {
     "func_id": 7,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/dot.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/dot.py",
     "function_name": "cdot",
     "function": "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef cdot(L, out=None):\n    L = asarray(L, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if L.ndim != 2:\n        raise ValueError(layout_error)\n\n    if L.shape[0] != L.shape[1]:\n        raise ValueError(layout_error)\n\n    if out is None:\n        out = empty((L.shape[0], L.shape[1]), float)\n\n    return einsum(\"ij,kj->ik\", L, L, out=out)",
@@ -85,7 +85,7 @@
   },
   {
     "func_id": 8,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lstsq.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/lstsq.py",
     "function_name": "lstsq",
     "function": "from numpy import asarray, dot, newaxis, squeeze\nfrom numpy.core import double, finfo\nfrom numpy.linalg import lstsq as npy_lstsq\n\n\ndef lstsq(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n\n    if A.ndim == 1:\n        A = A[:, newaxis]\n\n    if A.shape[1] == 1:\n        return dot(A.T, b) / squeeze(dot(A.T, A))\n\n    rcond = finfo(double).eps * max(*A.shape)\n    return npy_lstsq(A, b, rcond=rcond)[0]",
@@ -97,7 +97,7 @@
   },
   {
     "func_id": 9,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lu.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/lu.py",
     "function_name": "lu_slogdet",
     "function": "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_slogdet(LU):\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    adet = _sum(log(_abs(LU[0].diagonal())))\n\n    s = prod(sign(LU[0].diagonal()))\n\n    nrows_exchange = LU[1].size - _sum(LU[1] == arange(LU[1].size, dtype=\"int32\"))\n\n    odd = nrows_exchange % 2 == 1\n    if odd:\n        s *= -1.0\n\n    return (s, adet)",
@@ -109,7 +109,7 @@
   },
   {
     "func_id": 10,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lu.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/lu.py",
     "function_name": "lu_solve",
     "function": "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_solve(LU, b):\n    from scipy.linalg import lu_solve as sp_lu_solve\n\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    b = asarray(b, float)\n    return sp_lu_solve(LU, b, check_finite=False)",
@@ -121,7 +121,7 @@
   },
   {
     "func_id": 11,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/property.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/property.py",
     "function_name": "check_definite_positiveness",
     "function": "from numpy import diag_indices_from, empty_like, finfo, sqrt, asanyarray\nfrom numpy.linalg import LinAlgError, cholesky\n\n\ndef check_definite_positiveness(A):\n    try:\n        cholesky(A)\n    except LinAlgError:\n        return False\n    return True",
@@ -133,7 +133,7 @@
   },
   {
     "func_id": 12,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/property.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/property.py",
     "function_name": "check_symmetry",
     "function": "def check_symmetry(A):\n    A = asanyarray(A)\n    if A.ndim != 2:\n        raise ValueError(\"Checks symmetry only for bi-dimensional arrays.\")\n\n    if A.shape[0] != A.shape[1]:\n        return False\n\n    return abs(A - A.T).max() < sqrt(finfo(float).eps)",
@@ -145,7 +145,7 @@
   },
   {
     "func_id": 13,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
     "function_name": "hsolve",
     "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\nfrom .. import epsilon\n\n_epsilon = sqrt(finfo(float).eps)\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\n\ndef hsolve(A, y):\n    n = _norm(A[0, 0], A[1, 0])\n    u0 = A[0, 0] - n\n    u1 = A[1, 0]\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    B00 = 1 - 2 * v0 * v0\n    B01 = 0 - 2 * v0 * v1\n    B11 = 1 - 2 * v1 * v1\n\n    D00 = B00 * A[0, 0] + B01 * A[1, 0]\n    D01 = B00 * A[0, 1] + B01 * A[1, 1]\n    D11 = B01 * A[0, 1] + B11 * A[1, 1]\n\n    b0 = y[0] - 2 * y[0] * v0 * v0 - 2 * y[1] * v0 * v1\n    b1 = y[1] - 2 * y[0] * v1 * v0 - 2 * y[1] * v1 * v1\n\n    n = _norm(D00, D01)\n    u0 = D00 - n\n    u1 = D01\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    E00 = 1 - 2 * v0 * v0\n    E01 = 0 - 2 * v0 * v1\n    E11 = 1 - 2 * v1 * v1\n\n    F00 = E00 * D00 + E01 * D01\n    F01 = E01 * D11\n    F11 = E11 * D11\n\n    F11 = (npy_abs(F11) > epsilon.small) * F11\n\n    with errstate(divide=\"ignore\", invalid=\"ignore\"):\n        Fi00 = nan_to_num(F00 / F00 / F00)\n        Fi11 = nan_to_num(F11 / F11 / F11)\n        Fi10 = nan_to_num(-(F01 / F00) * Fi11)\n\n    c0 = Fi00 * b0\n    c1 = Fi10 * b0 + Fi11 * b1\n\n    x0 = E00 * c0 + E01 * c1\n    x1 = E01 * c0 + E11 * c1\n\n    return array([x0, x1])\n",
@@ -157,7 +157,7 @@
   },
   {
     "func_id": 14
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
     "function_name": "hsolve",
     "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 / A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a * d - b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)",
@@ -169,7 +169,7 @@
   },
   {
     "func_id": 15
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
     "function_name": "rsolve",
     "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef rsolve(A, b, epsilon=_epsilon):\n    r\"\"\"Robust solve for the linear equations.\n    Args:\n        A (array_like): Coefficient matrix.\n        b (array_like): Ordinate values.\n    Returns:\n        :class:`numpy.ndarray`: Solution ``x``.\n    \"\"\"\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] > epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
@@ -181,7 +181,7 @@
   },
   {
     "func_id": 16
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/qs.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/qs.py",
     "function_name": "economic_qs",
     "function": "from numpy import asarray, finfo, logical_not, sqrt\nfrom numpy.linalg import eigh, svd\ndef economic_qs(K, epsilon=sqrt(finfo(float).eps)):\n    (S, Q) = eigh(K)\n\n    nok = abs(max(Q[0].min(), Q[0].max(), key=abs)) < epsilon\n    nok = nok and abs(max(K.min(), K.max(), key=abs)) >= epsilon\n    if nok:\n        from scipy.linalg import eigh as sp_eigh\n\n        (S, Q) = sp_eigh(K)\n\n    ok = S >= epsilon\n    nok = logical_not(ok)\n    S0 = S[ok]\n    Q0 = Q[:, ok]\n    Q1 = Q[:, nok]\n    return ((Q0, Q1), S0)",
@@ -193,7 +193,7 @@
   },
   {
     "func_id": 17
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/qs.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/qs.py",
     "function_name": "economic_qs_linear",
     "function": "def economic_qs_linear(G):\n    import dask.array as da\n\n    if not isinstance(G, da.Array):\n        G = asarray(G, float)\n\n    if G.shape[0] > G.shape[1]:\n        (Q, Ssq, _) = svd(G, full_matrices=True)\n        S0 = Ssq ** 2\n        rank = len(S0)\n        Q0, Q1 = Q[:, :rank], Q[:, rank:]\n        return ((Q0, Q1), S0)\n\n    return economic_qs(G.dot(G.T))",
@@ -205,10 +205,322 @@
   },
   {
     "func_id": 18
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/tri.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/tri.py",
     "function_name": "stl",
     "function": "from numpy import asarray\n\n\ndef stl(A, b):\n    from scipy.linalg import solve_triangular\n\n    A = asarray(A, float)\n    b = asarray(b, float)\n    return solve_triangular(A, b, lower=True, check_finite=False)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 19
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
+    "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
+    "function_name": "_norm",
+    "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef rsolve(A, b, epsilon=_epsilon):\n    r\"\"\"Robust solve for the linear equations.\n    Args:\n        A (array_like): Coefficient matrix.\n        b (array_like): Ordinate values.\n    Returns:\n        :class:`numpy.ndarray`: Solution ``x``.\n    \"\"\"\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] > epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 20
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "empty",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef empty(shape, dtype=None, order='C'):\n   \n    return ndarray.__new__(matrix, shape, dtype, order=order)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 21
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "empty",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef ones(shape, dtype=None, order='C'):\n    a = ndarray.__new__(matrix, shape, dtype, order=order)\n    a.fill(1)\n    return a",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 22
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "zeroes",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef zeros(shape, dtype=None, order='C'):\n    a = ndarray.__new__(matrix, shape, dtype, order=order)\n    a.fill(0)\n    return a",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 23
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "identity",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\n    a = array([1]+n*[0], dtype=dtype)\n    b = empty((n, n), dtype=dtype)\n    b.flat = a\n    return b",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 24
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "eye",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\ndef eye(n,M=None, k=0, dtype=float, order='C'):\n    return asmatrix(np.eye(n, M=M, k=k, dtype=dtype, order=order))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium"
+  },
+  {
+    "func_id": 25
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "rand",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef rand(*args):\n    \"\"\"\n    Return a matrix of random values with given shape.\n    Create a matrix of the given shape and propagate it with\n    random samples from a uniform distribution over ``[0, 1)``.\n    Parameters\n    ----------\n    \\\\*args : Arguments\n        Shape of the output.\n        If given as N integers, each integer specifies the size of one\n        dimension.\n        If given as a tuple, this tuple gives the complete shape.\n    Returns\n    -------\n    out : ndarray\n        The matrix of random values with shape given by `\\\\*args`.\n    See Also\n    --------\n    randn, numpy.random.RandomState.rand\n    Examples\n    --------\n    >>> np.random.seed(123)\n    >>> import numpy.matlib\n    >>> np.matlib.rand(2, 3)\n    matrix([[0.69646919, 0.28613933, 0.22685145],\n            [0.55131477, 0.71946897, 0.42310646]])\n    >>> np.matlib.rand((2, 3))\n    matrix([[0.9807642 , 0.68482974, 0.4809319 ],\n            [0.39211752, 0.34317802, 0.72904971]])\n    If the first argument is a tuple, other arguments are ignored:\n    >>> np.matlib.rand((2, 3), 4)\n    matrix([[0.43857224, 0.0596779 , 0.39804426],\n            [0.73799541, 0.18249173, 0.17545176]])\n    \"\"\"\n    if isinstance(args[0], tuple):\n        args = args[0]\n    return asmatrix(np.random.rand(*args))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium"
+  },
+  {
+    "func_id": 26
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "randn",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef randn(*args):\n    \"\"\"\n    Return a random matrix with data from the \"standard normal\" distribution.\n    `randn` generates a matrix filled with random floats sampled from a\n    univariate \"normal\" (Gaussian) distribution of mean 0 and variance 1.\n    Parameters\n    ----------\n    \\\\*args : Arguments\n        Shape of the output.\n        If given as N integers, each integer specifies the size of one\n        dimension. If given as a tuple, this tuple gives the complete shape.\n    Returns\n    -------\n    Z : matrix of floats\n        A matrix of floating-point samples drawn from the standard normal\n        distribution.\n    See Also\n    --------\n    rand, numpy.random.RandomState.randn\n    Notes\n    -----\n    For random samples from the normal distribution with mean ``mu`` and\n    standard deviation ``sigma``, use::\n        sigma * np.matlib.randn(...) + mu\n    Examples\n    --------\n    >>> np.random.seed(123)\n    >>> import numpy.matlib\n    >>> np.matlib.randn(1)\n    matrix([[-1.0856306]])\n    >>> np.matlib.randn(1, 2, 3)\n    matrix([[ 0.99734545,  0.2829785 , -1.50629471],\n            [-0.57860025,  1.65143654, -2.42667924]])\n    Two-by-four matrix of samples from the normal distribution with\n    mean 3 and standard deviation 2.5:\n    >>> 2.5 * np.matlib.randn((2, 4)) + 3\n    matrix([[1.92771843, 6.16484065, 0.83314899, 1.30278462],\n            [2.76322758, 6.72847407, 1.40274501, 1.8900451 ]])\n    \"\"\"\n    if isinstance(args[0], tuple):\n        args = args[0]\n    return asmatrix(np.random.randn(*args))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "hard"
+  },
+  {
+    "func_id": 27
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "repmat",
+    "function": "def repmat(a, m, n):\n    \"\"\"\n    Repeat a 0-D to 2-D array or matrix MxN times.\n    Parameters\n    ----------\n    a : array_like\n        The array or matrix to be repeated.\n    m, n : int\n        The number of times `a` is repeated along the first and second axes.\n    Returns\n    -------\n    out : ndarray\n        The result of repeating `a`.\n    Examples\n    --------\n    >>> import numpy.matlib\n    >>> a0 = np.array(1)\n    >>> np.matlib.repmat(a0, 2, 3)\n    array([[1, 1, 1],\n           [1, 1, 1]])\n    >>> a1 = np.arange(4)\n    >>> np.matlib.repmat(a1, 2, 2)\n    array([[0, 1, 2, 3, 0, 1, 2, 3],\n           [0, 1, 2, 3, 0, 1, 2, 3]])\n    >>> a2 = np.asmatrix(np.arange(6).reshape(2, 3))\n    >>> np.matlib.repmat(a2, 2, 3)\n    matrix([[0, 1, 2, 0, 1, 2, 0, 1, 2],\n            [3, 4, 5, 3, 4, 5, 3, 4, 5],\n            [0, 1, 2, 0, 1, 2, 0, 1, 2],\n            [3, 4, 5, 3, 4, 5, 3, 4, 5]])\n    \"\"\"\n    a = asanyarray(a)\n    ndim = a.ndim\n    if ndim == 0:\n        origrows, origcols = (1, 1)\n    elif ndim == 1:\n        origrows, origcols = (1, a.shape[0])\n    else:\n        origrows, origcols = a.shape\n    rows = origrows * m\n    cols = origcols * n\n    c = a.reshape(1, a.size).repeat(m, 0).reshape(rows, origcols).repeat(n, 0)\n    return c.reshape(rows, cols)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 28
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "gmean",
+    "function": "def gmean(a, axis=0, dtype=None, weights=None):\n \n    a = np.asarray(a, dtype=dtype)\n\n    if weights is not None:\n        weights = np.asarray(weights, dtype=dtype)\n\n    with np.errstate(divide='ignore'):\n        log_a = np.log(a)\n\n    return np.exp(np.average(log_a, axis=axis, weights=weights))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 29
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "mode",
+    "function": "def mode(a, axis=0, nan_policy='propagate', keepdims=False):\n\n    if a.size == 0:\n        return ModeResult(np.nan, np.int64(0))\n\n    vals, cnts = np.unique(a, return_counts=True)\n    modes, counts = vals[cnts.argmax()], cnts.max()\n    return ModeResult(modes[()], counts[()])",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 30
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "tmean",
+    "function": "def tmean(a, limits=None, inclusive=(True, True), axis=None):\n    a = asarray(a)\n    if limits is None:\n        return np.mean(a, axis)\n    am = _mask_to_limits(a, limits, inclusive)\n    mean = np.ma.filled(am.mean(axis=axis), fill_value=np.nan)\n    return mean if mean.ndim > 0 else mean.item()",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 31
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "tvar",
+    "function": "def tvar(a, limits=None, inclusive=(True, True), axis=0, ddof=1):\n    a = asarray(a)\n    a = a.astype(float)\n    if limits is None:\n        return a.var(ddof=ddof, axis=axis)\n    am = _mask_to_limits(a, limits, inclusive)\n    amnan = am.filled(fill_value=np.nan)\n    return np.nanvar(amnan, ddof=ddof, axis=axis)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 32
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "tmax",
+    "function": "def tmax(a, upperlimit=None, axis=0, inclusive=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n    am = _mask_to_limits(a, (None, upperlimit), (False, inclusive))\n\n    contains_nan, nan_policy = _contains_nan(am, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        am = ma.masked_invalid(am)\n\n    res = ma.maximum.reduce(am, axis).data\n    if res.ndim == 0:\n        return res[()]\n    return res",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 33
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_var",
+    "function": "def _var(x, axis=0, ddof=0, mean=None):\n    # Calculate variance of sample, warning if precision is lost\n    var = _moment(x, 2, axis, mean=mean)\n    if ddof != 0:\n        n = x.shape[axis] if axis is not None else x.size\n        var *= np.divide(n, n-ddof)  \n    return var",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 34
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "describe",
+    "function": "def describe(a, axis=0, ddof=1, bias=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n\n    contains_nan, nan_policy = _contains_nan(a, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        a = ma.masked_invalid(a)\n        return mstats_basic.describe(a, axis, ddof, bias)\n\n    if a.size == 0:\n        raise ValueError(\"The input must not be empty.\")\n    n = a.shape[axis]\n    mm = (np.min(a, axis=axis), np.max(a, axis=axis))\n    m = np.mean(a, axis=axis)\n    v = _var(a, axis=axis, ddof=ddof)\n    sk = skew(a, axis, bias=bias)\n    kurt = kurtosis(a, axis, bias=bias)\n\n    return DescribeResult(n, mm, m, v, sk, kurt)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 35
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "scoreatpercentile",
+    "function": "def scoreatpercentile(a, per, limit=(), interpolation_method='fraction',\n                      axis=None):    # adapted from NumPy's percentile function.  When we require numpy >= 1.8,\n    # the implementation of this function can be replaced by np.percentile.\n    a = np.asarray(a)\n    if a.size == 0:\n        # empty array, return nan(s) with shape matching `per`\n        if np.isscalar(per):\n            return np.nan\n        else:\n            return np.full(np.asarray(per).shape, np.nan, dtype=np.float64)\n\n    if limit:\n        a = a[(limit[0] <= a) & (a <= limit[1])]\n\n    sorted_ = np.sort(a, axis=axis)\n    if axis is None:\n        axis = 0\n\n    return _compute_qth_percentile(sorted_, per, interpolation_method, axis)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 36
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_histogram",
+    "function": "def _histogram(a, numbins=10, defaultlimits=None, weights=None,\n               printextras=False):\n    \n    a = np.ravel(a)\n    if defaultlimits is None:\n        if a.size == 0:\n            # handle empty arrays. Undetermined range, so use 0-1.\n            defaultlimits = (0, 1)\n        else:\n            # no range given, so use values in `a`\n            data_min = a.min()\n            data_max = a.max()\n            # Have bins extend past min and max values slightly\n            s = (data_max - data_min) / (2. * (numbins - 1.))\n            defaultlimits = (data_min - s, data_max + s)\n\n    # use numpy's histogram method to compute bins\n    hist, bin_edges = np.histogram(a, bins=numbins, range=defaultlimits,\n                                   weights=weights)\n    # hist are not always floats, convert to keep with old output\n    hist = np.array(hist, dtype=float)\n    # fixed width for bins is assumed, as numpy's histogram gives\n    # fixed width bins for int values for 'bins'\n    binsize = bin_edges[1] - bin_edges[0]\n    # calculate number of extra points\n    extrapoints = len([v for v in a\n                       if defaultlimits[0] > v or v > defaultlimits[1]])\n    if extrapoints > 0 and printextras:\n        warnings.warn(\"Points outside given histogram range = %s\"\n                      % extrapoints)\n\n    return HistogramResult(hist, defaultlimits[0], binsize, extrapoints)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 37
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "cumfreq",
+    "function": "def cumfreq(a, numbins=10, defaultreallimits=None, weights=None):\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    cumhist = np.cumsum(h * 1, axis=0)\n    return CumfreqResult(cumhist, l, b, e)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 38
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "relfreq",
+    "function": "def relfreq(a, numbins=10, defaultreallimits=None, weights=None):\n\n    a = np.asanyarray(a)\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    h = h / a.shape[0]\n\n    return RelfreqResult(h, l, b, e)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 39
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "sem",
+    "function": "def sem(a, axis=0, ddof=1, nan_policy='propagate'):\n    \"\"\"Compute standard error of the mean.\n    Calculate the standard error of the mean (or standard error of\n    measurement) of the values in the input array.\n    Parameters\n    ----------\n    a : array_like\n        An array containing the values for which the standard error is\n        returned.\n    axis : int or None, optional\n        Axis along which to operate. Default is 0. If None, compute over\n        the whole array `a`.\n    ddof : int, optional\n        Delta degrees-of-freedom. How many degrees of freedom to adjust\n        for bias in limited samples relative to the population estimate\n        of variance. Defaults to 1.\n    nan_policy : {'propagate', 'raise', 'omit'}, optional\n        Defines how to handle when input contains nan.\n        The following options are available (default is 'propagate'):\n          * 'propagate': returns nan\n          * 'raise': throws an error\n          * 'omit': performs the calculations ignoring nan values\n    Returns\n    -------\n    s : ndarray or float\n        The standard error of the mean in the sample(s), along the input axis.\n    Notes\n    -----\n    The default value for `ddof` is different to the default (0) used by other\n    ddof containing routines, such as np.std and np.nanstd.\n    Examples\n    --------\n    Find standard error along the first axis:\n    >>> import numpy as np\n    >>> from scipy import stats\n    >>> a = np.arange(20).reshape(5,4)\n    >>> stats.sem(a)\n    array([ 2.8284,  2.8284,  2.8284,  2.8284])\n    Find standard error across the whole array, using n degrees of freedom:\n    >>> stats.sem(a, axis=None, ddof=0)\n    1.2893796958227628\n    \"\"\"\n    n = a.shape[axis]\n    s = np.std(a, axis=axis, ddof=ddof) / np.sqrt(n)\n    return s",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 40
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_isconst",
+    "function": "def _isconst(x):\n    \"\"\"\n    Check if all values in x are the same.  nans are ignored.\n    x must be a 1d array.\n    The return value is a 1d array with length 1, so it can be used\n    in np.apply_along_axis.\n    \"\"\"\n    y = x[~np.isnan(x)]\n    if y.size == 0:\n        return np.array([True])\n    else:\n        return (y[0] == y).all(keepdims=True)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 40
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_quiet_nanmean",
+    "function": "def _quiet_nanmean(x):\n    \"\"\"\n    Compute nanmean for the 1d array x, but quietly return nan if x is all nan.\n    The return value is a 1d array with length 1, so it can be used\n    in np.apply_along_axis.\n    \"\"\"\n    y = x[~np.isnan(x)]\n    if y.size == 0:\n        return np.array([np.nan])\n    else:\n        return np.mean(y, keepdims=True)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 41
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "zscore",
+    "function": "def zscore(a, axis=0, ddof=0, nan_policy='propagate'):\n    \"\"\"\n    Compute the z score.\n    Compute the z score of each value in the sample, relative to the\n    sample mean and standard deviation.\n    Parameters\n    ----------\n    a : array_like\n        An array like object containing the sample data.\n    axis : int or None, optional\n        Axis along which to operate. Default is 0. If None, compute over\n        the whole array `a`.\n    ddof : int, optional\n        Degrees of freedom correction in the calculation of the\n        standard deviation. Default is 0.\n    nan_policy : {'propagate', 'raise', 'omit'}, optional\n        Defines how to handle when input contains nan. 'propagate' returns nan,\n        'raise' throws an error, 'omit' performs the calculations ignoring nan\n        values. Default is 'propagate'.  Note that when the value is 'omit',\n        nans in the input also propagate to the output, but they do not affect\n        the z-scores computed for the non-nan values.\n    Returns\n    -------\n    zscore : array_like\n        The z-scores, standardized by mean and standard deviation of\n        input array `a`.\n    See Also\n    --------\n    numpy.mean : Arithmetic average\n    numpy.std : Arithmetic standard deviation\n    scipy.stats.gzscore : Geometric standard score\n    Notes\n    -----\n    This function preserves ndarray subclasses, and works also with\n    matrices and masked arrays (it uses `asanyarray` instead of\n    `asarray` for parameters).\n    References\n    ----------\n    .. [1] \"Standard score\", *Wikipedia*,\n           https://en.wikipedia.org/wiki/Standard_score.\n    .. [2] Huck, S. W., Cross, T. L., Clark, S. B, \"Overcoming misconceptions\n           about Z-scores\", Teaching Statistics, vol. 8, pp. 38-40, 1986\n    Examples\n    --------\n    >>> import numpy as np\n    >>> a = np.array([ 0.7972,  0.0767,  0.4383,  0.7866,  0.8091,\n    ...                0.1954,  0.6307,  0.6599,  0.1065,  0.0508])\n    >>> from scipy import stats\n    >>> stats.zscore(a)\n    array([ 1.1273, -1.247 , -0.0552,  1.0923,  1.1664, -0.8559,  0.5786,\n            0.6748, -1.1488, -1.3324])\n    Computing along a specified axis, using n-1 degrees of freedom\n    (``ddof=1``) to calculate the standard deviation:\n    >>> b = np.array([[ 0.3148,  0.0478,  0.6243,  0.4608],\n    ...               [ 0.7149,  0.0775,  0.6072,  0.9656],\n    ...               [ 0.6341,  0.1403,  0.9759,  0.4064],\n    ...               [ 0.5918,  0.6948,  0.904 ,  0.3721],\n    ...               [ 0.0921,  0.2481,  0.1188,  0.1366]])\n    >>> stats.zscore(b, axis=1, ddof=1)\n    array([[-0.19264823, -1.28415119,  1.07259584,  0.40420358],\n           [ 0.33048416, -1.37380874,  0.04251374,  1.00081084],\n           [ 0.26796377, -1.12598418,  1.23283094, -0.37481053],\n           [-0.22095197,  0.24468594,  1.19042819, -1.21416216],\n           [-0.82780366,  1.4457416 , -0.43867764, -0.1792603 ]])\n    An example with `nan_policy='omit'`:\n    >>> x = np.array([[25.11, 30.10, np.nan, 32.02, 43.15],\n    ...               [14.95, 16.06, 121.25, 94.35, 29.81]])\n    >>> stats.zscore(x, axis=1, nan_policy='omit')\n    array([[-1.13490897, -0.37830299,         nan, -0.08718406,  1.60039602],\n           [-0.91611681, -0.89090508,  1.4983032 ,  0.88731639, -0.5785977 ]])\n    \"\"\"\n    return zmap(a, a, axis=axis, ddof=ddof, nan_policy=nan_policy)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 42
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_mad_1d",
+    "function": "def _mad_1d(x, center, nan_policy):\n    # Median absolute deviation for 1-d array x.\n    # This is a helper function for `median_abs_deviation`; it assumes its\n    # arguments have been validated already.  In particular,  x must be a\n    # 1-d numpy array, center must be callable, and if nan_policy is not\n    # 'propagate', it is assumed to be 'omit', because 'raise' is handled\n    # in `median_abs_deviation`.\n    # No warning is generated if x is empty or all nan.\n    isnan = np.isnan(x)\n    if isnan.any():\n        if nan_policy == 'propagate':\n            return np.nan\n        x = x[~isnan]\n    if x.size == 0:\n        # MAD of an empty array is nan.\n        return np.nan\n    # Edge cases have been handled, so do the basic MAD calculation.\n    med = center(x)\n    mad = np.median(np.abs(x - med))\n    return mad",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 43
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "trimboth",
+    "function": "def trimboth(a, proportiontocut, axis=0):\n    a = np.asarray(a)\n\n    if a.size == 0:\n        return a\n\n    if axis is None:\n        a = a.ravel()\n        axis = 0\n\n    nobs = a.shape[axis]\n    lowercut = int(proportiontocut * nobs)\n    uppercut = nobs - lowercut\n    if (lowercut >= uppercut):\n        raise ValueError(\"Proportion too big.\")\n\n    atmp = np.partition(a, (lowercut, uppercut - 1), axis)\n\n    sl = [slice(None)] * atmp.ndim\n    sl[axis] = slice(lowercut, uppercut)\n    return atmp[tuple(sl)]",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
