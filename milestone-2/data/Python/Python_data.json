@@ -369,7 +369,7 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "medium"
   },
   {
     "func_id": 32
@@ -429,7 +429,7 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "hard"
   },
   {
     "func_id": 37
@@ -441,7 +441,7 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "medium"
   },
   {
     "func_id": 38
@@ -501,7 +501,7 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "medium"
   },
   {
     "func_id": 42
@@ -521,6 +521,90 @@
     "location": "scipy/scipy/stats/_stats_py.py ",
     "function_name": "trimboth",
     "function": "def trimboth(a, proportiontocut, axis=0):\n    a = np.asarray(a)\n\n    if a.size == 0:\n        return a\n\n    if axis is None:\n        a = a.ravel()\n        axis = 0\n\n    nobs = a.shape[axis]\n    lowercut = int(proportiontocut * nobs)\n    uppercut = nobs - lowercut\n    if (lowercut >= uppercut):\n        raise ValueError(\"Proportion too big.\")\n\n    atmp = np.partition(a, (lowercut, uppercut - 1), axis)\n\n    sl = [slice(None)] * atmp.ndim\n    sl[axis] = slice(lowercut, uppercut)\n    return atmp[tuple(sl)]",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium"
+  },
+  {
+    "func_id": 44
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "pointbiserialr",
+    "function": "def pointbiserialr(x, y):\n    r\"\"\"Calculate a point biserial correlation coefficient and its p-value.\n    The point biserial correlation is used to measure the relationship\n    between a binary variable, x, and a continuous variable, y. Like other\n    correlation coefficients, this one varies between -1 and +1 with 0\n    implying no correlation. Correlations of -1 or +1 imply a determinative\n    relationship.\n    This function may be computed using a shortcut formula but produces the\n    same result as `pearsonr`.\n    Parameters\n    ----------\n    x : array_like of bools\n        Input array.\n    y : array_like\n        Input array.\n    Returns\n    -------\n    res: SignificanceResult\n        An object containing attributes:\n        statistic : float\n            The R value.\n        pvalue : float\n            The two-sided p-value.\n    Notes\n    -----\n    `pointbiserialr` uses a t-test with ``n-1`` degrees of freedom.\n    It is equivalent to `pearsonr`.\n    The value of the point-biserial correlation can be calculated from:\n    .. math::\n        r_{pb} = \\frac{\\overline{Y_1} - \\overline{Y_0}}\n                      {s_y}\n                 \\sqrt{\\frac{N_0 N_1}\n                            {N (N - 1)}}\n    Where :math:`\\overline{Y_{0}}` and :math:`\\overline{Y_{1}}` are means\n    of the metric observations coded 0 and 1 respectively; :math:`N_{0}` and\n    :math:`N_{1}` are number of observations coded 0 and 1 respectively;\n    :math:`N` is the total number of observations and :math:`s_{y}` is the\n    standard deviation of all the metric observations.\n    A value of :math:`r_{pb}` that is significantly different from zero is\n    completely equivalent to a significant difference in means between the two\n    groups. Thus, an independent groups t Test with :math:`N-2` degrees of\n    freedom may be used to test whether :math:`r_{pb}` is nonzero. The\n    relation between the t-statistic for comparing two independent groups and\n    :math:`r_{pb}` is given by:\n    .. math::\n        t = \\sqrt{N - 2}\\frac{r_{pb}}{\\sqrt{1 - r^{2}_{pb}}}\n    References\n    ----------\n    .. [1] J. Lev, \"The Point Biserial Coefficient of Correlation\", Ann. Math.\n           Statist., Vol. 20, no.1, pp. 125-126, 1949.\n    .. [2] R.F. Tate, \"Correlation Between a Discrete and a Continuous\n           Variable. Point-Biserial Correlation.\", Ann. Math. Statist., Vol. 25,\n           np. 3, pp. 603-607, 1954.\n    .. [3] D. Kornbrot \"Point Biserial Correlation\", In Wiley StatsRef:\n           Statistics Reference Online (eds N. Balakrishnan, et al.), 2014.\n           :doi:`10.1002/9781118445112.stat06227`\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from scipy import stats\n    >>> a = np.array([0, 0, 0, 1, 1, 1, 1])\n    >>> b = np.arange(7)\n    >>> stats.pointbiserialr(a, b)\n    (0.8660254037844386, 0.011724811003954652)\n    >>> stats.pearsonr(a, b)\n    (0.86602540378443871, 0.011724811003954626)\n    >>> np.corrcoef(a, b)\n    array([[ 1.       ,  0.8660254],\n           [ 0.8660254,  1.       ]])\n    \"\"\"\n    rpb, prob = pearsonr(x, y)\n    # create result object with alias for backward compatibility\n    res = SignificanceResult(rpb, prob)\n    res.correlation = rpb\n    return res",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "hard"
+  },
+  {
+    "func_id": 45
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_perm_test",
+    "function": "def _perm_test(x, y, stat, reps=1000, workers=-1, random_state=None):\n    \n    # generate seeds for each rep (change to new parallel random number\n    # capabilities in numpy >= 1.17+)\n    random_state = check_random_state(random_state)\n    random_states = [np.random.RandomState(rng_integers(random_state, 1 << 32,\n                     size=4, dtype=np.uint32)) for _ in range(reps)]\n\n    # parallelizes with specified workers over number of reps and set seeds\n    parallelp = _ParallelP(x=x, y=y, random_states=random_states)\n    with MapWrapper(workers) as mapwrapper:\n        null_dist = np.array(list(mapwrapper(parallelp, range(reps))))\n\n    # calculate p-value and significant permutation map through list\n    pvalue = (1 + (null_dist >= stat).sum()) / (1 + reps)\n\n    return pvalue, null_dist\n\n\ndef _euclidean_dist(x):\n    return cdist(x, x)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 46
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_mgc_stat",
+    "function": "def _mgc_stat(distx, disty):\n    \n    # calculate MGC map and optimal scale\n    stat_mgc_map = _local_correlations(distx, disty, global_corr='mgc')\n\n    n, m = stat_mgc_map.shape\n    if m == 1 or n == 1:\n        # the global scale at is the statistic calculated at maximial nearest\n        # neighbors. There is not enough local scale to search over, so\n        # default to global scale\n        stat = stat_mgc_map[m - 1][n - 1]\n        opt_scale = m * n\n    else:\n        samp_size = len(distx) - 1\n\n        # threshold to find connected region of significant local correlations\n        sig_connect = _threshold_mgc_map(stat_mgc_map, samp_size)\n\n        # maximum within the significant region\n        stat, opt_scale = _smooth_mgc_map(sig_connect, stat_mgc_map)\n\n    stat_dict = {\"stat_mgc_map\": stat_mgc_map,\n                 \"opt_scale\": opt_scale}\n\n    return stat, stat_dict"
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 47
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_two_sample_transform",
+    "function": "def _two_sample_transform(u, v):\n    \"\"\"Helper function that concatenates x and y for two sample MGC stat.\n    See above for use.\n    Parameters\n    ----------\n    u, v : ndarray\n        `u` and `v` have shapes `(n, p)` and `(m, p)`.\n    Returns\n    -------\n    x : ndarray\n        Concatenate `u` and `v` along the `axis = 0`. `x` thus has shape\n        `(2n, p)`.\n    y : ndarray\n        Label matrix for `x` where 0 refers to samples that comes from `u` and\n        1 refers to samples that come from `v`. `y` thus has shape `(2n, 1)`.\n    \"\"\"\n    nx = u.shape[0]\n    ny = v.shape[0]\n    x = np.concatenate([u, v], axis=0)\n    y = np.concatenate([np.zeros(nx), np.ones(ny)], axis=0).reshape(-1, 1)\n    return x, y",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 48
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_calculate_winsorized_variance",
+    "function": "def _calculate_winsorized_variance(a, g, axis):\n    \"\"\"Calculates g-times winsorized variance along specified axis\"\"\"\n    # it is expected that the input `a` is sorted along the correct axis\n    if g == 0:\n        return _var(a, ddof=1, axis=axis)\n    # move the intended axis to the end that way it is easier to manipulate\n    a_win = np.moveaxis(a, axis, -1)\n\n    # save where NaNs are for later use.\n    nans_indices = np.any(np.isnan(a_win), axis=-1)\n\n    # Winsorization and variance calculation are done in one step in [4]\n    # (1-3), but here winsorization is done first; replace the left and\n    # right sides with the repeating value. This can be see in effect in (\n    # 1-3) in [4], where the leftmost and rightmost tails are replaced with\n    # `(g + 1) * x_{g + 1}` on the left and `(g + 1) * x_{n - g}` on the\n    # right. Zero-indexing turns `g + 1` to `g`, and `n - g` to `- g - 1` in\n    # array indexing.\n    a_win[..., :g] = a_win[..., [g]]\n    a_win[..., -g:] = a_win[..., [-g - 1]]\n\n    # Determine the variance. In [4], the degrees of freedom is expressed as\n    # `h - 1`, where `h = n - 2g` (unnumbered equations in Section 1, end of\n    # page 369, beginning of page 370). This is converted to NumPy's format,\n    # `n - ddof` for use with `np.var`. The result is converted to an\n    # array to accommodate indexing later.\n    var_win = np.asarray(_var(a_win, ddof=(2 * g + 1), axis=-1))\n\n    # with `nan_policy='propagate'`, NaNs may be completely trimmed out\n    # because they were sorted into the tail of the array. In these cases,\n    # replace computed variances with `np.nan`.\n    var_win[nans_indices] = np.nan\n    return var_win",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "hard"
+  },
+  {
+    "func_id": 49
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_count",
+    "function": "def _count(a, axis=None):\n    \"\"\"Count the number of non-masked elements of an array.\n    This function behaves like `np.ma.count`, but is much faster\n    for ndarrays.\n    \"\"\"\n    if hasattr(a, 'count'):\n        num = a.count(axis=axis)\n        if isinstance(num, np.ndarray) and num.ndim == 0:\n            # In some cases, the `count` method returns a scalar array (e.g.\n            # np.array(3)), but we want a plain integer.\n            num = int(num)\n    else:\n        if axis is None:\n            num = a.size\n        else:\n            num = a.shape[axis]\n    return num",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "hard"
+  },
+  {
+    "func_id": 50
+    "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
+    "location": "scipy/scipy/stats/_stats_py.py ",
+    "function_name": "_compute_prob_outside_square",
+    "function": "def _compute_prob_outside_square(n, h):\n    \"\"\"\n    Compute the proportion of paths that pass outside the two diagonal lines.\n    Parameters\n    ----------\n    n : integer\n        n > 0\n    h : integer\n        0 <= h <= n\n    Returns\n    -------\n    p : float\n        The proportion of paths that pass outside the lines x-y = +/-h.\n    \"\"\"\n    # Compute Pr(D_{n,n} >= h/n)\n    # Prob = 2 * ( binom(2n, n-h) - binom(2n, n-2a) + binom(2n, n-3a) - ... )\n    # / binom(2n, n)\n    # This formulation exhibits subtractive cancellation.\n    # Instead divide each term by binom(2n, n), then factor common terms\n    # and use a Horner-like algorithm\n    # P = 2 * A0 * (1 - A1*(1 - A2*(1 - A3*(1 - A4*(...)))))\n\n    P = 0.0\n    k = int(np.floor(n / h))\n    while k >= 0:\n        p1 = 1.0\n        # Each of the Ai terms has numerator and denominator with\n        # h simple terms.\n        for j in range(h):\n            p1 = (n - k * h - j) * p1 / (n + k * h + j + 1)\n        P = p1 * (1.0 - P)\n        k -= 1\n    return 2 * P\n",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
