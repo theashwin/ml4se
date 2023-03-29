@@ -1,7 +1,7 @@
 [
   {
     "func_id": 1,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/_kron.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/_kron.py",
     "function_name": "kron_dot",
     "function": "def kron_dot(A, B, C, out=None):\n    \n    from numpy import dot, zeros, asarray\n\n    A = asarray(A)\n    B = asarray(B)\n    C = asarray(C)\n\n    if out is None:\n        out = zeros((B.shape[0], A.shape[0]))\n    dot(B, dot(C, A.T), out=out)\n    return out",
@@ -13,7 +13,7 @@
   },
   {
     "func_id": 2,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/cho.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/cho.py",
     "function_name": "cho_solve",
     "function": "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size != 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
@@ -25,7 +25,7 @@
   },
   {
     "func_id": 3,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/det.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/det.py",
     "function_name": "plogdet",
     "function": "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals > epsilon]))",
@@ -37,7 +37,7 @@
   },
   {
     "func_id": 4,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/diag.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/diag.py",
     "function_name": "sum2diag",
     "function": "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
@@ -49,7 +49,7 @@
   },
   {
     "func_id": 5,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/dot.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/dot.py",
     "function_name": "dotd",
     "function": "from numpy import asarray, copy, dot, einsum, empty, multiply\n\n\ndef dotd(A, B, out=None):\n   \n    A = asarray(A, float)\n    B = asarray(B, float)\n    if A.ndim == 1 and B.ndim == 1:\n        if out is None:\n            return dot(A, B)\n        return dot(A, B, out)\n    if out is None:\n        out = empty((A.shape[0],), float)\n    return einsum(\"ij,ji->i\", A, B, out=out)",
@@ -61,7 +61,7 @@
   },
   {
     "func_id": 6,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/dot.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/dot.py",
     "function_name": "ddot",
     "function": "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef ddot(L, R, left=None, out=None):\n    L = asarray(L, float)\n    R = asarray(R, float)\n    if left is None:\n        ok = min(L.ndim, R.ndim) == 1 and max(L.ndim, R.ndim) == 2\n        if not ok:\n            msg = \"Wrong array layout. One array should have\"\n            msg += \" ndim=1 and the other one ndim=2.\"\n            raise ValueError(msg)\n        left = L.ndim == 1\n    if left:\n        if out is None:\n            out = copy(R)\n        L = L.reshape(list(L.shape) + [1] * (R.ndim - 1))\n        return multiply(L, R, out=out)\n    else:\n        if out is None:\n            out = copy(L)\n        return multiply(L, R, out=out)",
@@ -73,7 +73,7 @@
   },
   {
     "func_id": 7,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/dot.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/dot.py",
     "function_name": "cdot",
     "function": "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef cdot(L, out=None):\n    L = asarray(L, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if L.ndim != 2:\n        raise ValueError(layout_error)\n\n    if L.shape[0] != L.shape[1]:\n        raise ValueError(layout_error)\n\n    if out is None:\n        out = empty((L.shape[0], L.shape[1]), float)\n\n    return einsum(\"ij,kj->ik\", L, L, out=out)",
@@ -85,7 +85,7 @@
   },
   {
     "func_id": 8,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lstsq.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/lstsq.py",
     "function_name": "lstsq",
     "function": "from numpy import asarray, dot, newaxis, squeeze\nfrom numpy.core import double, finfo\nfrom numpy.linalg import lstsq as npy_lstsq\n\n\ndef lstsq(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n\n    if A.ndim == 1:\n        A = A[:, newaxis]\n\n    if A.shape[1] == 1:\n        return dot(A.T, b) / squeeze(dot(A.T, A))\n\n    rcond = finfo(double).eps * max(*A.shape)\n    return npy_lstsq(A, b, rcond=rcond)[0]",
@@ -97,7 +97,7 @@
   },
   {
     "func_id": 9,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lu.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/lu.py",
     "function_name": "lu_slogdet",
     "function": "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_slogdet(LU):\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    adet = _sum(log(_abs(LU[0].diagonal())))\n\n    s = prod(sign(LU[0].diagonal()))\n\n    nrows_exchange = LU[1].size - _sum(LU[1] == arange(LU[1].size, dtype=\"int32\"))\n\n    odd = nrows_exchange % 2 == 1\n    if odd:\n        s *= -1.0\n\n    return (s, adet)",
@@ -109,7 +109,7 @@
   },
   {
     "func_id": 10,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/lu.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/lu.py",
     "function_name": "lu_solve",
     "function": "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_solve(LU, b):\n    from scipy.linalg import lu_solve as sp_lu_solve\n\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    b = asarray(b, float)\n    return sp_lu_solve(LU, b, check_finite=False)",
@@ -121,7 +121,7 @@
   },
   {
     "func_id": 11,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/property.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/property.py",
     "function_name": "check_definite_positiveness",
     "function": "from numpy import diag_indices_from, empty_like, finfo, sqrt, asanyarray\nfrom numpy.linalg import LinAlgError, cholesky\n\n\ndef check_definite_positiveness(A):\n    try:\n        cholesky(A)\n    except LinAlgError:\n        return False\n    return True",
@@ -133,7 +133,7 @@
   },
   {
     "func_id": 12,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/property.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/property.py",
     "function_name": "check_symmetry",
     "function": "def check_symmetry(A):\n    A = asanyarray(A)\n    if A.ndim != 2:\n        raise ValueError(\"Checks symmetry only for bi-dimensional arrays.\")\n\n    if A.shape[0] != A.shape[1]:\n        return False\n\n    return abs(A - A.T).max() < sqrt(finfo(float).eps)",
@@ -145,7 +145,7 @@
   },
   {
     "func_id": 13,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
     "function_name": "hsolve",
     "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\nfrom .. import epsilon\n\n_epsilon = sqrt(finfo(float).eps)\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\n\ndef hsolve(A, y):\n    n = _norm(A[0, 0], A[1, 0])\n    u0 = A[0, 0] - n\n    u1 = A[1, 0]\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    B00 = 1 - 2 * v0 * v0\n    B01 = 0 - 2 * v0 * v1\n    B11 = 1 - 2 * v1 * v1\n\n    D00 = B00 * A[0, 0] + B01 * A[1, 0]\n    D01 = B00 * A[0, 1] + B01 * A[1, 1]\n    D11 = B01 * A[0, 1] + B11 * A[1, 1]\n\n    b0 = y[0] - 2 * y[0] * v0 * v0 - 2 * y[1] * v0 * v1\n    b1 = y[1] - 2 * y[0] * v1 * v0 - 2 * y[1] * v1 * v1\n\n    n = _norm(D00, D01)\n    u0 = D00 - n\n    u1 = D01\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    E00 = 1 - 2 * v0 * v0\n    E01 = 0 - 2 * v0 * v1\n    E11 = 1 - 2 * v1 * v1\n\n    F00 = E00 * D00 + E01 * D01\n    F01 = E01 * D11\n    F11 = E11 * D11\n\n    F11 = (npy_abs(F11) > epsilon.small) * F11\n\n    with errstate(divide=\"ignore\", invalid=\"ignore\"):\n        Fi00 = nan_to_num(F00 / F00 / F00)\n        Fi11 = nan_to_num(F11 / F11 / F11)\n        Fi10 = nan_to_num(-(F01 / F00) * Fi11)\n\n    c0 = Fi00 * b0\n    c1 = Fi10 * b0 + Fi11 * b1\n\n    x0 = E00 * c0 + E01 * c1\n    x1 = E01 * c0 + E11 * c1\n\n    return array([x0, x1])\n",
@@ -157,7 +157,7 @@
   },
   {
     "func_id": 14
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
     "function_name": "hsolve",
     "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 / A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a * d - b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)",
@@ -169,7 +169,7 @@
   },
   {
     "func_id": 15
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/solve.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
     "function_name": "rsolve",
     "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef rsolve(A, b, epsilon=_epsilon):\n    r\"\"\"Robust solve for the linear equations.\n    Args:\n        A (array_like): Coefficient matrix.\n        b (array_like): Ordinate values.\n    Returns:\n        :class:`numpy.ndarray`: Solution ``x``.\n    \"\"\"\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] > epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
@@ -181,7 +181,7 @@
   },
   {
     "func_id": 16
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/qs.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/qs.py",
     "function_name": "economic_qs",
     "function": "from numpy import asarray, finfo, logical_not, sqrt\nfrom numpy.linalg import eigh, svd\ndef economic_qs(K, epsilon=sqrt(finfo(float).eps)):\n    (S, Q) = eigh(K)\n\n    nok = abs(max(Q[0].min(), Q[0].max(), key=abs)) < epsilon\n    nok = nok and abs(max(K.min(), K.max(), key=abs)) >= epsilon\n    if nok:\n        from scipy.linalg import eigh as sp_eigh\n\n        (S, Q) = sp_eigh(K)\n\n    ok = S >= epsilon\n    nok = logical_not(ok)\n    S0 = S[ok]\n    Q0 = Q[:, ok]\n    Q1 = Q[:, nok]\n    return ((Q0, Q1), S0)",
@@ -193,7 +193,7 @@
   },
   {
     "func_id": 17
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/qs.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/qs.py",
     "function_name": "economic_qs_linear",
     "function": "def economic_qs_linear(G):\n    import dask.array as da\n\n    if not isinstance(G, da.Array):\n        G = asarray(G, float)\n\n    if G.shape[0] > G.shape[1]:\n        (Q, Ssq, _) = svd(G, full_matrices=True)\n        S0 = Ssq ** 2\n        rank = len(S0)\n        Q0, Q1 = Q[:, :rank], Q[:, rank:]\n        return ((Q0, Q1), S0)\n\n    return economic_qs(G.dot(G.T))",
@@ -205,7 +205,7 @@
   },
   {
     "func_id": 18
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg/tri.py",
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/tri.py",
     "function_name": "stl",
     "function": "from numpy import asarray\n\n\ndef stl(A, b):\n    from scipy.linalg import solve_triangular\n\n    A = asarray(A, float)\n    b = asarray(b, float)\n    return solve_triangular(A, b, lower=True, check_finite=False)",
@@ -215,4 +215,113 @@
     "expected_output": "",
     "flag": "easy"
   },
+  {
+    "func_id": 19
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
+    "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
+    "function_name": "_norm",
+    "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef rsolve(A, b, epsilon=_epsilon):\n    r\"\"\"Robust solve for the linear equations.\n    Args:\n        A (array_like): Coefficient matrix.\n        b (array_like): Ordinate values.\n    Returns:\n        :class:`numpy.ndarray`: Solution ``x``.\n    \"\"\"\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] > epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 20
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "empty",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef empty(shape, dtype=None, order='C'):\n   \n    return ndarray.__new__(matrix, shape, dtype, order=order)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 21
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "empty",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef ones(shape, dtype=None, order='C'):\n    a = ndarray.__new__(matrix, shape, dtype, order=order)\n    a.fill(1)\n    return a",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 22
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "zeroes",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef zeros(shape, dtype=None, order='C'):\n    a = ndarray.__new__(matrix, shape, dtype, order=order)\n    a.fill(0)\n    return a",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 23
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "identity",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\n    a = array([1]+n*[0], dtype=dtype)\n    b = empty((n, n), dtype=dtype)\n    b.flat = a\n    return b",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  {
+    "func_id": 24
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "eye",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\ndef eye(n,M=None, k=0, dtype=float, order='C'):\n    return asmatrix(np.eye(n, M=M, k=k, dtype=dtype, order=order))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium"
+  },
+  {
+    "func_id": 25
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "rand",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef rand(*args):\n    \"\"\"\n    Return a matrix of random values with given shape.\n    Create a matrix of the given shape and propagate it with\n    random samples from a uniform distribution over ``[0, 1)``.\n    Parameters\n    ----------\n    \\\\*args : Arguments\n        Shape of the output.\n        If given as N integers, each integer specifies the size of one\n        dimension.\n        If given as a tuple, this tuple gives the complete shape.\n    Returns\n    -------\n    out : ndarray\n        The matrix of random values with shape given by `\\\\*args`.\n    See Also\n    --------\n    randn, numpy.random.RandomState.rand\n    Examples\n    --------\n    >>> np.random.seed(123)\n    >>> import numpy.matlib\n    >>> np.matlib.rand(2, 3)\n    matrix([[0.69646919, 0.28613933, 0.22685145],\n            [0.55131477, 0.71946897, 0.42310646]])\n    >>> np.matlib.rand((2, 3))\n    matrix([[0.9807642 , 0.68482974, 0.4809319 ],\n            [0.39211752, 0.34317802, 0.72904971]])\n    If the first argument is a tuple, other arguments are ignored:\n    >>> np.matlib.rand((2, 3), 4)\n    matrix([[0.43857224, 0.0596779 , 0.39804426],\n            [0.73799541, 0.18249173, 0.17545176]])\n    \"\"\"\n    if isinstance(args[0], tuple):\n        args = args[0]\n    return asmatrix(np.random.rand(*args))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium"
+  },
+  {
+    "func_id": 26
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "randn",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef randn(*args):\n    \"\"\"\n    Return a random matrix with data from the \"standard normal\" distribution.\n    `randn` generates a matrix filled with random floats sampled from a\n    univariate \"normal\" (Gaussian) distribution of mean 0 and variance 1.\n    Parameters\n    ----------\n    \\\\*args : Arguments\n        Shape of the output.\n        If given as N integers, each integer specifies the size of one\n        dimension. If given as a tuple, this tuple gives the complete shape.\n    Returns\n    -------\n    Z : matrix of floats\n        A matrix of floating-point samples drawn from the standard normal\n        distribution.\n    See Also\n    --------\n    rand, numpy.random.RandomState.randn\n    Notes\n    -----\n    For random samples from the normal distribution with mean ``mu`` and\n    standard deviation ``sigma``, use::\n        sigma * np.matlib.randn(...) + mu\n    Examples\n    --------\n    >>> np.random.seed(123)\n    >>> import numpy.matlib\n    >>> np.matlib.randn(1)\n    matrix([[-1.0856306]])\n    >>> np.matlib.randn(1, 2, 3)\n    matrix([[ 0.99734545,  0.2829785 , -1.50629471],\n            [-0.57860025,  1.65143654, -2.42667924]])\n    Two-by-four matrix of samples from the normal distribution with\n    mean 3 and standard deviation 2.5:\n    >>> 2.5 * np.matlib.randn((2, 4)) + 3\n    matrix([[1.92771843, 6.16484065, 0.83314899, 1.30278462],\n            [2.76322758, 6.72847407, 1.40274501, 1.8900451 ]])\n    \"\"\"\n    if isinstance(args[0], tuple):\n        args = args[0]\n    return asmatrix(np.random.randn(*args))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "hard"
+  },
+  {
+    "func_id": 27
+    "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
+    "location": "numpy/numpy/matlib.py",
+    "function_name": "repmat",
+    "function": "def repmat(a, m, n):\n    \"\"\"\n    Repeat a 0-D to 2-D array or matrix MxN times.\n    Parameters\n    ----------\n    a : array_like\n        The array or matrix to be repeated.\n    m, n : int\n        The number of times `a` is repeated along the first and second axes.\n    Returns\n    -------\n    out : ndarray\n        The result of repeating `a`.\n    Examples\n    --------\n    >>> import numpy.matlib\n    >>> a0 = np.array(1)\n    >>> np.matlib.repmat(a0, 2, 3)\n    array([[1, 1, 1],\n           [1, 1, 1]])\n    >>> a1 = np.arange(4)\n    >>> np.matlib.repmat(a1, 2, 2)\n    array([[0, 1, 2, 3, 0, 1, 2, 3],\n           [0, 1, 2, 3, 0, 1, 2, 3]])\n    >>> a2 = np.asmatrix(np.arange(6).reshape(2, 3))\n    >>> np.matlib.repmat(a2, 2, 3)\n    matrix([[0, 1, 2, 0, 1, 2, 0, 1, 2],\n            [3, 4, 5, 3, 4, 5, 3, 4, 5],\n            [0, 1, 2, 0, 1, 2, 0, 1, 2],\n            [3, 4, 5, 3, 4, 5, 3, 4, 5]])\n    \"\"\"\n    a = asanyarray(a)\n    ndim = a.ndim\n    if ndim == 0:\n        origrows, origcols = (1, 1)\n    elif ndim == 1:\n        origrows, origcols = (1, a.shape[0])\n    else:\n        origrows, origcols = a.shape\n    rows = origrows * m\n    cols = origcols * n\n    c = a.reshape(1, a.size).repeat(m, 0).reshape(rows, origcols).repeat(n, 0)\n    return c.reshape(rows, cols)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "easy"
+  },
+  
 ]
