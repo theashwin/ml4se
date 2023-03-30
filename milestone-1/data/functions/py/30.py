@@ -1,7 +1,7 @@
 def fileno(self):
         """
         Returns an OS-level file descriptor which can be used for polling, but
-        but not for reading or writing.  This is primarily to allow Python's
+        but not for reading or writing.  This is primarily to allow python's
         ``select`` module to work.
 
         The first time ``fileno`` is called on a channel, a pipe is created to

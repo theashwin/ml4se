@@ -16,7 +16,7 @@ with open("config.json", "r") as file:
 openai.api_key = config["OPENAI_API_KEY"]
 
 
-# Python
+# python
 
 def chat(i, task, out):
     init = task.get_init_prompt()
