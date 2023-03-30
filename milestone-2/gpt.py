@@ -1,6 +1,6 @@
 import json
 import sys
-
+import argparse
 import openai
 
 # GET YOUR OPEN AI API KEY FROM : https://platform.openai.com/account/api-keys
@@ -16,7 +16,7 @@ with open("config.json", "r") as file:
 openai.api_key = config["OPENAI_API_KEY"]
 
 
-# Python
+# python
 
 def chat(i, task, out):
     init = task.get_init_prompt()
@@ -95,12 +95,15 @@ def read_data(data_path):
     return data
 
 
-# Check if the 2nd argument is either java or python. If not then select default lang as java
-try:
-    lang = sys.argv[1].lower()
-    if lang not in ['java', 'python']:
-        lang = 'java'
-except:
+# Get lang argument and check is either java or python. If not then select default lang as java
+p = argparse.ArgumentParser()
+
+p.add_argument('--lang', '--language', dest='lang', default='java', help='language')
+
+args = p.parse_args()
+lang = args.lang.lower()
+
+if lang not in ['java', 'python']:
     lang = 'java'
 
 print(f'Running the utility for {lang.upper()} language code snippets')

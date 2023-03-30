@@ -5,7 +5,7 @@ def _init_posix(vars):
     try:
         _parse_makefile(makefile, vars)
     except IOError as e:
-        msg = "invalid Python installation: unable to open %s" % makefile
+        msg = "invalid python installation: unable to open %s" % makefile
         if hasattr(e, "strerror"):
             msg = msg + " (%s)" % e.strerror
         raise IOError(msg)
@@ -15,12 +15,12 @@ def _init_posix(vars):
         with open(config_h) as f:
             parse_config_h(f, vars)
     except IOError as e:
-        msg = "invalid Python installation: unable to open %s" % config_h
+        msg = "invalid python installation: unable to open %s" % config_h
         if hasattr(e, "strerror"):
             msg = msg + " (%s)" % e.strerror
         raise IOError(msg)
     # On AIX, there are wrong paths to the linker scripts in the Makefile
-    # -- these paths are relative to the Python source, but when installed
+    # -- these paths are relative to the python source, but when installed
     # the scripts are in another directory.
     if _PYTHON_BUILD:
         vars['LDSHARED'] = vars['BLDSHARED']
