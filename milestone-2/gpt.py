@@ -16,17 +16,17 @@ with open("config.json", "r") as file:
 openai.api_key = config["OPENAI_API_KEY"]
 
 
-def add_code_details(task, prompt, out):
-    out.append(prompt)
-    out.append("> ### Method under consideration:\n"
-               "> **func_id** : " + task.get_func_id() + " <br/> \n "
-               "> **repository** : " + task.get_project_repo() + " <br/> \n" +
-               "> **location** : " + task.get_location() + " <br/> \n"
-               "> **flag** : " + task.get_flag() + " <br/> \n" +
-               "> **function** : <br/> \n"
-               "> ``` <br/> \n"
-               ">> " + task.get_code().replace('\n', '\n>') + " \n"
-               "> ``` \n")
+def add_code_details(data, out):
+    out.append("# Method under consideration:")
+    out.append("---")
+    out.append("**func_id** : " + str(data['func_id']) + " <br/> \n "
+               "**repository** : " + data['project_repo'] + " <br/> \n" +
+               "**location** : " + data['location'] + " <br/> \n"
+               "**flag** : " + data['flag'] + " <br/> \n" +
+               "**function** : <br/> \n"
+               "``` <br/> \n"
+               "" + data['function'] + " \n"
+               "``` \n")
 
 
 def chat(i, task, out):
@@ -44,9 +44,12 @@ def chat(i, task, out):
     while True:
         prompt = task.generate_prompt(idx)
 
-        # To print the method body inside a code block in the output Markdown
+        # To print the method body inside a code block in the output
         if idx == 1:
-            add_code_details(task, prompt, out)
+            out.append(prompt)
+            out.append('```')
+            out.append(task.get_code())
+            out.append('```')
 
         prompt += task.get_code() if idx == 1 else ""
 
@@ -62,7 +65,7 @@ def chat(i, task, out):
 
         reply = chat.choices[0].message.content
 
-        if idx > 1:
+        if idx != 1:
             out.append(prompt)
         out.append(reply)
 
@@ -121,6 +124,8 @@ all_threads = []
 
 for i in range(len(data_json)):
     out = []
+    # Add code details to the md
+    add_code_details(data_json[i], out)
     # Reasoning
     print(f'Started REASONING task for the {i + 1}th object...')
     reasoning(i + 1, data_json[i], out, lang)
