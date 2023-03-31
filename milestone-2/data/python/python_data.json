@@ -220,7 +220,7 @@
     "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
     "function_name": "_norm",
-    "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef rsolve(A, b, epsilon=_epsilon):\n    r\"\"\"Robust solve for the linear equations.\n    Args:\n        A (array_like): Coefficient matrix.\n        b (array_like): Ordinate values.\n    Returns:\n        :class:`numpy.ndarray`: Solution ``x``.\n    \"\"\"\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] > epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
+    "function": "def _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
