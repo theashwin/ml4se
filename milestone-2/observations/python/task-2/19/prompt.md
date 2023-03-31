@@ -51,6 +51,7 @@ Multiple Errors encountered, code did not passed single test case and all the te
 
 
 ## Prompt - 2
+```
 I am running into following error code F
 ======================================================================
 FAIL: test_norm (__main__.TestNorm)
@@ -64,7 +65,7 @@ AssertionError: 21.095023109728984 != 21.02379604162864 within 10 places (0.0712
 Ran 1 test in 0.006s
 
 FAILED (failures=1)  please refactor the code and make necessary changes to make all unit tests pass and give correct output 
-
+```
 ## Output - 2
 The error message indicates that the first test case has failed. Specifically, the expected output 21.02379604162864 does not match the actual output 21.095023109728984 within 10 decimal places.
 
@@ -94,11 +95,13 @@ if __name__ == '__main__':
 
 ```
 ## Observation - 2
+```
 The error message indicates that the first test case has failed. Specifically, the expected output 21.02379604162864 does not match the actual output 21.095023109728984 within 10 decimal places.
 
 This suggests that there might be a problem with the calculation in the _norm() function. One possible issue is that the max() function is being applied to lists instead of individual elements. To fix this issue, we can modify the function to use the max() function separately for x0 and x1.
-
+```
 ## Prompt - 3
+```
 E
 ======================================================================
 ERROR: test_norm (__main__.TestNorm)
@@ -114,7 +117,7 @@ TypeError: 'int' object is not iterable
 Ran 1 test in 0.001s
 
 FAILED (errors=1)
-
+```
 
 #Generated Test Output
 Error running this function which checks the output by 10 decimal places and it does not match. 
