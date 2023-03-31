@@ -56,7 +56,9 @@ Here's what this unit test does:
 </br></br>
 4. The GraphicPoint class is included as a private inner class to simplify the test setup. This class could be replaced with any other implementation of a point object with x and y fields
 
-### Generated Test Output
+## Observation - 1
+The test failed as to check the floating values, the `assertEquals` should have third parameter as `delta`
+![alt text](observation-1.PNG "Test-Execution")
 
 ## Prompt - 2
 Can you create one more test for the same code?
@@ -101,10 +103,11 @@ public class ExampleTest {
 }
 ```
 This unit test verifies that the scal() method works correctly with negative coordinates. It sets up four points with negative x and y values, calls scal() with these points, and verifies that the result is equal to the expected value (-15).
-### Generated Test Output
+## Observation - 2
+Same issue as previous observation
 
 ## Prompt - 3
-his test will fail. The expected output is incorrect. Can you please regenerate the test with same inputs?
+This test will fail. The expected output is incorrect. Can you please regenerate the test with same inputs?
 
 ## Output - 3
 I apologize for the mistake. Here's the updated test with the corrected expected output:
@@ -147,6 +150,5 @@ public class ExampleTest {
 ```
 This test sets up four points with negative coordinates and calls the scal() method with those points as parameters. It then verifies that the returned value is equal to the expected value (-1).This test sets up four points with negative coordinates and calls the scal() method with those points as parameters. It then verifies that the returned value is equal to the expected value (-1).
 
-
-
-
+## Observation - 3
+Same issue as previous observation

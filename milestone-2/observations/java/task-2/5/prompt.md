@@ -37,7 +37,9 @@ public class TruncateTest {
 ```
 Note: I have assumed that the class name for the truncate function is Truncate. Please replace it with the appropriate class name before running the test.
 
-### Generated Test Output
+## Observation - 1
+The test executed successfully only after changing the class-name which.
+![alt text](observation-1.PNG "Test-Execution")
 
 ## Prompt - 2
 Refactor the unit test produced, make sure it's runnable and efficient.
@@ -84,4 +86,6 @@ public class TruncateTest {
 }
 ```
 This version of the test uses the @RunWith(Parameterized.class) annotation to enable parameterized testing, and the @Parameters annotation to specify the test data. The test method testTruncate is called once for each row in the test data, and the input and expected values are passed in as arguments to the constructor. This reduces code duplication and makes the test more efficient.
-### Generated Test Output
+## Observation - 2
+The parametrized test executed successfully only after changing the class-name.
+![alt text](observation-2.PNG "Test-Execution")
