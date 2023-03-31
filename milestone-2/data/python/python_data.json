@@ -297,19 +297,19 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "hard"
   },
   {
     "func_id": 26,
     "project_repo": "https://github.com/numpy/numpy/blob/main/numpy",
     "location": "numpy/numpy/matlib.py",
     "function_name": "randn",
-    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef randn(*args):\n    \"\"\"\n    Return a random matrix with data from the \"standard normal\" distribution.\n    `randn` generates a matrix filled with random floats sampled from a\n    univariate \"normal\" (Gaussian) distribution of mean 0 and variance 1.\n    Parameters\n    ----------\n    \\\\*args : Arguments\n        Shape of the output.\n        If given as N integers, each integer specifies the size of one\n        dimension. If given as a tuple, this tuple gives the complete shape.\n    Returns\n    -------\n    Z : matrix of floats\n        A matrix of floating-point samples drawn from the standard normal\n        distribution.\n    See Also\n    --------\n    rand, numpy.random.RandomState.randn\n    Notes\n    -----\n    For random samples from the normal distribution with mean ``mu`` and\n    standard deviation ``sigma``, use::\n        sigma * np.matlib.randn(...) + mu\n    Examples\n    --------\n    >>> np.random.seed(123)\n    >>> import numpy.matlib\n    >>> np.matlib.randn(1)\n    matrix([[-1.0856306]])\n    >>> np.matlib.randn(1, 2, 3)\n    matrix([[ 0.99734545,  0.2829785 , -1.50629471],\n            [-0.57860025,  1.65143654, -2.42667924]])\n    Two-by-four matrix of samples from the normal distribution with\n    mean 3 and standard deviation 2.5:\n    >>> 2.5 * np.matlib.randn((2, 4)) + 3\n    matrix([[1.92771843, 6.16484065, 0.83314899, 1.30278462],\n            [2.76322758, 6.72847407, 1.40274501, 1.8900451 ]])\n    \"\"\"\n    if isinstance(args[0], tuple):\n        args = args[0]\n    return asmatrix(np.random.randn(*args))",
+    "function": "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef randn(*args):\n    if isinstance(args[0], tuple):\n        args = args[0]\n    return asmatrix(np.random.randn(*args))",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "medium"
   },
   {
     "func_id": 27,
@@ -580,7 +580,7 @@
     "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
     "location": "scipy/scipy/stats/_stats_py.py ",
     "function_name": "_count",
-    "function": "def _count(a, axis=None):\n    \"\"\"Count the number of non-masked elements of an array.\n    This function behaves like `np.ma.count`, but is much faster\n    for ndarrays.\n    \"\"\"\n    if hasattr(a, 'count'):\n        num = a.count(axis=axis)\n        if isinstance(num, np.ndarray) and num.ndim == 0:\n            # In some cases, the `count` method returns a scalar array (e.g.\n            # np.array(3)), but we want a plain integer.\n            num = int(num)\n    else:\n        if axis is None:\n            num = a.size\n        else:\n            num = a.shape[axis]\n    return num",
+    "function": "def _count(a, axis=None):\n    if hasattr(a, 'count'):\n        num = a.count(axis=axis)\n        if isinstance(num, np.ndarray) and num.ndim == 0:\n            # In some cases, the `count` method returns a scalar array (e.g.\n            # np.array(3)), but we want a plain integer.\n            num = int(num)\n    else:\n        if axis is None:\n            num = a.size\n        else:\n            num = a.shape[axis]\n    return num",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
     "input": "",
