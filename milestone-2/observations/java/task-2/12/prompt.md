@@ -31,7 +31,8 @@ public class GeometryFunctionTest {
 ```
 Note: The GeometryFunction class and its constructor are not provided in the code, so I created a sample constructor with some inputs. You may need to modify the input values according to the actual implementation of GeometryFunction.
 
-### Generated Test Output
+## Observation - 1
+Compile Time Error - GeometryFunction class/interface has more variables than defined in test.
 
 ## Prompt - 2
 Can you please regenerate the tests by using the following data:
@@ -85,8 +86,8 @@ public void testFunctionDescriptionHTMLWithoutDescription() {
 ```
 The first test checks if the description is properly appended to the signature when it exists, while the second test checks if only the signature is returned when there is no description.
 
-### Generated Test Output
-
+## Observation - 2
+Compile Time Error - GeometryFunction class/interface has more variables than defined in test.
 
 
 

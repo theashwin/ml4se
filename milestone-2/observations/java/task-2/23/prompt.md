@@ -74,7 +74,10 @@ public class SplitTest {
 ```
 These tests cover various scenarios such as splitting a string with one separator, multiple separators, no separators, an empty string, and a different separator than the default comma.
 
-### Generated Test Output
+## Observation - 1
+Some tests executed successfully. Couple of test cases failed. Following are the reasons behind test failure:
+1. Corner case not handled
+![alt text](observation-1.PNG "Test-Execution")
 
 ## Prompt - 2
 Can you please refactor the generated tests?
@@ -120,4 +123,8 @@ public class SplitTest {
 }
 ```
 I've added static imports for assertArrayEquals and Arrays.asList, renamed the tests to be more descriptive, and added comments to explain what each test is doing.
-### Generated Test Output
+## Observation - 2
+Some tests executed successfully. Couple of test cases failed. Following are the reasons behind test failure:
+1. Wrong regex for input
+2. Corner case not handled
+![alt text](observation-2.PNG "Test-Execution")

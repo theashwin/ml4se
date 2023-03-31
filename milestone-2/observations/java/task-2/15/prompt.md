@@ -58,7 +58,8 @@ public class InvokeEachATest {
 ```
 Note that this example uses the Mockito framework to create mock objects for testing, so you'll need to import the org.mockito.Mockito package. If you're not familiar with Mockito, you can read more about it in the documentation.
 
-### Generated Test Output
+## Observation - 1
+Compile time error. `invokeB` method was called with wrong arguments.
 
 ## Prompt - 2
 The generated test is incorrect. Can you please regenerate the test?
@@ -146,4 +147,5 @@ public class InvokeEachATest {
 }
 ```
 This test creates three mock Geometry objects, sets up a mock invokeB method on each one, and then creates a mock Geometry object that returns these three mock Geometry objects in its getGeometryN method. It then invokes invokeEachA with these mocks and verifies that invokeB was called on each mock Geometry object with the correct arguments, and that the resulting List contains all three mock Geometry objects in the order they were invoked.
-### Generated Test Output
+## Observation - 2
+Compile time error. `invokeB` method was called with wrong arguments.

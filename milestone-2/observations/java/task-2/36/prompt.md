@@ -52,7 +52,10 @@ public class TestGetVertexByID {
 ```
 Note: We need to import the required packages for assertEquals and Test.
 
-### Generated Test Output
+## Observation - 1
+One test cases executed successfully. Other two test cases failed as `getVertexByIDImpl_` was not mocked in the test.
+<br/><br/>
+![alt text](observation-1.PNG "Test-Execution")
 
 ## Prompt - 2
 What assumptions did you consider while generating these tests?
@@ -124,3 +127,8 @@ public void testGetVertexByID_() {
 }
 ```
 Note that since the getVertexByIDImpl_ function is private and cannot be accessed from outside of the getVertexByID_ method, we cannot test it directly. However, we can infer its behavior based on the output of the getVertexByID_ method for the given inputs. In this case, we have assumed that the getVertexByIDImpl_ function doubles the value of the vertex parameter and adds the geometry_id parameter to it.
+
+## Observation - 7
+One test cases executed successfully. Other two test cases failed as `getVertexByIDImpl_` was not mocked in the test.
+<br/><br/>
+![alt text](observation-7.PNG "Test-Execution")
