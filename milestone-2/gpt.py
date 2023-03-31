@@ -16,7 +16,18 @@ with open("config.json", "r") as file:
 openai.api_key = config["OPENAI_API_KEY"]
 
 
-# python
+def add_code_details(task, prompt, out):
+    out.append(prompt)
+    out.append("> ### Method under consideration:\n"
+               "> **func_id** : " + task.get_func_id() + " <br/> \n "
+               "> **repository** : " + task.get_project_repo() + " <br/> \n" +
+               "> **location** : " + task.get_location() + " <br/> \n"
+               "> **flag** : " + task.get_flag() + " <br/> \n" +
+               "> **function** : <br/> \n"
+               "> ``` <br/> \n"
+               ">> " + task.get_code().replace('\n', '\n>') + " \n"
+               "> ``` \n")
+
 
 def chat(i, task, out):
     init = task.get_init_prompt()
@@ -35,10 +46,7 @@ def chat(i, task, out):
 
         # To print the method body inside a code block in the output Markdown
         if idx == 1:
-            out.append(prompt)
-            out.append("```")
-            out.append(task.get_code())
-            out.append("```")
+            add_code_details(task, prompt, out)
 
         prompt += task.get_code() if idx == 1 else ""
 
@@ -109,14 +117,17 @@ if lang not in ['java', 'python']:
 print(f'Running the utility for {lang.upper()} language code snippets')
 data_path = "prompt/json/" + lang + ".json"
 data_json = read_data(data_path)
+all_threads = []
 
 for i in range(len(data_json)):
-    # Reasoning
     out = []
+    # Reasoning
     print(f'Started REASONING task for the {i + 1}th object...')
     reasoning(i + 1, data_json[i], out, lang)
+    # Unit test
     print(f'Started UNIT TEST GENERATION task for the {i + 1}th object...')
     tests(i + 1, data_json[i], out, lang)
+    # Semantically equivalent code
     print(f'Started SEMANTICALLY EQUIVALENT CODE GENERATION task for the {i + 1}th object...')
     refactor(i + 1, data_json[i], out, lang)
     print()
