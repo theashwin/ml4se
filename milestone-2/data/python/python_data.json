@@ -159,7 +159,7 @@
     "func_id": 14,
     "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
     "location": "numpy-sugar/numpy_sugar/linalg/solve.py",
-    "function_name": "hsolve",
+    "function_name": "solve",
     "function": "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\ndef solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 / A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a * d - b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
@@ -599,7 +599,7 @@
     "expected_output": "",
     "flag": "easy"
   },
-    {
+  {
     "func_id": 51,
     "project_repo": "https://github.com/scipy/scipy/blob/main/scipy/stats",
     "location": "scipy/scipy/stats/_stats_py.py ",
