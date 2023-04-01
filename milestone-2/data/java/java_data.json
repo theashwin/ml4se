@@ -7,7 +7,7 @@
     "function": "private void progress_() {\n\t\tm_progress_counter++;\n\t\tif (m_progress_counter % 1024 == 0) {\n\t\t\tif ((m_progress_tracker != null)\n\t\t\t\t\t&& !(m_progress_tracker.progress(-1, -1)))\n\t\t\t\tthrow new RuntimeException(\"user_canceled\");\n\t\t}\n\t}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
-    "input": "",
+    "input": "m_progress_counter",
     "expected_output": "",
     "flag": "hard"
   },
