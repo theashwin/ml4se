@@ -14,8 +14,15 @@ class Tests(Prompt):
 		with open(self.path) as file:
 			self.prompt = json.loads(file.read())
 
-		# Replace the <LANG> with java or python
+		# Replace the <LANG> token with 'java' or 'python'.
 		self.prompt['init'] = self.prompt['init'].replace('<LANG>', lang)
+
+		# Replace the <COMMENTS> token with 'javadoc' or 'docstring' depending on language.
+		comments = {
+			'java': 'javadoc',
+			'python': 'docstring'
+		}
+		self.prompt['init'] = self.prompt['init'].replace('<COMMENTS>', comments[lang])
 
 	def parse_response(self, prompt_idx, response):
 		# Idea here is to check the response from GPT and make sure it makes sense, else give additional prompts

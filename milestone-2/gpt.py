@@ -17,7 +17,7 @@ openai.api_key = config["OPENAI_API_KEY"]
 
 
 def add_code_details(data, out):
-    out.append("# Method under consideration:")
+    out.append("# Method Under Consideration")
     out.append("---")
     out.append("**func_id** : " + str(data['func_id']) + " <br/> \n "
                "**repository** : " + data['project_repo'] + " <br/> \n" +
@@ -40,13 +40,14 @@ def chat(i, task, out):
     ]
 
     idx = 1
-    out.append(init)
+    # * are for italics
+    out.append("*" + init + "*")
     while True:
         prompt = task.generate_prompt(idx)
 
         # To print the method body inside a code block in the output
         if idx == 1:
-            out.append(prompt)
+            out.append("*" + prompt + "*")
             out.append('```')
             out.append(task.get_code())
             out.append('```')
@@ -66,7 +67,7 @@ def chat(i, task, out):
         reply = chat.choices[0].message.content
 
         if idx != 1:
-            out.append(prompt)
+            out.append("*" + prompt + "*")
         out.append(reply)
 
         idx += 1
@@ -78,21 +79,21 @@ def chat(i, task, out):
 
 
 def reasoning(i, data_json, out, lang):
-    out.append("# Reasoning")
+    out.append("# Task 1: Reasoning")
     reasoning = Reasoning(i, data_json, lang)
     out.append("---")
     chat(i, reasoning, out)
 
 
 def tests(i, data_json, out, lang):
-    out.append("# Tests")
+    out.append("# Task 2: Generate Tests")
     tests = Tests(i, data_json, lang)
     out.append("---")
     chat(i, tests, out)
 
 
 def refactor(i, data_json, out, lang):
-    out.append("# Refactoring")
+    out.append("# Task 3: Generate Semantically Equivalent Method")
     refactor = Refactor(i, data_json, lang)
     out.append("---")
     chat(i, refactor, out)
@@ -127,13 +128,13 @@ for i in range(len(data_json)):
     # Add code details to the md
     add_code_details(data_json[i], out)
     # Reasoning
-    print(f'Starting REASONING task for the object {i + 1}...')
+    print(f'Starting REASONING task for the object #{i + 1}...')
     reasoning(i + 1, data_json[i], out, lang)
     # Unit test
-    print(f'Starting UNIT TEST GENERATION task for the object {i + 1}...')
+    print(f'Starting UNIT TEST GENERATION task for the object #{i + 1}...')
     tests(i + 1, data_json[i], out, lang)
     # Semantically equivalent code
-    print(f'Starting SEMANTICALLY EQUIVALENT CODE GENERATION task for the object {i + 1}...')
+    print(f'Starting SEMANTICALLY EQUIVALENT CODE GENERATION task for the object #{i + 1}...')
     refactor(i + 1, data_json[i], out, lang)
     print()
     break

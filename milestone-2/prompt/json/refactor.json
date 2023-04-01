@@ -1,4 +1,5 @@
 {
-	"init": "For the <LANG> function with comments given in the variable 'code' below write a semantically equivalent code. Keep the method signature as it is just modify the contents of the function.",
-	"1": "Refactor the semantically equivalent function produced, make sure it's runnable and efficient. "
+	"init": "For the <LANG> function with comments given in the variable 'code' below write a semantically equivalent function. Follow the instructions carefully. Instructions: Method signature should remain identical, Return type of the function should also remain identical, Add comments to the method when required, Add <COMMENTS> to the method.",
+	"1": "code:",
+	"2": "Refactor the semantically equivalent function produced, make sure it's runnable and efficient."
 }
