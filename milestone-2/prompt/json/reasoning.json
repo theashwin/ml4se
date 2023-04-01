@@ -1,5 +1,5 @@
 {
-	"init": "For the <LANG> function with comments given in the variable 'code' below, write three inputs and outputs in a table and reason about the execution of the function. Assume variable's contents as required. The generated response must have the following qualities: concise, stepwise and specific.",
+	"init": "For the <LANG> function with comments given in the variable 'code' below, write three inputs and outputs in a table and reason about the execution of the function. Follow the instructions carefully. Instructions: Assume variable's contents as required. The generated response must have the following qualities: concise, stepwise and specific.",
 	"1": "code: ",
 	"2": "Show calculations and reason for each of the three input-output pairs."
 }
