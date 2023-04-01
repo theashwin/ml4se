@@ -117,7 +117,7 @@ lang = args.lang.lower()
 if lang not in ['java', 'python']:
     lang = 'java'
 
-print(f'Running the utility for {lang.upper()} language code snippets')
+print(f'Running the utility for {lang.upper()} code snippets')
 data_path = "prompt/json/" + lang + ".json"
 data_json = read_data(data_path)
 all_threads = []
@@ -127,13 +127,13 @@ for i in range(len(data_json)):
     # Add code details to the md
     add_code_details(data_json[i], out)
     # Reasoning
-    print(f'Started REASONING task for the {i + 1}th object...')
+    print(f'Starting REASONING task for the object {i + 1}...')
     reasoning(i + 1, data_json[i], out, lang)
     # Unit test
-    print(f'Started UNIT TEST GENERATION task for the {i + 1}th object...')
+    print(f'Starting UNIT TEST GENERATION task for the object {i + 1}...')
     tests(i + 1, data_json[i], out, lang)
     # Semantically equivalent code
-    print(f'Started SEMANTICALLY EQUIVALENT CODE GENERATION task for the {i + 1}th object...')
+    print(f'Starting SEMANTICALLY EQUIVALENT CODE GENERATION task for the object {i + 1}...')
     refactor(i + 1, data_json[i], out, lang)
     print()
     break
