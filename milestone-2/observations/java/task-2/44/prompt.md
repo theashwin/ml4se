@@ -79,7 +79,9 @@ public class RainbowTest {
 ```
 In this test, we have covered all possible scenarios of page count and display count with different values of the current page. The assertArrayEquals method is used to check whether the expected and actual output arrays are the same.
 
-### Generated Test Output
+## Observation - 1
+The test compiled and executed. Couple of tests failed due to wrong expected output predicted by ChatGPT.
+![alt text](observation-1.PNG "Test-Execution")
 
 ## Prompt - 2
 The last test's expected output is incorrect. Can you please rectify that?
@@ -92,7 +94,9 @@ public void testRainbowLastPage() {
     assertArrayEquals(expected, rainbow(10, 10, 3));
 }
 ```
-### Generated Test Output
+## Observation - 2
+The test compiled and executed successfully. But, we asked model to rectify the last test case generated from previous prompt. Instead ChatGPT created test with different inputs. It didn't rectify the expected output.
+![alt text](observation-2.PNG "Test-Execution")
 
 ## Prompt - 3
 Generate test for this input: rainbow(3, 3, 4)
@@ -106,5 +110,7 @@ public void testRainbow() {
     assertArrayEquals(expectedOutput, actualOutput);
 }
 ```
-Note that in this case, since pageCount is equal to displayCount, the expected output should simply be an array of integers from 1 to pageCount.
-### Generated Test Output
+## Observation - 3
+The test compiled and executed successfully. This time we explicitly gave ChatGPT the inputs to be considered for the test. For this set of inputs test cases was failing (refer Observation - 1 of this section).
+But, this time chatgpt generated correct test suite.
+![alt text](observation-3.PNG "Test-Execution")

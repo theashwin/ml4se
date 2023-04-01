@@ -1,4 +1,4 @@
 {
-	"init": "For the <LANG> function with comments given in the variable 'code' below, write unit test for testing the function. Import all the required packages.",
+	"init": "For the <LANG> function with comments given in the variable 'code' below, write unit test for testing the function. Import all the required packages and mock all the functions and classes required by the method.",
 	"1": "Refactor the unit test produced, make sure it's runnable and efficient."
 }

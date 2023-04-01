@@ -64,7 +64,10 @@ public class AddTest {
 ```
 Note that the test cases cover various scenarios such as adding two integers, adding a double and an integer, and adding a mix of integers, doubles, and null values. The toBigDecimal helper method is used to convert the input values to BigDecimal objects, while the add method is a copy of the original add function.
 
-### Generated Test Output
+## Observation - 1
+Out of three generated tests, the third test has wrong expected output. For other two tests, the ChatGPT generated correct tests.
+This could've caused due to involvement of negative numbers in the calculation.
+![alt text](observation-1.PNG "Test-Execution")
 
 ## Prompt - 2
 The third test in testAddition has the wrong expected output. Can you please rectify that?
@@ -80,7 +83,8 @@ public void testAddition() {
 }
 ```
 Note that the third test case now expects the result to be BigDecimal.valueOf(15), which is the correct sum of the input values.
-### Generated Test Output
+## Observation - 2
+When we explicitly asked ChatGPT to rectify the 3rd test, it changed the inputs and all were positive.
 
 ## Prompt - 3
 The expected output is incorrect when one of the numbers is negative. Consider negative numbers as well while generating tests.
@@ -96,7 +100,11 @@ public void testAddition() {
 }
 ```
 These tests check the function with different types of inputs, including an empty input array, positive numbers, negative numbers, and decimal numbers.
-### Generated Test Output
+## Observation - 3
+When explicitly asked to generate tests with negative number as inputs, the ChatGPT generated the correct tests.
+Error - The first test is giving compile time error - as the method needs atleast one parameter as input.
+Other tests are running successfully.
+![alt text](observation-3.PNG "Test-Execution")
 
 ## Prompt - 4
 Give few more examples involving negative numbers
@@ -114,4 +122,9 @@ public void testAddition() {
 }
 ```
 These tests cover different combinations of positive and negative numbers as well as decimal values.
-## Generated Output
+## Observation - 4
+When explicitly asked to generate more tests with negative number as inputs, the ChatGPT generated the correct tests.
+Error - The first test is giving compile time error - as the method needs atleast one parameter as input.
+For 5th test - the expected output is incorrect as it involves negative number.
+Other tests are running successfully.
+![alt text](observation-4.PNG "Test-Execution")
