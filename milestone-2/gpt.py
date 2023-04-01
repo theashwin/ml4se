@@ -39,6 +39,7 @@ def chat(i, task, out):
         }
     ]
 
+    out.append("## Prompt")
     idx = 1
     # * are for italics
     out.append("*" + init + "*")
@@ -67,7 +68,9 @@ def chat(i, task, out):
         reply = chat.choices[0].message.content
 
         if idx != 1:
+            out.append("## Prompt")
             out.append("*" + prompt + "*")
+        out.append("## Prompt Output")
         out.append(reply)
 
         idx += 1
@@ -101,7 +104,7 @@ def refactor(i, data_json, out, lang):
 
 def read_data(data_path):
     # Load Dataset
-    with open(data_path) as file:
+    with open(data_path, encoding='utf8') as file:
         data = json.load(file)
 
     return data
@@ -111,19 +114,26 @@ def read_data(data_path):
 p = argparse.ArgumentParser()
 
 p.add_argument('--lang', '--language', dest='lang', default='java', help='language')
+p.add_argument('--n', '--number', dest='num', default='5', help='number of data points to run', type=int)
 
 args = p.parse_args()
 lang = args.lang.lower()
+num_data_pts = args.num
 
 if lang not in ['java', 'python']:
     lang = 'java'
 
+
+if num_data_pts > 50:
+    num_data_pts = 50
+
 print(f'Running the utility for {lang.upper()} code snippets')
+print(f'Number of data points to run: {num_data_pts}')
+
 data_path = "prompt/json/" + lang + ".json"
 data_json = read_data(data_path)
-all_threads = []
 
-for i in range(len(data_json)):
+for i in range(num_data_pts):
     out = []
     # Add code details to the md
     add_code_details(data_json[i], out)
