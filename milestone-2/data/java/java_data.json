@@ -19,7 +19,7 @@
     "function": "private int calcN_() {\n\t\t//this method should be called only once m_circle_template_size is set then;\n\t\tfinal int minN = 4;\n\t\tif (m_densify_dist == 0)\n\t\t\treturn m_max_vertex_in_complete_circle;\n\n\t\tdouble r = m_densify_dist * Math.abs(m_abs_distance_reversed);\n\t\tdouble cos_a = 1 - r;\n\t\tdouble N;\n\t\tif (cos_a < -1)\n\t\t\tN = minN;\n\t\telse\n\t\t\tN = 2.0 * Math.PI / Math.acos(cos_a) + 0.5;\n\n\t\tif (N < minN)\n\t\t\tN = minN;\n\t\telse if (N > m_max_vertex_in_complete_circle)\n\t\t\tN = m_max_vertex_in_complete_circle;\n\n\t\treturn (int) N;\n\t}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
-    "input": "",
+    "input": "m_densify_dist, m_max_vertex_in_complete_circle, m_abs_distance_reversed",
     "expected_output": "",
     "flag": "hard"
   },
@@ -343,7 +343,7 @@
     "function": "public Point getCoordinate() {\n    if (isEmpty())\n        throw new GeometryException(\"invalid call\");\n\n    return new Point(m_coordinate.x, m_coordinate.y);\n}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
-    "input": "",
+    "input": "m_coordinate, isEmpty()",
     "expected_output": "",
     "flag": "medium"
   },
@@ -355,7 +355,7 @@
     "function": "public double getDistance() {\n\t\tif (isEmpty())\n\t\t\tthrow new GeometryException(\"invalid call\");\n\n\t\treturn m_distance;\n\t}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
-    "input": "",
+    "input": "m_distance, isEmpty()",
     "expected_output": "",
     "flag": "medium"
   },
@@ -379,7 +379,7 @@
     "function": "public Point3D getXYZ() {\n    Point3D pt = new Point3D();\n    pt.x = m_x;\n    pt.y = m_y;\n    pt.z = hasZ() ? m_attributes[0] : VertexDescription.getDefaultValue(VertexDescription.Semantics.Z);\n\n    return pt;\n}",
     "non_primitive_data_objects": "",
     "primitive_data_objects": "",
-    "input": "",
+    "input": "m_x, m_y, hasZ(), m_attributes",
     "expected_output": "",
     "flag": "medium"
   },
