@@ -42,13 +42,13 @@ def chat(i, task, out):
     out.append("## Prompt")
     idx = 1
     # * are for italics
-    out.append("*" + init + "*")
+    out.append("**" + init + "**")
     while True:
         prompt = task.generate_prompt(idx)
 
         # To print the method body inside a code block in the output
         if idx == 1:
-            out.append("*" + prompt + "*")
+            out.append("**" + prompt + "**")
             out.append('```')
             out.append(task.get_code())
             out.append('```')
@@ -69,8 +69,8 @@ def chat(i, task, out):
 
         if idx != 1:
             out.append("## Prompt")
-            out.append("*" + prompt + "*")
-        out.append("## Prompt Output")
+            out.append("**" + prompt + "**")
+        out.append("## Response")
         out.append(reply)
 
         idx += 1
@@ -147,6 +147,5 @@ for i in range(num_data_pts):
     print(f'Starting SEMANTICALLY EQUIVALENT CODE GENERATION task for the object #{i + 1}...')
     refactor(i + 1, data_json[i], out, lang)
     print()
-    break
 
 print(f'Task Completed')
