@@ -1,0 +1,53 @@
+{
+  "easy": {
+    "task-1": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    },
+    "task-2": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    },
+    "task-3": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    }
+  },
+  "medium": {
+    "task-1": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    },
+    "task-2": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    },
+    "task-3": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    }
+  },
+  "hard": {
+    "task-1": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    },
+    "task-2": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    },
+    "task-3": {
+      "correct": 0,
+      "wrong": 0,
+      "partial-correct": 0
+    }
+  }
+}
