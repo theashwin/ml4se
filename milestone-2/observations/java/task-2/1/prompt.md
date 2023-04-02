@@ -225,7 +225,8 @@ Tests compiled successfully but needs more context to get correct results.
 
 ## Prompt - 3
 ```
-For the java function of class "Bufferer" with comments given in the variable 'code' below, write unit test for testing the function. Import all the required packages.
+For the java function of class "Bufferer" with comments given in the variable 'code' below, write unit test for testing the function. 
+Import all the required packages.
 code: public void progress_() {
 		m_progress_counter++;
 		if (m_progress_counter % 1024 == 0) {
