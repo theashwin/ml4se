@@ -1,0 +1,30 @@
+{
+  "project_repo": [
+    {
+      "project_repo": "https://github.com/limix/numpy-sugar",
+      "count": 19
+    },
+    {
+      "project_repo": "https://github.com/numpy/numpy",
+      "count": 8
+    },
+    {
+      "project_repo": "https://github.com/scipy/scipy",
+      "count": 24
+    }
+  ],
+  "difficulty_level": [
+    {
+      "level": "easy",
+      "count": 32
+    },
+    {
+      "level": "medium",
+      "count": 12
+    },
+    {
+      "level": "hard",
+      "count": 7
+    }
+  ]
+}
