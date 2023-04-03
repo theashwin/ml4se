@@ -1,53 +1,53 @@
 {
   "easy": {
     "task-1": {
-      "correct": 0,
-      "wrong": 0,
-      "partial-correct": 0
+      "correct": 11,
+      "wrong": 4,
+      "partial-correct": 3
     },
     "task-2": {
-      "correct": 0,
-      "wrong": 0,
-      "partial-correct": 0
+      "correct": 11,
+      "wrong": 3,
+      "partial-correct": 4
     },
     "task-3": {
-      "correct": 0,
-      "wrong": 0,
+      "correct": 13,
+      "wrong": 5,
       "partial-correct": 0
     }
   },
   "medium": {
     "task-1": {
-      "correct": 0,
-      "wrong": 0,
-      "partial-correct": 0
+      "correct": 8,
+      "wrong": 4,
+      "partial-correct": 3
     },
     "task-2": {
-      "correct": 0,
-      "wrong": 0,
-      "partial-correct": 0
+      "correct": 2,
+      "wrong": 5,
+      "partial-correct": 8
     },
     "task-3": {
-      "correct": 0,
-      "wrong": 0,
-      "partial-correct": 0
+      "correct": 7,
+      "wrong": 5,
+      "partial-correct": 3
     }
   },
   "hard": {
     "task-1": {
-      "correct": 0,
-      "wrong": 0,
-      "partial-correct": 0
+      "correct": 3,
+      "wrong": 5,
+      "partial-correct": 9
     },
     "task-2": {
-      "correct": 0,
-      "wrong": 0,
-      "partial-correct": 0
+      "correct": 3,
+      "wrong": 5,
+      "partial-correct": 9
     },
     "task-3": {
-      "correct": 0,
-      "wrong": 0,
-      "partial-correct": 0
+      "correct": 6,
+      "wrong": 7,
+      "partial-correct": 4
     }
   }
 }
