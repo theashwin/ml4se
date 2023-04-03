@@ -1,5 +1,5 @@
 # Setting up the ChatGPT 
-This would require an OpenAI API key which can be obtained from [https://platform.openai.com/account/api-keys](OpenAI API Key). Save the key in a file named config.json in '/milestone-2' folder in the format given below.
+This would require an OpenAI API key which can be obtained from [https://platform.openai.com/account/api-keys](OpenAI API Key). Save the key in a file named `config.json` in `/milestone-2` folder in the format given below.
 
 ```
 { 
