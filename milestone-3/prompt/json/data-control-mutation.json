@@ -1,0 +1,5 @@
+{
+	"init": "For the <LANG> function with comments given in the variable 'code' below, generate two versions of the function. First, change the data flow of the function. Second, change the control flow of the function. Follow the instructions carefully. Instructions: Be as creative as possible. List out all of the changes done to the original function.",
+	"1": "code:",
+	"2": "Write the data flow mutated function in <data> </data> tags and control flow mutated function in <control> </control> tags."
+}
