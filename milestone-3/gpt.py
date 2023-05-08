@@ -3,6 +3,7 @@ import sys
 import argparse
 import openai
 import time
+import re
 
 # GET YOUR OPEN AI API KEY FROM : https://platform.openai.com/account/api-keys
 # Save the key in config.json as { "OPENAI_API_KEY": "<KEY>" }
@@ -82,6 +83,10 @@ def chat(i, task, out):
         time.sleep(20)
 
 def extract_control_data(text):
+    if not re.search("<DATA>", text):
+        print("<ERROR> Not able to find the <DATA> tag for his function")
+    if not re.search("<CONTROL>", text):
+        print("<ERROR> Not able to find the <DATA> tag for his function")
     data = text.split("</DATA>")[0].split("<DATA>")[-1]
     control = text.split("</CONTROL>")[0].split("<CONTROL>")[-1]
     return [control, data]
