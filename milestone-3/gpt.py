@@ -82,8 +82,8 @@ def chat(i, task, out):
         time.sleep(20)
 
 def extract_control_data(text):
-    data = text.split("</data>")[0].split("<data>")[-1]
-    control = text.split("</control>")[0].split("<control>")[-1]
+    data = text.split("</DATA>")[0].split("<DATA>")[-1]
+    control = text.split("</CONTROL>")[0].split("<CONTROL>")[-1]
     return [control, data]
 
 def data_control(i, data_json, out, lang):
