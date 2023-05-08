@@ -2,6 +2,7 @@ import json
 import sys
 import argparse
 import openai
+import time
 
 # GET YOUR OPEN AI API KEY FROM : https://platform.openai.com/account/api-keys
 # Save the key in config.json as { "OPENAI_API_KEY": "<KEY>" }
@@ -78,6 +79,7 @@ def chat(i, task, out):
         if not task.parse_response(idx, reply):
             task.store(i, out)
             return out[-1]
+        time.sleep(20)
 
 def extract_control_data(text):
     data = text.split("</data>")[0].split("<data>")[-1]
