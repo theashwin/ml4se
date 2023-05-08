@@ -83,9 +83,16 @@ def chat(i, task, out):
         time.sleep(20)
 
 def extract_control_data(text):
+    text = text.replace("<Data>", "<DATA>").replace("</Data>", "</DATA>")
+    text = text.replace("<data>", "<DATA>").replace("</data>", "</DATA>")
+
+    text = text.replace("<Control>", "<CONTROL>").replace("</Control>", "</CONTROL>")
+    text = text.replace("<control>", "<CONTROL>").replace("</control>", "</CONTROL>")
+
     if not re.search("<DATA>", text):
         print("<ERROR> Not able to find the <DATA> tag for his function")
     if not re.search("<CONTROL>", text):
+
         print("<ERROR> Not able to find the <DATA> tag for his function")
     data = text.split("</DATA>")[0].split("<DATA>")[-1]
     control = text.split("</CONTROL>")[0].split("<CONTROL>")[-1]
