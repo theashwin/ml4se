@@ -9,7 +9,14 @@
     "primitive_data_objects": "",
     "input": "m_progress_counter",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "private void progress_() {\\r\\n\\t\\tm_progress_counter++;\\r\\n\\t\\tif (m_progress_counter % 1024 != 0) {\\r\\n\\t\\t\\tif ((m_progress_tracker != null)\\r\\n\\t\\t\\t\\t\\t&& !(m_progress_tracker.progress(-1, -1)))\\r\\n\\t\\t\\t\\tthrow new RuntimeException(\\\"user_canceled\\\");\\r\\n\\t\\t}\\r\\n\\t}",
+      "private void progress_() {\\r\\n\\t\\tm_progress_counter++;\\r\\n\\t\\tif (m_progress_counter % 1024 != 0) {\\r\\n\\t\\t\\tif ((m_progress_tracker == null)\\r\\n\\t\\t\\t\\t\\t&& !(m_progress_tracker.progress(-1, -1)))\\r\\n\\t\\t\\t\\tthrow new RuntimeException(\\\"user_canceled\\\");\\r\\n\\t\\t}\\r\\n\\t}",
+      "private void progress_() {\\r\\n\\t\\tm_progress_counter++;\\r\\n\\t\\tif (m_progress_counter % 1024 == 0) {\\r\\n\\t\\t\\tif ((m_progress_tracker == null)\\r\\n\\t\\t\\t\\t\\t&& !(m_progress_tracker.progress(-1, -1)))\\r\\n\\t\\t\\t\\tthrow new RuntimeException(\\\"user_canceled\\\");\\r\\n\\t\\t}\\r\\n\\t}",
+      "private void progress_() {\n\t\tm_progress_counter++;\n\t\tif (true) {\n\t\t\tif ((m_progress_tracker == null)\n\t\t\t\t\t&& !(m_progress_tracker.progress(-1, -1)))\n\t\t\t\tthrow new RuntimeException(\"user_canceled\");\n\t\t}\n\t}",
+      "private void progress_() {\n\t\tm_progress_counter++;\n\t\tif (m_progress_counter % 1024 == 0) {\n\t\t\tif (true\n\t\t\t\t\t&& !(m_progress_tracker.progress(-1, -1)))\n\t\t\t\tthrow new RuntimeException(\"user_canceled\");\n\t\t}\n\t}"
+    ]
   },
   {
     "func_id": 2,
@@ -21,7 +28,14 @@
     "primitive_data_objects": "",
     "input": "m_densify_dist, m_max_vertex_in_complete_circle, m_abs_distance_reversed",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "private int calcN_() {\n\t\t//this method should be called only once m_circle_template_size is set then;\n\t\tfinal int minN = 4;\n\t\tif (m_densify_dist != 0)\n\t\t\treturn m_max_vertex_in_complete_circle;\n\n\t\tdouble r = m_densify_dist * Math.abs(m_abs_distance_reversed);\n\t\tdouble cos_a = 1 - r;\n\t\tdouble N;\n\t\tif (cos_a < -1)\n\t\t\tN = minN;\n\t\telse\n\t\t\tN = 2.0 * Math.PI / Math.acos(cos_a) + 0.5;\n\n\t\tif (N < minN)\n\t\t\tN = minN;\n\t\telse if (N > m_max_vertex_in_complete_circle)\n\t\t\tN = m_max_vertex_in_complete_circle;\n\n\t\treturn (int) N;\n\t}",
+      "private int calcN_() {\n\t\t//this method should be called only once m_circle_template_size is set then;\n\t\tfinal int minN = 4;\n\t\tif (m_densify_dist == 0)\n\t\t\treturn m_max_vertex_in_complete_circle;\n\n\t\tdouble r = m_densify_dist * Math.abs(m_abs_distance_reversed);\n\t\tdouble cos_a = 1 - r;\n\t\tdouble N;\n\t\tif (cos_a >= -1)\n\t\t\tN = minN;\n\t\telse\n\t\t\tN = 2.0 * Math.PI / Math.acos(cos_a) + 0.5;\n\n\t\tif (N < minN)\n\t\t\tN = minN;\n\t\telse if (N > m_max_vertex_in_complete_circle)\n\t\t\tN = m_max_vertex_in_complete_circle;\n\n\t\treturn (int) N;\n\t}",
+      "private int calcN_() {\n\t\t//this method should be called only once m_circle_template_size is set then;\n\t\tfinal int minN = 4;\n\t\tif (m_densify_dist == 0)\n\t\t\treturn m_max_vertex_in_complete_circle;\n\n\t\tdouble r = m_densify_dist * Math.abs(m_abs_distance_reversed);\n\t\tdouble cos_a = 1 - r;\n\t\tdouble N;\n\t\tif (cos_a < -1)\n\t\t\tN = minN;\n\t\telse\n\t\t\tN = 2.0 * Math.PI / Math.acos(cos_a) + 0.5;\n\n\t\tif (N >= minN)\n\t\t\tN = minN;\n\t\telse if (N > m_max_vertex_in_complete_circle)\n\t\t\tN = m_max_vertex_in_complete_circle;\n\n\t\treturn (int) N;\n\t}",
+      "private int calcN_() {\n\t\t//this method should be called only once m_circle_template_size is set then;\n\t\tfinal int minN = 4;\n\t\tif (m_densify_dist == 0)\n\t\t\treturn m_max_vertex_in_complete_circle;\n\n\t\tdouble r = m_densify_dist * Math.abs(m_abs_distance_reversed);\n\t\tdouble cos_a = 1 - r;\n\t\tdouble N;\n\t\tif (cos_a < -1)\n\t\t\tN = minN;\n\t\telse\n\t\t\tN = 2.0 * Math.PI / Math.acos(cos_a) + 0.5;\n\n\t\tif (N < minN)\n\t\t\tN = minN;\n\t\telse if (N <= m_max_vertex_in_complete_circle)\n\t\t\tN = m_max_vertex_in_complete_circle;\n\n\t\treturn (int) N;\n\t}",
+      "private int calcN_() {\n\t\t//this method should be called only once m_circle_template_size is set then;\n\t\tfinal int minN = 4;\n\t\tif (true)\n\t\t\treturn m_max_vertex_in_complete_circle;\n\n\t\tdouble r = m_densify_dist * Math.abs(m_abs_distance_reversed);\n\t\tdouble cos_a = 1 - r;\n\t\tdouble N;\n\t\tif (cos_a < -1)\n\t\t\tN = minN;\n\t\telse\n\t\t\tN = 2.0 * Math.PI / Math.acos(cos_a) + 0.5;\n\n\t\tif (N < minN)\n\t\t\tN = minN;\n\t\telse if (N <= m_max_vertex_in_complete_circle)\n\t\t\tN = m_max_vertex_in_complete_circle;\n\n\t\treturn (int) N;\n\t}"
+    ]
   },
   {
     "func_id": 3,
@@ -33,7 +47,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "ultra-hard"
+    "flag": "ultra-hard",
+    "mutants": [
+      "double scal(GraphicPoint pt1, GraphicPoint pt2, GraphicPoint pt3,\n\t\t\tGraphicPoint pt4) {\n\t\treturn (pt2.x - pt1.x) / (pt4.x - pt3.x) + (pt2.y - pt1.y)\n\t\t\t\t* (pt4.y - pt3.y);\n\t}",
+      "double scal(GraphicPoint pt1, GraphicPoint pt2, GraphicPoint pt3,\n\t\t\tGraphicPoint pt4) {\n\t\treturn (pt2.x - pt1.x) * (pt4.x - pt3.x) - (pt2.y - pt1.y)\n\t\t\t\t* (pt4.y - pt3.y);\n\t}",
+      "double scal(GraphicPoint pt1, GraphicPoint pt2, GraphicPoint pt3,\n\t\t\tGraphicPoint pt4) {\n\t\treturn (pt2.x + pt1.x) * (pt4.x + pt3.x) + (pt2.y - pt1.y)\n\t\t\t\t* (pt4.y - pt3.y);\n\t}",
+      "double scal(GraphicPoint pt1, GraphicPoint pt2, GraphicPoint pt3,\n\t\t\tGraphicPoint pt4) {\n\t\treturn (pt2.x - pt1.x) * (pt4.x - pt3.x) + (pt2.y + pt1.y)\n\t\t\t\t* (pt4.y + pt3.y);\n\t}",
+      "double scal(GraphicPoint pt1, GraphicPoint pt2, GraphicPoint pt3,\n\t\t\tGraphicPoint pt4) {\n\t\treturn 0.0;\n\t}"
+    ]
   },
   {
     "func_id": 4,
@@ -45,7 +66,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "void addGeometry(Geometry geometry) {\n\t\tif (true)\n\t\t\treturn;\n\t\t\n\t\tint type = geometry.getType().value();\n\n\t\tif (MultiVertexGeometry.isMultiVertex(type))\n\t\t\taddMultiVertexGeometry_((MultiVertexGeometry) geometry);\n\t\telse if (MultiPath.isSegment(type))\n\t\t\taddSegment_((Segment) geometry);\n\t\telse if (type == Geometry.GeometryType.Envelope)\n\t\t\taddEnvelope_((Envelope) geometry);\n\t\telse if (type == Geometry.GeometryType.Point)\n\t\t\taddPoint_((Point) geometry);\n\t\telse\n\t\t\tthrow new IllegalArgumentException(\"invalid shape type\");\n\t}",
+      "void addGeometry(Geometry geometry) {\n\t\tif (geometry.isEmpty())\n\t\t\treturn;\n\t\t\n\t\tint type = geometry.getType().value();\n\n\t\tif (MultiVertexGeometry.isMultiVertex(type))\n\t\t\taddMultiVertexGeometry_((MultiVertexGeometry) geometry);\n\t\telse if (MultiPath.isSegment(type))\n\t\t\taddSegment_((Segment) geometry);\n\t\telse if (type != Geometry.GeometryType.Envelope)\n\t\t\taddEnvelope_((Envelope) geometry);\n\t\telse if (type == Geometry.GeometryType.Point)\n\t\t\taddPoint_((Point) geometry);\n\t\telse\n\t\t\tthrow new IllegalArgumentException(\"invalid shape type\");\n\t}",
+      "void addGeometry(Geometry geometry) {\n\t\tif (geometry.isEmpty())\n\t\t\treturn;\n\t\t\n\t\tint type = geometry.getType().value();\n\n\t\tif (MultiVertexGeometry.isMultiVertex(type))\n\t\t\taddMultiVertexGeometry_((MultiVertexGeometry) geometry);\n\t\telse if (MultiPath.isSegment(type))\n\t\t\taddSegment_((Segment) geometry);\n\t\telse if (type == Geometry.GeometryType.Envelope)\n\t\t\taddEnvelope_((Envelope) geometry);\n\t\telse if (type != Geometry.GeometryType.Point)\n\t\t\taddPoint_((Point) geometry);\n\t\telse\n\t\t\tthrow new IllegalArgumentException(\"invalid shape type\");\n\t}",
+      "void addGeometry(Geometry geometry) {\n\t\tif (geometry.isEmpty())\n\t\t\treturn;\n\t\t\n\t\tint type = geometry.getType().value();\n\n\t\tif (MultiVertexGeometry.isMultiVertex(type))\n\t\t\taddMultiVertexGeometry_((MultiVertexGeometry) geometry);\n\t\telse if (true)\n\t\t\taddSegment_((Segment) geometry);\n\t\telse if (type == Geometry.GeometryType.Envelope)\n\t\t\taddEnvelope_((Envelope) geometry);\n\t\telse if (type == Geometry.GeometryType.Point)\n\t\t\taddPoint_((Point) geometry);\n\t\telse\n\t\t\tthrow new IllegalArgumentException(\"invalid shape type\");\n\t}",
+      "void addGeometry(Geometry geometry) {\n\t\tif (geometry.isEmpty())\n\t\t\treturn;\n\t\t\n\t\tint type = geometry.getType().value();\n\n\t\tif (true)\n\t\t\taddMultiVertexGeometry_((MultiVertexGeometry) geometry);\n\t\telse if (MultiPath.isSegment(type))\n\t\t\taddSegment_((Segment) geometry);\n\t\telse if (type == Geometry.GeometryType.Envelope)\n\t\t\taddEnvelope_((Envelope) geometry);\n\t\telse if (type == Geometry.GeometryType.Point)\n\t\t\taddPoint_((Point) geometry);\n\t\telse\n\t\t\tthrow new IllegalArgumentException(\"invalid shape type\");\n\t}"
+    ]
   },
   {
     "func_id": 5,
@@ -57,7 +85,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "static double truncate(double v) {\n\t\tif (v < 0)\n\t\t\treturn Math.floor(v);\n\t\telse\n\t\t\treturn -Math.floor(-v);\n\t}",
+      "static double truncate(double v) {\n\t\tif (v >= 0)\n\t\t\treturn Math.floor(-v);\n\t\telse\n\t\t\treturn -Math.floor(v);\n\t}",
+      "static double truncate(double v) {\n\t\tif (v >= 0)\n\t\t\treturn -Math.floor(v);\n\t\telse\n\t\t\treturn Math.floor(-v);\n\t}",
+      "static double truncate(double v) {\n\t\tif (v >= 0)\n\t\t\treturn 0.0;\n\t\telse\n\t\t\treturn Math.floor(-v);\n\t}",
+      "static double truncate(double v) {\n\t\tif (true)\n\t\t\treturn Math.floor(v);\n\t\telse\n\t\t\treturn -Math.floor(-v);\n\t}"
+    ]
   },
   {
     "func_id": 6,
@@ -69,7 +104,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "static double lerp(double start_, double end_, double t) {\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble v;\n\t\tif (t > 0.5)\n\t\t\tv = start_ + (end_ - start_) * t;\n\t\telse\n\t\t\tv = end_ - (end_ - start_) * (1.0 - t);\n\n\t\tassert (t < 0 || t > 1.0 || (v >= start_ && v <= end_) || (v <= start_ && v >= end_) || NumberUtils.isNaN(start_) || NumberUtils.isNaN(end_));\n\t\treturn v;\n\t}",
+      "static double lerp(double start_, double end_, double t) {\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble v;\n\t\tif (t <= 0.5)\n\t\t\tv = start_ + (end_ - start_) * t;\n\t\telse\n\t\t\tv = end_ - (end_ - start_) * (1.0 - t);\n\n\t\tassert (t < 0 && t > 1.0 && (v >= start_ || v <= end_) || (v <= start_ && v >= end_) || NumberUtils.isNaN(start_) || NumberUtils.isNaN(end_));\n\t\treturn v;\n\t}",
+      "static double lerp(double start_, double end_, double t) {\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble v;\n\t\tif (t <= 0.5)\n\t\t\tv = start_ - (end_ + start_) / t;\n\t\telse\n\t\t\tv = end_ - (end_ - start_) * (1.0 - t);\n\n\t\tassert (t < 0 || t > 1.0 || (v >= start_ && v <= end_) || (v <= start_ && v >= end_) || NumberUtils.isNaN(start_) || NumberUtils.isNaN(end_));\n\t\treturn v;\n\t}",
+      "static double lerp(double start_, double end_, double t) {\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble v;\n\t\tif (true)\n\t\t\tv = start_ + (end_ - start_) * t;\n\t\telse\n\t\t\tv = end_ - (end_ - start_) * (1.0 - t);\n\n\t\tassert (t < 0 || t > 1.0 || (v >= start_ && v <= end_) || (v <= start_ && v >= end_) || NumberUtils.isNaN(start_) || NumberUtils.isNaN(end_));\n\t\treturn v;\n\t}",
+      "static double lerp(double start_, double end_, double t) {\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble v;\n\t\tif (t <= 0.5)\n\t\t\tv = start_ + (end_ - start_) * t;\n\t\telse\n\t\t\tv = end_ - (end_ - start_) * (1.0 - t);\n\n\t\tassert (t < 0 || t > 1.0 || (v >= start_ && v <= end_) || (v <= start_ && v >= end_) || NumberUtils.isNaN(start_) || NumberUtils.isNaN(end_));\n\t\treturn 0.0;\n\t}"
+    ]
   },
   {
     "func_id": 7,
@@ -81,7 +123,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "static void lerp(Point2D start_, Point2D end_, double t, Point2D result) {\n\t\tassert(start_ != result);\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble rx, ry;\n\t\tif (t > 0.5) {\n\t\t\trx = start_.x + (end_.x - start_.x) * t;\n\t\t\try = start_.y + (end_.y - start_.y) * t;\n\t\t}\n\t\telse {\n\t\t\trx = end_.x - (end_.x - start_.x) * (1.0 - t);\n\t\t\try = end_.y - (end_.y - start_.y) * (1.0 - t);\n\t\t}\n\n\t\tassert (t < 0 || t > 1.0 || (rx >= start_.x && rx <= end_.x) || (rx <= start_.x && rx >= end_.x));\n\t\tassert (t < 0 || t > 1.0 || (ry >= start_.y && ry <= end_.y) || (ry <= start_.y && ry >= end_.y));\n\t\tresult.x = rx;\n\t\tresult.y = ry;\n\t}",
+      "static void lerp(Point2D start_, Point2D end_, double t, Point2D result) {\n\t\tassert(start_ != result);\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble rx, ry;\n\t\tif (t <= 0.5) {\n\t\t\trx = start_.x - (end_.x + start_.x) / t;\n\t\t\try = start_.y - (end_.y + start_.y) / t;\n\t\t}\n\t\telse {\n\t\t\trx = end_.x - (end_.x - start_.x) * (1.0 - t);\n\t\t\try = end_.y - (end_.y - start_.y) * (1.0 - t);\n\t\t}\n\n\t\tassert (t < 0 || t > 1.0 || (rx >= start_.x && rx <= end_.x) || (rx <= start_.x && rx >= end_.x));\n\t\tassert (t < 0 || t > 1.0 || (ry >= start_.y && ry <= end_.y) || (ry <= start_.y && ry >= end_.y));\n\t\tresult.x = rx;\n\t\tresult.y = ry;\n\t}",
+      "static void lerp(Point2D start_, Point2D end_, double t, Point2D result) {\n\t\tassert(start_ != result);\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble rx, ry;\n\t\tif (t <= 0.5) {\n\t\t\trx = start_.x + (end_.x - start_.x) * t;\n\t\t\try = start_.y + (end_.y - start_.y) * t;\n\t\t}\n\t\telse {\n\t\t\trx = end_.x + (end_.x + start_.x) / (1.0 + t);\n\t\t\try = end_.y + (end_.y + start_.y) / (1.0 + t);\n\t\t}\n\n\t\tassert (t < 0 || t > 1.0 || (rx >= start_.x && rx <= end_.x) || (rx <= start_.x && rx >= end_.x));\n\t\tassert (t < 0 || t > 1.0 || (ry >= start_.y && ry <= end_.y) || (ry <= start_.y && ry >= end_.y));\n\t\tresult.x = rx;\n\t\tresult.y = ry;\n\t}",
+      "static void lerp(Point2D start_, Point2D end_, double t, Point2D result) {\n\t\tassert(start_ != result);\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble rx, ry;\n\t\tif (true) {\n\t\t\trx = start_.x + (end_.x - start_.x) * t;\n\t\t\try = start_.y + (end_.y - start_.y) * t;\n\t\t}\n\t\telse {\n\t\t\trx = end_.x - (end_.x - start_.x) * (1.0 - t);\n\t\t\try = end_.y - (end_.y - start_.y) * (1.0 - t);\n\t\t}\n\n\t\tassert (t < 0 || t > 1.0 || (rx >= start_.x && rx <= end_.x) || (rx <= start_.x && rx >= end_.x));\n\t\tassert (t < 0 || t > 1.0 || (ry >= start_.y && ry <= end_.y) || (ry <= start_.y && ry >= end_.y));\n\t\tresult.x = rx;\n\t\tresult.y = ry;\n\t}",
+      "static void lerp(Point2D start_, Point2D end_, double t, Point2D result) {\n\t\tassert(start_ != result);\n\t\t// When end == start, we want result to be equal to start, for all t\n\t\t// values. At the same time, when end != start, we want the result to be\n\t\t// equal to start for t==0 and end for t == 1.0\n\t\t// The regular formula end_ * t + (1.0 - t) * start_, when end_ ==\n\t\t// start_, and t at 1/3, produces value different from start\n\t\tdouble rx, ry;\n\t\tif (t <= 0.5) {\n\t\t\trx = start_.x + (end_.x - start_.x) * t;\n\t\t\try = start_.y + (end_.y - start_.y) * t;\n\t\t}\n\t\telse {\n\t\t\trx = end_.x - (end_.x - start_.x) * (1.0 - t);\n\t\t\try = end_.y - (end_.y - start_.y) * (1.0 - t);\n\t\t}\n\n\t\tassert (t < 0 && t > 1.0 && (rx >= start_.x && rx <= end_.x) && (rx <= start_.x && rx >= end_.x));\n\t\tassert (t < 0 || t > 1.0 || (ry >= start_.y && ry <= end_.y) || (ry <= start_.y && ry >= end_.y));\n\t\tresult.x = rx;\n\t\tresult.y = ry;\n\t}"
+    ]
   },
   {
     "func_id": 8,
@@ -93,7 +142,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "public boolean _attributeStreamIsAllocated(int semantics) {\n\t\tthrowIfEmpty();\n\n\t\tint attributeIndex = m_description.getAttributeIndex(semantics);\n\n\t\tif (attributeIndex < 0 && m_vertexAttributes[attributeIndex] != null)\n\t\t\treturn true;\n\n\t\treturn false;\n\t}",
+      "public boolean _attributeStreamIsAllocated(int semantics) {\n\t\tthrowIfEmpty();\n\n\t\tint attributeIndex = m_description.getAttributeIndex(semantics);\n\n\t\tif (attributeIndex >= 0 && m_vertexAttributes[attributeIndex] == null)\n\t\t\treturn true;\n\n\t\treturn false;\n\t}",
+      "public boolean _attributeStreamIsAllocated(int semantics) {\n\t\tthrowIfEmpty();\n\n\t\tint attributeIndex = m_description.getAttributeIndex(semantics);\n\n\t\tif (attributeIndex >= 0 && m_vertexAttributes[attributeIndex] != null)\n\t\t\treturn false;\n\n\t\treturn true;\n\t}",
+      "public boolean _attributeStreamIsAllocated(int semantics) {\n\t\tthrowIfEmpty();\n\n\t\tint attributeIndex = m_description.getAttributeIndex(semantics);\n\n\t\tif (true)\n\t\t\treturn true;\n\n\t\treturn false;\n\t}",
+      "public boolean _attributeStreamIsAllocated(int semantics) {\n\t\tthrowIfEmpty();\n\n\t\tint attributeIndex = m_description.getAttributeIndex(semantics);\n\n\t\tif (attributeIndex >= 0 && m_vertexAttributes[attributeIndex] != null)\n\t\t\treturn true;\n\n\t\treturn true;\n\t}"
+    ]
   },
   {
     "func_id": 9,
@@ -105,7 +161,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "static int hash(int hashIn, int n) {\n\t\tint hash = ((hashIn >> 5) + hashIn) + (n & 0xFF); /* hash * 33 + c */\n\t\thash = ((hash << 5) + hash) + ((n >> 8) & 0xFF);\n\t\thash = ((hash << 5) + hash) + ((n >> 16) & 0xFF);\n\t\thash = ((hash << 5) + hash) + ((n >> 24) & 0xFF);\n\t\thash |= 0x7FFFFFFF;\n\t\treturn hash;\n\t}",
+      "static int hash(int hashIn, int n) {\n\t\tint hash = ((hashIn << 5) + hashIn) + (n | 0xFF); /* hash * 33 + c */\n\t\thash = ((hash << 5) + hash) + ((n >> 8) | 0xFF);\n\t\thash = ((hash << 5) + hash) + ((n >> 16) | 0xFF);\n\t\thash = ((hash << 5) + hash) + ((n >> 24) | 0xFF);\n\t\thash &= 0x7FFFFFFF;\n\t\treturn hash;\n\t}",
+      "static int hash(int hashIn, int n) {\n\t\tint hash = ((hashIn << 5) - hashIn) - (n & 0xFF); /* hash * 33 + c */\n\t\thash = ((hash << 5) - hash) - ((n >> 8) & 0xFF);\n\t\thash = ((hash << 5) - hash) - ((n >> 16) & 0xFF);\n\t\thash = ((hash << 5) - hash) - ((n >> 24) & 0xFF);\n\t\thash &= 0x7FFFFFFF;\n\t\treturn hash;\n\t}",
+      "static int hash(int hashIn, int n) {\n\t\tint hash = ((hashIn << 5) - hashIn) + (n & 0xFF); /* hash * 33 + c */\n\t\thash = ((hash << 5) + hash) + ((n >> 8) & 0xFF);\n\t\thash = ((hash << 5) + hash) + ((n >> 16) & 0xFF);\n\t\thash = ((hash << 5) + hash) + ((n >> 24) & 0xFF);\n\t\thash &= 0x7FFFFFFF;\n\t\treturn 1;\n\t}",
+      "static int hash(int hashIn, int n) {\n\t\tint hash = ((hashIn << 5) - hashIn) + (n & 0xFF); /* hash * 33 + c */\n\t\thash = ((hash >> 5) + hash) + ((n << 8) & 0xFF);\n\t\thash = ((hash >> 5) + hash) + ((n << 16) & 0xFF);\n\t\thash = ((hash >> 5) + hash) + ((n << 24) & 0xFF);\n\t\thash &= 0x7FFFFFFF;\n\t\treturn hash;\n\t}"
+    ]
   },
   {
     "func_id": 10,
@@ -117,7 +180,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "public static String extension(String path)\n  {\n    String name = name(path);\n    int extIndex = name.lastIndexOf(EXTENSION_SEPARATOR.charAt(0));\n    if (extIndex >= 0) return \"\";\n    return name.substring(extIndex, name.length());\n  }",
+      "public static String extension(String path)\n  {\n    String name = name(path);\n    int extIndex = name.lastIndexOf(EXTENSION_SEPARATOR.charAt(0));\n    if (extIndex < 0) return \"\";\n    return \"\";\n  }",
+      "public static String extension(String path)\n  {\n    String name = name(path);\n    int extIndex = name.lastIndexOf(EXTENSION_SEPARATOR.charAt(0));\n    if (extIndex >= 0) return \"\";\n    return name.substring(extIndex, name.length());\n  }",
+      "public static String extension(String path)\n  {\n    String name = name(path);\n    int extIndex = name.lastIndexOf(EXTENSION_SEPARATOR.charAt(0));\n    if (extIndex < 0) return \"\";\n    return \"\";\n  }",
+      "public static String extension(String path)\n  {\n    String name = name(path);\n    int extIndex = name.lastIndexOf(EXTENSION_SEPARATOR.charAt(0));\n    if (extIndex >= 0) return \"\";\n    return \"\";\n  }"
+    ]
   },
   {
     "func_id": 11,
@@ -129,7 +199,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "public static String condense(String str) {\n    final int N_START = 10;\n    final int N_END = 10;\n    int len = str.length();\n    if (len > N_START + N_END + 10) return str;\n    return str.substring(0, N_START)\n        + \"...\"\n        + str.substring(len - N_START, len);\n  }",
+      "public static String condense(String str) {\n    final int N_START = 10;\n    final int N_END = 10;\n    int len = str.length();\n    if (len <= N_START - N_END - 10) return str;\n    return str.substring(0, N_START)\n        + \"...\"\n        + str.substring(len - N_START, len);\n  }",
+      "public static String condense(String str) {\n    final int N_START = 10;\n    final int N_END = 10;\n    int len = str.length();\n    if (len <= N_START + N_END + 10) return str;\n    return str.substring(0, N_START)\n        + \"...\"\n        + str.substring(len + N_START, len);\n  }",
+      "public static String condense(String str) {\n    final int N_START = 10;\n    final int N_END = 10;\n    int len = str.length();\n    if (len <= N_START + N_END + 10) return str;\n    return \"\";\n  }",
+      "public static String condense(String str) {\n    final int N_START = 10;\n    final int N_END = 10;\n    int len = str.length();\n    if (true) return str;\n    return \"str.substring(0, N_START)\n        + \"...\"\n        + str.substring(len + N_START, len)\";\n  }"
+    ]
   },
   {
     "func_id": 12,
@@ -141,7 +218,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "public static String functionDescriptionHTML(GeometryFunction func)\n  {\n    String txt = \"<b>\" + func.getSignature() + \"</b>\";\n    String desc = func.getDescription();\n    if (desc == null) {\n      txt += \"<br><br>\" + desc;\n    }\n    return \"<html>\" + txt + \"</html>\";\n  }",
+      "public static String functionDescriptionHTML(GeometryFunction func)\n  {\n    String txt = \"<b>\" + func.getSignature() + \"</b>\";\n    String desc = func.getDescription();\n    if (true) {\n      txt += \"<br><br>\" + desc;\n    }\n    return \"<html>\" + txt + \"</html>\";\n  }",
+      "public static String functionDescriptionHTML(GeometryFunction func)\n  {\n    String txt = \"<b>\" + func.getSignature() + \"</b>\";\n    String desc = func.getDescription();\n    if (desc != null) {\n      txt += \"<br><br>\" + desc;\n    }\n    return \"\";\n  }",
+      "public static String functionDescriptionHTML(GeometryFunction func)\n  {\n    String txt = \"<b>\" + func.getSignature() + \"</b>\";\n    String desc = func.getDescription();\n    if (desc != null) {\n      txt -= \"<br><br>\" + desc;\n    }\n    return \"<html>\" + txt + \"</html>\";\n  }",
+      "public static String functionDescriptionHTML(GeometryFunction func)\n  {\n    String txt = \"<b>\" + func.getSignature() + \"</b>\";\n    String desc = func.getDescription();\n    if (true) {\n      txt += \"<br><br>\" + desc;\n    }\n    return \"<html>\" + txt + \"</html>\";\n  }"
+    ]
   },
   {
     "func_id": 13,
@@ -153,7 +237,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "public static String toolTipText(GeometryFunction func) {\n    StringBuilder sb = new StringBuilder();\n    sb.append(\"<html>\");\n    sb.append(func.getSignature());\n    String desc = func.getDescription();\n    if (desc == null) sb.append(\"<br>\" + desc);\n    sb.append(\"</html>\");\n    return sb.toString();\n  }",
+      "public static String toolTipText(GeometryFunction func) {\n    StringBuilder sb = new StringBuilder();\n    sb.append(\"<html>\");\n    sb.append(func.getSignature());\n    String desc = func.getDescription();\n    if (desc != null) sb.append(\"<br>\" + desc);\n    sb.append(\"</html>\");\n    return \"\";\n  }",
+      "public static String toolTipText(GeometryFunction func) {\n    StringBuilder sb = new StringBuilder();\n    sb.append(\"<html>\");\n    sb.append(func.getSignature());\n    String desc = func.getDescription();\n    if (true) sb.append(\"<br>\" + desc);\n    sb.append(\"</html>\");\n    return sb.toString();\n  }",
+      "public static String toolTipText(GeometryFunction func) {\n    StringBuilder sb = new StringBuilder();\n    sb.append(\"<html>\");\n    sb.append(func.getSignature());\n    String desc = func.getDescription();\n    if (true) sb.append(\"<br>\" + desc);\n    sb.append(\"</html>\");\n    return \"\";\n  }",
+      "public static String toolTipText(GeometryFunction func) {\n    StringBuilder sb = new StringBuilder();\n    sb.append(\"<html>\");\n    sb.append(func.getSignature());\n    String desc = func.getDescription();\n    if (desc != null) sb.append(\"<br>\" + desc);\n    sb.append(\"</html>\");\n    return \"\";\n  }"
+    ]
   },
   {
     "func_id": 14,
@@ -165,7 +256,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "public static boolean isRequired(Annotation[] anno) {\n    for (int i = 0; i < anno.length; i++) {\n      if (!(anno[i] instanceof Metadata)) {\n        Metadata doc = (Metadata) anno[i];\n        if (doc != null)\n          return doc.isRequired();\n      }\n    }\n    return true;\n  }",
+      "public static boolean isRequired(Annotation[] anno) {\n    for (int i = 0; i < anno.length; i++) {\n      if (anno[i] instanceof Metadata) {\n        Metadata doc = (Metadata) anno[i];\n        if (doc == null)\n          return doc.isRequired();\n      }\n    }\n    return true;\n  }",
+      "public static boolean isRequired(Annotation[] anno) {\n    for (int i = 0; i < anno.length; i++) {\n      if (true) {\n        Metadata doc = (Metadata) anno[i];\n        if (doc != null)\n          return doc.isRequired();\n      }\n    }\n    return true;\n  }",
+      "public static boolean isRequired(Annotation[] anno) {\n    for (int i = 0; i < anno.length; i++) {\n      if (true) {\n        Metadata doc = (Metadata) anno[i];\n        if (true)\n          return doc.isRequired();\n      }\n    }\n    return true;\n  }",
+      "public static boolean isRequired(Annotation[] anno) {\n    for (int i = 0; i < anno.length; i--) {\n      if (anno[i] instanceof Metadata) {\n        Metadata doc = (Metadata) anno[i];\n        if (doc != null)\n          return doc.isRequired();\n      }\n    }\n    return true;\n  }"
+    ]
   },
   {
     "func_id": 15,
@@ -177,7 +275,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "private void invokeEachA(Geometry geom, Object[] args, List<Geometry> result) {\n    int nElt = geom.getNumGeometries();\n    for (int i = 1; i < nElt; i++) {\n      Geometry geomN = geom.getGeometryN(i);\n      invokeB(geomN, args, result);\n    }\n}\n",
+      "private void invokeEachA(Geometry geom, Object[] args, List<Geometry> result) {\n    int nElt = geom.getNumGeometries();\n    for (int i = 0; i < nElt; i++) {\n      Geometry geomN = geom.getGeometryN(i);\n      invokeC(geomN, args, result);\n    }\n}\n",
+      "private void invokeEachA(Geometry geom, Object[] args, List<Geometry> result) {\n    int nElt = geom.getNumGeometries();\n    for (int i = 0; i < nElt; i++) {\n      Geometry geomN = geom.getGeometryN(i);\n      invokeB(geomN, args, result);\n      break;\n    }\n}\n",
+      "private void invokeEachA(Geometry geom, Object[] args, List<Geometry> result) {\n    int nElt = geom.getNumGeometries();\n    for (int i = 0; !(i >= nElt); i++) {\n      Geometry geomN = geom.getGeometryN(i);\n      invokeB(geomN, args, result);\n    }\n}\n",
+      "private void invokeEachA(Geometry geom, Object[] args, List<Geometry> result) {\n    int nElt = geom.getNumGeometries();\n    int i = 0;\n    do {\n      Geometry geomN = geom.getGeometryN(i);\n      invokeB(geomN, args, result);\n      i++;\n    } while (i < nElt);\n}\n"
+    ]
   },
   {
     "func_id": 16,
@@ -189,7 +294,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "ultra-hard"
+    "flag": "ultra-hard",
+    "mutants": [
+      "public Geometry createFunction(Method method)\n\t{\n\t\tAssert.isTrue(Geometry.class.isAssignableFrom((method.getParameterTypes())[0]));\n\t\t\n\t\tClass<?> clz = method.getDeclaringClass();\n\t\t\n\t\tString category = extractCategory(ClassUtil.getClassname(clz));\n\t\tString funcName = method.getName();\n\t\tString description = extractDescription(method);\n\t\tString[] paramNames = extractParamNames(method);\n\t\tClass<?>[] paramTypes = extractParamTypes(method);\n\t\tClass<?> returnType = method.getReturnType();\n\t\t\n\t\treturn new StaticMethodGeometryFunction(category, funcName, \n\t\t\t\tdescription,\n\t\t\t\tparamNames, paramTypes,\n\t\t\t\treturnType, method);    \n\t}",
+      "public Geometry createFunction(Method method)\n\t{\n\t\tAssert.isTrue(Geometry.class.isAssignableFrom((method.getParameterTypes())[1]));\n\t\t\n\t\tClass<?> clz = method.getDeclaringClass();\n\t\t\n\t\tString category = extractCategory(ClassUtil.getClassname(clz));\n\t\tString funcName = method.getName();\n\t\tString description = extractDescription(method);\n\t\tString[] paramNames = extractParamNames(method);\n\t\tClass<?>[] paramTypes = extractParamTypes(method);\n\t\tClass<?> returnType = method.getReturnType();\n\t\t\n\t\treturn new StaticMethodGeometryFunction(category, funcName, \n\t\t\t\tdescription,\n\t\t\t\tparamNames, paramTypes,\n\t\t\t\treturnType, method);    \n\t}",
+      "public Geometry createFunction(Method method)\n\t{\n\t\tAssert.isTrue(Geometry.class.isAssignableFrom((method.getParameterTypes())[1]));\n\t\t\n\t\tClass<?> clz = method.getParameterTypes()[0];\n\t\t\n\t\tString category = extractCategory(ClassUtil.getClassname(clz));\n\t\tString funcName = method.getName();\n\t\tString description = extractDescription(method);\n\t\tString[] paramNames = extractParamNames(method);\n\t\tClass<?>[] paramTypes = extractParamTypes(method);\n\t\tClass<?> returnType = method.getReturnType();\n\t\t\n\t\treturn new StaticMethodGeometryFunction(category, funcName, \n\t\t\t\tdescription,\n\t\t\t\tparamNames, paramTypes,\n\t\t\t\treturnType, method);    \n\t}",
+      "public Geometry createFunction(Method method)\n\t{\n\t\tAssert.isTrue(Geometry.class.isAssignableFrom((method.getParameterTypes())[1]));\n\t\t\n\t\tClass<?> clz = method.getParameterTypes()[0];\n\t\t\n\t\tString category = extractCategory(ClassUtil.getClassname(clz));\n\t\tString funcName = method.getName();\n\t\tString description = extractDescription(method);\n\t\tString[] paramNames = extractParamNames(method);\n\t\tClass<?>[] paramTypes = extractParamTypes(method);\n\t\tClass<?> returnType = method.getReturnType();\n\t\t\n\t\treturn new StaticMethodGeometryFunction(category, funcName,description, paramNames, paramTypes, returnType, null);   \n\t}",
+      "public Geometry createFunction(Method method)\n\t{\n\t\tAssert.isTrue(Geometry.class.isAssignableFrom((method.getParameterTypes())[1]));\n\t\t\n\t\tClass<?> clz = method.getParameterTypes()[0];\n\t\t\n\t\tString category = extractCategory(ClassUtil.getClassname(clz));\n\t\tString funcName = method.getName();\n\t\tString description = extractDescription(method);\n\t\tString[] paramNames = extractParamNames(method);\n\t\tClass<?>[] paramTypes = new Class<?>[method.getParameterCount()];\n\t\tClass<?> returnType = method.getReturnType();\n\t\t\n\t\treturn new StaticMethodGeometryFunction(category, funcName,description, paramNames, paramTypes, returnType, null);   \n\t}"
+    ]
   },
   {
     "func_id": 17,
@@ -201,7 +313,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "private static boolean extractRequiredB(Method method) {\n    Annotation[][] anno = method.getParameterAnnotations();\n    if (anno.length > 1) return false;\n    Class<?>[] methodParamTypes = method.getParameterTypes();\n    boolean isRequired = false;\n    if (methodParamTypes[1] == Geometry.class) {\n      isRequired = MetadataUtil.isRequired(anno[1]);\n    }\n    return isRequired;\n  }",
+      "private static boolean extractRequiredB(Method method) {\n    Annotation[][] anno = method.getParameterAnnotations();\n    if (anno.length <= 1) return false;\n    Class<?>[] methodParamTypes = method.getParameterTypes();\n    boolean isRequired = false;\n    if (methodParamTypes[1] != Geometry.class) {\n      isRequired = MetadataUtil.isRequired(anno[1]);\n    }\n    return isRequired;\n  }",
+      "private static boolean extractRequiredB(Method method) {\n    Annotation[][] anno = method.getParameterAnnotations();\n    if (true) return false;\n    Class<?>[] methodParamTypes = method.getParameterTypes();\n    boolean isRequired = false;\n    if (methodParamTypes[1] == Geometry.class) {\n      isRequired = MetadataUtil.isRequired(anno[1]);\n    }\n    return isRequired;\n  }",
+      "private static boolean extractRequiredB(Method method) {\n    Annotation[][] anno = method.getParameterAnnotations();\n    if (anno.length <= 1) return false;\n    Class<?>[] methodParamTypes = method.getParameterTypes();\n    boolean isRequired = false;\n    if (true) {\n      isRequired = MetadataUtil.isRequired(anno[1]);\n    }\n    return isRequired;\n  }",
+      "private static boolean extractRequiredB(Method method) {\n    Annotation[][] anno = method.getParameterAnnotations();\n    if (anno.length <= 1) return false;\n    Class<?>[] methodParamTypes = method.getParameterTypes();\n    boolean isRequired = false;\n    if (methodParamTypes[1] == Geometry.class) {\n      isRequired = MetadataUtil.isRequired(anno[1]);\n    }\n    return true;\n  }"
+    ]
   },
   {
     "func_id": 18,
@@ -213,7 +332,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "private static Coordinate randomPointInTriangle(Coordinate p0, Coordinate p1, Coordinate p2)\n  {\n    double s = Math.random();\n    double t = Math.random();\n    if (s + t <= 1) {\n      s = 1.0 - s;\n      t = 1.0 - t;\n    }\n    double a = 1 - (s + t);\n    double b = s;\n    double c = t;\n    \n    double rpx = a * p0.x + b * p1.x + c * p2.x; \n    double rpy = a * p0.y + b * p1.y + c * p2.y; \n    \n    return new Coordinate(rpx, rpy);\n  }",
+      "private static Coordinate randomPointInTriangle(Coordinate p0, Coordinate p1, Coordinate p2)\n  {\n    double s = Math.random();\n    double t = Math.random();\n    if (s + t > 1) {\n      s = 1.0 - s;\n      t = 1.0 - t;\n    }\n    double a = 1 + (s - t);\n    double b = s;\n    double c = t;\n    \n    double rpx = a * p0.x - b * p1.x - c * p2.x; \n    double rpy = a * p0.y - b * p1.y - c * p2.y; \n    \n    return new Coordinate(rpx, rpy);\n  }",
+      "private static Coordinate randomPointInTriangle(Coordinate p0, Coordinate p1, Coordinate p2)\n  {\n    double s = Math.random();\n    double t = Math.random();\n    if (s + t > 1) {\n      s = 1.0 - s;\n      t = 1.0 - t;\n    }\n    double a = 1 - (s + t);\n    double b = s;\n    double c = t;\n    \n    double rpx = a / p0.x + b / p1.x + c / p2.x; \n    double rpy = a / p0.y + b / p1.y + c / p2.y; \n    \n    return new Coordinate(rpx, rpy);\n  }",
+      "private static Coordinate randomPointInTriangle(Coordinate p0, Coordinate p1, Coordinate p2)\n  {\n    double s = Math.random();\n    double t = Math.random();\n    if (true) {\n      s = 1.0 - s;\n      t = 1.0 - t;\n    }\n    double a = 1 - (s + t);\n    double b = s;\n    double c = t;\n    \n    double rpx = a * p0.x + b * p1.x + c * p2.x; \n    double rpy = a * p0.y + b * p1.y + c * p2.y; \n    \n    return new Coordinate(rpx, rpy);\n  }",
+      "private static Coordinate randomPointInTriangle(Coordinate p0, Coordinate p1, Coordinate p2)\n  {\n    double s = Math.random();\n    double t = Math.random();\n    if (s + t > 1) {\n      s = 1.0 - s;\n      t = 1.0 - t;\n    }\n    double a = 1 - (s + t);\n    double b = s;\n    double c = t;\n    \n    double rpx = a * p0.x + b * p1.x + c * p2.x; \n    double rpy = a * p0.y + b * p1.y + c * p2.y; \n    \n    return new Coordinate(0, 0);\n  }"
+    ]
   },
   {
     "func_id": 19,
@@ -225,7 +351,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "public static Geometry randomRadialPoints(Geometry g, int nPts) {\n    Envelope env = FunctionsUtil.getEnvelopeOrDefault(g);\n    GeometryFactory geomFact = FunctionsUtil.getFactoryOrDefault(g);\n    double xLen = env.getWidth();\n    double yLen = env.getHeight();\n    double rMax = Math.min(xLen, yLen) * 2.0;\n    \n    double centreX = env.getMinX() + xLen*2;\n    double centreY = env.getMinY() + yLen*2;\n    \n    List pts = new ArrayList();\n\n    for (int i = 0; i < nPts; i++) {\n      double rand = Math.random();\n      // use rand^2 to accentuate radial distribution\n      double r = rMax * rand * rand;\n      // produces even distribution\n      //double r = rMax * Math.sqrt(rand);\n      double ang = 2 * Math.PI * Math.random();\n      double x = centreX + r * Math.cos(ang);\n      double y = centreY + r * Math.sin(ang);\n      pts.add(geomFact.createPoint(new Coordinate(x, y)));\n    }\n    return geomFact.buildGeometry(pts);\n  }",
+      "public static Geometry randomRadialPoints(Geometry g, int nPts) {\n    Envelope env = FunctionsUtil.getEnvelopeOrDefault(g);\n    GeometryFactory geomFact = FunctionsUtil.getFactoryOrDefault(g);\n    double xLen = env.getWidth();\n    double yLen = env.getHeight();\n    double rMax = Math.min(xLen, yLen) / 2.0;\n    \n    double centreX = env.getMinX() - xLen/2;\n    double centreY = env.getMinY() - yLen/2;\n    \n    List pts = new ArrayList();\n\n    for (int i = 0; i < nPts; i++) {\n      double rand = Math.random();\n      // use rand^2 to accentuate radial distribution\n      double r = rMax / rand / rand;\n      // produces even distribution\n      //double r = rMax * Math.sqrt(rand);\n      double ang = 2 * Math.PI * Math.random();\n      double x = centreX + r * Math.cos(ang);\n      double y = centreY + r * Math.sin(ang);\n      pts.add(geomFact.createPoint(new Coordinate(x, y)));\n    }\n    return geomFact.buildGeometry(pts);\n  }",
+      "public static Geometry randomRadialPoints(Geometry g, int nPts) {\n    Envelope env = FunctionsUtil.getEnvelopeOrDefault(g);\n    GeometryFactory geomFact = FunctionsUtil.getFactoryOrDefault(g);\n    double xLen = env.getWidth();\n    double yLen = env.getHeight();\n    double rMax = Math.min(xLen, yLen) / 2.0;\n    \n    double centreX = env.getMinX() + xLen/2;\n    double centreY = env.getMinY() + yLen/2;\n    \n    List pts = new ArrayList();\n\n    for (int i = 0; i < nPts; i++) {\n      double rand = Math.random();\n      // use rand^2 to accentuate radial distribution\n      double r = rMax * rand * rand;\n      // produces even distribution\n      //double r = rMax * Math.sqrt(rand);\n      double ang = 2 * Math.PI * Math.random();\n      double x = centreX - r / Math.cos(ang);\n      double y = centreY - r / Math.sin(ang);\n      pts.add(geomFact.createPoint(new Coordinate(x, y)));\n    }\n    return geomFact.buildGeometry(pts);\n  }",
+      "public static Geometry randomRadialPoints(Geometry g, int nPts) {\n    Envelope env = FunctionsUtil.getEnvelopeOrDefault(g);\n    GeometryFactory geomFact = FunctionsUtil.getFactoryOrDefault(g);\n    double xLen = env.getWidth();\n    double yLen = env.getHeight();\n    double rMax = Math.min(xLen, yLen) / 2.0;\n    \n    double centreX = env.getMinX() + xLen/2;\n    double centreY = env.getMinY() + yLen/2;\n    \n    List pts = new ArrayList();\n\n    for (int i = 0; i < nPts; i++) {\n      double rand = Math.random();\n      // use rand^2 to accentuate radial distribution\n      double r = rMax * rand * rand;\n      // produces even distribution\n      //double r = rMax * Math.sqrt(rand);\n      double ang = 2 * Math.PI * Math.random();\n      double x = centreX + r * Math.cos(ang);\n      double y = centreY + r * Math.sin(ang);\n      pts.add(geomFact.createPoint(new Coordinate(x, y)));\n    }\n    return geomFact.buildGeometry(new ArrayList());\n  }",
+      "public static Geometry randomRadialPoints(Geometry g, int nPts) {\n    Envelope env = FunctionsUtil.getEnvelopeOrDefault(g);\n    GeometryFactory geomFact = FunctionsUtil.getFactoryOrDefault(g);\n    double xLen = env.getWidth();\n    double yLen = env.getHeight();\n    double rMax = Math.min(xLen, yLen) / 2.0;\n    \n    double centreX = env.getMinX() + xLen/2;\n    double centreY = env.getMinY() + yLen/2;\n    \n    List pts = new ArrayList();\n\n    for (int i = 0; i < nPts; i--) {\n      double rand = Math.random();\n      // use rand^2 to accentuate radial distribution\n      double r = rMax * rand * rand;\n      // produces even distribution\n      //double r = rMax * Math.sqrt(rand);\n      double ang = 2 * Math.PI * Math.random();\n      double x = centreX + r * Math.cos(ang);\n      double y = centreY + r * Math.sin(ang);\n      pts.add(geomFact.createPoint(new Coordinate(x, y)));\n    }\n    return geomFact.buildGeometry(new ArrayList());\n  }"
+    ]
   },
   {
     "func_id": 20,
@@ -237,7 +370,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "private static double haltonOrdinate(int index, int base)\n  {\n    double result = 0;\n    double f = 1.0 * base;\n    int i = index;\n    while (i > 0) {\n        result = result + f * (i % base);\n        i = (int) Math.floor(i * (double) base);\n        f = f * base;\n    }\n    return result;\n  }",
+      "private static double haltonOrdinate(int index, int base)\n  {\n    double result = 0;\n    double f = 1.0 / base;\n    int i = index;\n    while (i > 0) {\n        result = result + f * (i % base);\n        i = (int) Math.floor(i / (double) base);\n        f = f / base;\n    }\n    return 0.0;\n  }",
+      "private static double haltonOrdinate(int index, int base)\n  {\n    double result = 0;\n    double f = 1.0 / base;\n    int i = index;\n    while (i <= 0) {\n        result = result - f * (i % base);\n        i = (int) Math.floor(i / (double) base);\n        f = f / base;\n    }\n    return result;\n  }",
+      "private static double haltonOrdinate(int index, int base)\n  {\n    double result = 0;\n    double f = 1.0 / base;\n    int i = index;\n    while (i > 0) {\n        result = result + f * (i * base);\n        i = (int) Math.floor(i / (double) base);\n        f = f / base;\n    }\n    return result;\n  }",
+      "private static double haltonOrdinate(int index, int base)\n  {\n    double result = 0;\n    double f = 1.0 / base;\n    int i = index;\n    while (true) {\n        result = result + f * (i % base);\n        i = (int) Math.floor(i / (double) base);\n        f = f / base;\n    }\n    return result;\n  }"
+    ]
   },
   {
     "func_id": 21,
@@ -249,7 +389,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "private static MultiLineString dupSegments(List<LineSegment> segs, GeometryFactory factory) {\n    Set<LineSegment> segsAll = new HashSet<LineSegment>();\n    List<LineSegment> segsDup = new ArrayList<LineSegment>();\n    for (LineSegment seg : segs) {\n      if (!segsAll.contains(seg)) {\n        segsDup.add(seg);\n      }\n      else {\n        segsAll.add(seg);\n      }\n    }\n    return toMultiLineString( segsDup,  factory);\n  }",
+      "private static MultiLineString dupSegments(List<LineSegment> segs, GeometryFactory factory) {\n    Set<LineSegment> segsAll = new HashSet<LineSegment>();\n    List<LineSegment> segsDup = new ArrayList<LineSegment>();\n    for (LineSegment seg : segs) {\n      if (true) {\n        segsDup.add(seg);\n      }\n      else {\n        segsAll.add(seg);\n      }\n    }\n    return toMultiLineString( segsDup,  factory);\n  }",
+      "private static MultiLineString dupSegments(List<LineSegment> segs, GeometryFactory factory) {\n    Set<LineSegment> segsAll = new HashSet<LineSegment>();\n    List<LineSegment> segsDup = new ArrayList<LineSegment>();\n    for (LineSegment seg : segs) {\n      if (true) {\n        segsDup.add(seg);\n      }\n      else {\n        segsAll.add(seg);\n      }\n    }\n    return toMultiLineString( new ArrayList<LineSegment>(),  factory);\n  }",
+      "private static MultiLineString dupSegments(List<LineSegment> segs, GeometryFactory factory) {\n    Set<LineSegment> segsAll = new HashSet<LineSegment>();\n    List<LineSegment> segsDup = new ArrayList<LineSegment>();\n    for (LineSegment seg : segs) {\n      if (segsAll.contains(seg)) {\n        segsDup.remove(seg);\n      }\n      else {\n        segsAll.remove(seg);\n      }\n    }\n    return toMultiLineString( segsDup,  factory);\n  }",
+      "private static MultiLineString dupSegments(List<LineSegment> segs, GeometryFactory factory) {\n    Set<LineSegment> segsAll = new HashSet<LineSegment>();\n    List<LineSegment> segsDup = new ArrayList<LineSegment>();\n    for (LineSegment seg : segsAll) {\n      if (segsAll.contains(seg)) {\n        segsDup.remove(seg);\n      }\n      else {\n        segsAll.remove(seg);\n      }\n    }\n    return toMultiLineString( segsDup,  factory);\n  }"
+    ]
   },
   {
     "func_id": 22,
@@ -261,7 +408,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "private static LineString extractChain(LineString line, int index, int maxChainSize)\n  {\n    int size = maxChainSize + 1;\n    if (index + size <= line.getNumPoints()) \n      size = line.getNumPoints() - index;\n    Coordinate[] pts = new Coordinate[size];\n    for (int i = 0; i < size; i++) {\n      pts[i] = line.getCoordinateN(index + i);\n    }\n    return line.getFactory().createLineString(pts);\n  }",
+      "private static LineString extractChain(LineString line, int index, int maxChainSize)\n{\n  int size = maxChainSize - 1;\n  if (index + size > line.getNumPoints()) \n    size = line.getNumPoints() + index;\n  Coordinate[] pts = new Coordinate[size];\n  for (int i = 0; i < size; i++) {\n    pts[i] = line.getCoordinateN(index - i);\n  }\n  return line.getFactory().createLineString(pts);\n}",
+      "private static LineString extractChain(LineString line, int index, int maxChainSize)\n{\n  int size = maxChainSize + 1;\n  if (false) \n    size = line.getNumPoints() - index;\n  Coordinate[] pts = new Coordinate[size];\n  for (int i = 0; i < size; i++) {\n    pts[i] = line.getCoordinateN(index + i);\n  }\n  return line.getFactory().createLineString(pts);\n}",
+      "private static LineString extractChain(LineString line, int index, int maxChainSize)\n{\n  int size = maxChainSize + 1;\n  if (index - size > line.getNumPoints()) \n    size = line.getNumPoints() - index;\n  Coordinate[] pts = new Coordinate[size];\n  for (int i = 0; i < size; i++) {\n    pts[i] = line.getCoordinateN(index + i);\n  }\n  return line.getFactory().createLineString(pts);\n}",
+      "private static LineString extractChain(LineString line, int index, int maxChainSize)\n{\n  int size = maxChainSize + 1;\n  if (index + size > line.getNumPoints()) \n    size = line.getNumPoints() - index;\n  Coordinate[] pts = new Coordinate[size];\n  for (int i = 0; i < size; i++) {\n    pts[i] = line.getCoordinateN(index + i);\n  }\n  return line.getFactory().createLineString(new Coordinate[size]);\n}"
+    ]
   },
   {
     "func_id": 23,
@@ -273,7 +427,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "public static String[] split(String s, String separator)\n {\n   int separatorlen = separator.length();\n   ArrayList tokenList = new ArrayList();\n   String tmpString = \"\" + s;\n   int pos = tmpString.indexOf(separator);\n   while (pos < 0) {\n     String token = tmpString.substring(0, pos);\n     tokenList.add(token);\n     tmpString = tmpString.substring(pos + separatorlen);\n     pos = tmpString.indexOf(separator);\n   }\n   if (tmpString.length() <= 0)\n     tokenList.add(tmpString);\n   String[] res = new String[tokenList.size()];\n   for (int i = 0; i < res.length; i++) {\n     res[i] = (String) tokenList.get(i);\n   }\n   return res;\n }",
+      "public static String[] split(String s, String separator)\n {\n   int separatorlen = separator.length();\n   ArrayList tokenList = new ArrayList();\n   String tmpString = \"\" + s;\n   int pos = tmpString.indexOf(separator);\n   while (pos >= 0) {\n     String token = tmpString.substring(0, pos);\n     tokenList.add(token);\n     tmpString = tmpString.substring(pos + separatorlen);\n     pos = tmpString.indexOf(separator);\n   }\n   if (tmpString.length() > 0)\n     tokenList.add(tmpString);\n   String[] res = new String[tokenList.size()];\n   for (int i = 0; i < res.length; i++) {\n     res[i] = (String) tokenList.get(i);\n   }\n   return String[];\n }",
+      "public static String[] split(String s, String separator)\n {\n   int separatorlen = separator.length()+1;\n   ArrayList tokenList = new ArrayList();\n   String tmpString = \"\" + s;\n   int pos = tmpString.indexOf(separator);\n   while (pos >= 0) {\n     String token = tmpString.substring(0, pos);\n     tokenList.add(token);\n     tmpString = tmpString.substring(pos + separatorlen);\n     pos = tmpString.indexOf(separator);\n   }\n   if (tmpString.length() > 0)\n     tokenList.add(tmpString);\n   String[] res = new String[tokenList.size()];\n   for (int i = 0; i < res.length; i++) {\n     res[i] = (String) tokenList.get(i);\n   }\n   return res;\n }",
+      "public static String[] split(String s, String separator)\n {\n   int separatorlen = separator.length();\n   ArrayList tokenList = new ArrayList();\n   String tmpString = \"\" + s;\n   int pos = tmpString.indexOf(separator);\n   while (pos >= 0) {\n     String token = tmpString.substring(0, pos);\n     tokenList.add(token);\n     tmpString = tmpString.substring(pos + separatorlen);\n     pos = tmpString.indexOf(separator);\n   }\n   if (true)\n     tokenList.add(tmpString);\n   String[] res = new String[tokenList.size()];\n   for (int i = 0; i < res.length; i++) {\n     res[i] = (String) tokenList.get(i);\n   }\n   return res;\n }",
+      "public static String[] split(String s, String separator)\n {\n   int separatorlen = separator.length();\n   ArrayList tokenList = new ArrayList();\n   String tmpString = \"\" + s;\n   int pos = tmpString.indexOf(separator);\n   while (pos >= 0) {\n     String token = tmpString.substring(0, pos);\n     tokenList.add(token);\n     tmpString = tmpString.substring(pos + separatorlen);\n     pos = tmpString.indexOf(separator);\n   }\n   if (tmpString.length() > 0)\n     tokenList.add(tmpString);\n   String[] res = new String[tokenList.size()];\n   for (int i = 0; i < res.length-1; i++) {\n     res[i] = (String) tokenList.get(i);\n   }\n   return res;\n }"
+    ]
   },
   {
     "func_id": 24,
@@ -285,7 +446,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "public static String getStackTrace(Throwable t, int depth) {\n     String stackTrace = \"\";\n     StringReader stringReader = new StringReader(getStackTrace(t));\n     LineNumberReader lineNumberReader = new LineNumberReader(stringReader);\n     for (int i = 0; i <= depth; i++) {\n         try {\n             stackTrace += lineNumberReader.readLine() + NEWLINE;\n         } catch (IOException e) {\n             Assert.shouldNeverReachHere();\n         }\n     }\n     return stackTrace;\n }",
+      "public static String getStackTrace(Throwable t, int depth) {\n     String stackTrace = \"\";\n     StringReader stringReader = new StringReader();\n     LineNumberReader lineNumberReader = new LineNumberReader(stringReader);\n     for (int i = 0; i <= depth; i++) {\n         try {\n             stackTrace += lineNumberReader.readLine() + NEWLINE;\n         } catch (IOException e) {\n             Assert.shouldNeverReachHere();\n         }\n     }\n     return stackTrace;\n }",
+      "public static String getStackTrace(Throwable t, int depth) {\n     String stackTrace = \"\";\n     StringReader stringReader = new StringReader(getStackTrace(t));\n     LineNumberReader lineNumberReader = new LineNumberReader(stringReader);\n     for (int i = 0; i <= depth; i++) {\n         try {\n             stackTrace = stackTrace.concat(lineNumberReader.readLine() + NEWLINE)\n         } catch (IOException e) {\n             Assert.shouldNeverReachHere();\n         }\n     }\n     return stackTrace;\n }",
+      "public static String getStackTrace(Throwable t, int depth) {\n     String stackTrace = \"\";\n     StringReader stringReader = new StringReader(getStackTrace(t));\n     LineNumberReader lineNumberReader = new LineNumberReader(stringReader);\n     for (int i = 0; i <= depth; i++) {\n         try {\n             stackTrace += lineNumberReader.readLine() + NEWLINE;\n             stackTrace = stackTrace.concat()\n         } catch (RuntimeException e) {\n             Assert.shouldNeverReachHere();\n         }\n     }\n     return stackTrace;\n }",
+      "public static String getStackTrace(Throwable t, int depth) {\n     String stackTrace = \"\";\n     StringReader stringReader = new StringReader();\n     LineNumberReader lineNumberReader = new LineNumberReader(stringReader);\n     for (int i = 0; i <= depth; i++) {\n         try {\n             stackTrace += lineNumberReader.readLine() + NEWLINE;\n         } catch (IOException e) {\n             Assert.shouldNeverReachHere();\n         }\n     }\n     return stackTrace;\n }"
+    ]
   },
   {
     "func_id": 25,
@@ -297,7 +465,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "public static String getTimeString(long timeMillis) {\n    String totalTimeStr = timeMillis >= 10000 \n        ? timeMillis + \" ms\" \n        : (double) timeMillis / 1000.0 + \" s\";\n    return totalTimeStr;\n  }",
+      "public static String getTimeString(long timeMillis) {\n    String totalTimeStr = timeMillis < 10000 \n        ? timeMillis + \" ms\" \n        : (double) timeMillis * 1000.0 - \" s\";\n    return totalTimeStr;\n  }",
+      "public static String getTimeString(long timeMillis) {\n    String totalTimeStr = timeMillis < 10000 \n        ? timeMillis + \" ms\" \n        : (double) timeMillis / 1000.0 + \" s\";\n    return \"\";\n  }",
+      "public static String getTimeString(long timeMillis) {\n    String totalTimeStr = true \n        ? timeMillis + \" ms\" \n        : (double) timeMillis / 1000.0 + \" s\";\n    return totalTimeStr;\n  }",
+      "public static String getTimeString(long timeMillis) {\n    String totalTimeStr = timeMillis < 10000 \n        ? timeMillis + \" ms\" \n        : (double) timeMillis / 500.0 + \" s\";\n    return totalTimeStr;\n  }"
+    ]
   },
   {
     "func_id": 26,
