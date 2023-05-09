@@ -11,9 +11,9 @@
     "expected_output": "",
     "flag": "hard",
     "mutants": [
-      "private void progress_() {\\r\\n\\t\\tm_progress_counter++;\\r\\n\\t\\tif (m_progress_counter % 1024 != 0) {\\r\\n\\t\\t\\tif ((m_progress_tracker != null)\\r\\n\\t\\t\\t\\t\\t&& !(m_progress_tracker.progress(-1, -1)))\\r\\n\\t\\t\\t\\tthrow new RuntimeException(\\\"user_canceled\\\");\\r\\n\\t\\t}\\r\\n\\t}",
-      "private void progress_() {\\r\\n\\t\\tm_progress_counter++;\\r\\n\\t\\tif (m_progress_counter % 1024 != 0) {\\r\\n\\t\\t\\tif ((m_progress_tracker == null)\\r\\n\\t\\t\\t\\t\\t&& !(m_progress_tracker.progress(-1, -1)))\\r\\n\\t\\t\\t\\tthrow new RuntimeException(\\\"user_canceled\\\");\\r\\n\\t\\t}\\r\\n\\t}",
-      "private void progress_() {\\r\\n\\t\\tm_progress_counter++;\\r\\n\\t\\tif (m_progress_counter % 1024 == 0) {\\r\\n\\t\\t\\tif ((m_progress_tracker == null)\\r\\n\\t\\t\\t\\t\\t&& !(m_progress_tracker.progress(-1, -1)))\\r\\n\\t\\t\\t\\tthrow new RuntimeException(\\\"user_canceled\\\");\\r\\n\\t\\t}\\r\\n\\t}",
+      "private void progress_() {\r\n\t\tm_progress_counter++;\r\n\t\tif (m_progress_counter % 1024 != 0) {\r\n\t\t\tif ((m_progress_tracker != null)\r\n\t\t\t\t\t&& !(m_progress_tracker.progress(-1, -1)))\r\n\t\t\t\tthrow new RuntimeException(\"user_canceled\");\r\n\t\t}\r\n\t}",
+      "private void progress_() {\r\n\t\tm_progress_counter++;\r\n\t\tif (m_progress_counter % 1024 != 0) {\r\n\t\t\tif ((m_progress_tracker == null)\r\n\t\t\t\t\t&& !(m_progress_tracker.progress(-1, -1)))\r\n\t\t\t\tthrow new RuntimeException(\"user_canceled\");\r\n\t\t}\r\n\t}",
+      "private void progress_() {\r\n\t\tm_progress_counter++;\r\n\t\tif (m_progress_counter % 1024 == 0) {\r\n\t\t\tif ((m_progress_tracker == null)\r\n\t\t\t\t\t&& !(m_progress_tracker.progress(-1, -1)))\r\n\t\t\t\tthrow new RuntimeException(\"user_canceled\");\r\n\t\t}\r\n\t}",
       "private void progress_() {\n\t\tm_progress_counter++;\n\t\tif (true) {\n\t\t\tif ((m_progress_tracker == null)\n\t\t\t\t\t&& !(m_progress_tracker.progress(-1, -1)))\n\t\t\t\tthrow new RuntimeException(\"user_canceled\");\n\t\t}\n\t}",
       "private void progress_() {\n\t\tm_progress_counter++;\n\t\tif (m_progress_counter % 1024 == 0) {\n\t\t\tif (true\n\t\t\t\t\t&& !(m_progress_tracker.progress(-1, -1)))\n\t\t\t\tthrow new RuntimeException(\"user_canceled\");\n\t\t}\n\t}"
     ]

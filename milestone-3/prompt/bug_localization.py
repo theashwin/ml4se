@@ -35,5 +35,5 @@ class BugLocalization(Prompt):
 
     def store(self, idx, out):
         # Writing to a file based on the language passed in the command line
-        with open("out/task2/" + str(self.lang) + "/" + str(idx) + ".md", "w") as file:
+        with open("out/task-2/" + str(self.lang) + "/" + str(idx) + ".md", "w") as file:
             file.write("\n\n".join(out))
