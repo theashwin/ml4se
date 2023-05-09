@@ -1,0 +1,5 @@
+{
+	"init": "For the <LANG> function tell if it is buggy. Follow the instructions carefully. Instructions: The first word of your response must be `Yes` if the function is buggy, else `No`. Give a coherent explanation for your analysis. Also, if it is buggy then localize the bug in the function.",
+	"1": "code:",
+	"2": "Now consider this information about the function provided to you in the previous message. The function is buggy, now your task is to find the exact location of the bug."
+}

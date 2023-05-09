@@ -3,8 +3,8 @@ import json
 from prompt.prompt import Prompt
 
 
-class DataControlMutation(Prompt):
-    path = "prompt/json/data-control-mutation.json"
+class BugLocalization(Prompt):
+    path = "prompt/json/bug-localization.json"
 
     def __init__(self, idx, data, lang):
         self.idx = idx
@@ -35,5 +35,5 @@ class DataControlMutation(Prompt):
 
     def store(self, idx, out):
         # Writing to a file based on the language passed in the command line
-        with open("out/task1/" + str(self.lang) + "/" + str(idx) + ".md", "w") as file:
+        with open("out/task2/" + str(self.lang) + "/" + str(idx) + ".md", "w") as file:
             file.write("\n\n".join(out))

@@ -12,41 +12,62 @@
     "flag": "medium"
   },
   {
-    "func_id": 2,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
-    "location": "numpy-sugar/numpy_sugar/linalg/cho.py",
-    "function_name": "cho_solve",
-    "function": "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size != 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
-    "non_primitive_data_objects": "",
-    "primitive_data_objects": "",
-    "input": "",
-    "expected_output": "",
-    "flag": "hard"
-  },
-  {
-    "func_id": 3,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
-    "location": "numpy-sugar/numpy_sugar/linalg/det.py",
-    "function_name": "plogdet",
-    "function": "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals > epsilon]))",
-    "non_primitive_data_objects": "",
-    "primitive_data_objects": "",
-    "input": "",
-    "expected_output": "",
-    "flag": "medium"
-  },
-  {
-    "func_id": 4,
-    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
-    "location": "numpy-sugar/numpy_sugar/linalg/diag.py",
-    "function_name": "sum2diag",
-    "function": "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
-    "non_primitive_data_objects": "",
-    "primitive_data_objects": "",
-    "input": "",
-    "expected_output": "",
-    "flag": "very hard"
-  },
+      "func_id": 2,
+      "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
+      "location": "numpy-sugar/numpy_sugar/linalg/cho.py",
+      "function_name": "cho_solve",
+      "function": "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size != 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+      "non_primitive_data_objects": "",
+      "primitive_data_objects": "",
+      "input": "",
+      "expected_output": "",
+      "flag": "hard",
+      "mutants": [
+        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size == 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size > 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size >= 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size < 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size <= 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)"
+      ]
+    },
+    {
+      "func_id": 3,
+      "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
+      "location": "numpy-sugar/numpy_sugar/linalg/det.py",
+      "function_name": "plogdet",
+      "function": "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals > epsilon]))",
+      "non_primitive_data_objects": "",
+      "primitive_data_objects": "",
+      "input": "",
+      "expected_output": "",
+      "flag": "medium",
+      "mutants": [
+        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals >= epsilon]))",
+        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals < epsilon]))",
+        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals <= epsilon]))",
+        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals == epsilon]))",
+        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals != epsilon]))"
+        ]
+    },
+    {
+      "func_id": 4,
+      "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
+      "location": "numpy-sugar/numpy_sugar/linalg/diag.py",
+      "function_name": "sum2diag",
+      "function": "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+      "non_primitive_data_objects": "",
+      "primitive_data_objects": "",
+      "input": "",
+      "expected_output": "",
+      "flag": "very hard",
+      "mutants": [
+        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) != 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) > 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) >= 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) < 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) <= 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out"
+        ]
+    },
   {
     "func_id": 5,
     "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",

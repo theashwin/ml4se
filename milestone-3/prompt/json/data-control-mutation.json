@@ -1,5 +1,5 @@
 {
 	"init": "For the <LANG> function with comments given in the variable 'code' below, generate two versions of the function. First, change the data flow of the function. Second, change the control flow of the function. It is fine to change the semantics of the function. Follow the instructions carefully. Instructions: Be as creative as possible. Return the generated functions.",
 	"1": "code:",
-	"2": "Enclose the data flow mutated function in <DATA> </DATA> tags and control flow mutated function in <CONTROL> </CONTROL> tags."
+	"2": "Enclose the data flow mutated function in `<DATA>` `</DATA>` tags and control flow mutated function in `<CONTROL>` `</CONTROL>` tags."
 }

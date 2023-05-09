@@ -2,7 +2,7 @@ import json
 import sys
 import argparse
 import openai
-import time
+import datetime, time
 import re
 
 # GET YOUR OPEN AI API KEY FROM : https://platform.openai.com/account/api-keys
@@ -10,6 +10,7 @@ import re
 
 from prompt.reasoning import Reasoning
 from prompt.data_control_mutation import DataControlMutation
+from prompt.bug_localization import BugLocalization
 
 with open("config.json", "r") as file:
     config = json.loads(file.read())
@@ -21,13 +22,13 @@ def add_code_details(data, out):
     out.append("# Method Under Consideration")
     out.append("---")
     out.append("**func_id** : " + str(data['func_id']) + " <br/> \n "
-               "**repository** : " + data['project_repo'] + " <br/> \n" +
+                                                         "**repository** : " + data['project_repo'] + " <br/> \n" +
                "**location** : " + data['location'] + " <br/> \n"
-               "**flag** : " + data['flag'] + " <br/> \n" +
+                                                      "**flag** : " + data['flag'] + " <br/> \n" +
                "**function** : <br/> \n"
                "``` <br/> \n"
                "" + data['function'] + " \n"
-               "``` \n")
+                                       "``` \n")
 
 
 def chat(i, task, out):
@@ -53,6 +54,10 @@ def chat(i, task, out):
             out.append('```')
             out.append(task.get_code())
             out.append('```')
+        else:
+            if isinstance(task, BugLocalization):
+                if reply[0] == 'Y' or reply[0] == 'y':
+                    return
 
         prompt += task.get_code() if idx == 1 else ""
 
@@ -80,7 +85,8 @@ def chat(i, task, out):
         if not task.parse_response(idx, reply):
             task.store(i, out)
             return out[-1]
-        time.sleep(20)
+        time.sleep(30)
+
 
 def extract_control_data(text):
     text = text.replace("<Data>", "<DATA>").replace("</Data>", "</DATA>")
@@ -92,11 +98,11 @@ def extract_control_data(text):
     if not re.search("<DATA>", text):
         print("<ERROR> Not able to find the <DATA> tag for his function")
     if not re.search("<CONTROL>", text):
-
         print("<ERROR> Not able to find the <DATA> tag for his function")
     data = text.split("</DATA>")[0].split("<DATA>")[-1]
     control = text.split("</CONTROL>")[0].split("<CONTROL>")[-1]
     return [control, data]
+
 
 def data_control(i, data_json, out, lang):
     out.append("# Task 1: Data Control")
@@ -104,11 +110,52 @@ def data_control(i, data_json, out, lang):
     out.append("---")
     return extract_control_data(chat(i, dc, out))
 
+
 def reasoning(i, data_json, out, lang, task):
     out.append(f"# Task 1: Reasoning for {task}")
     reasoning = Reasoning(i, data_json, lang)
     out.append("---")
     chat(i, reasoning, out)
+
+
+def mutation_bug_detection(i, data_json, out, lang):
+    out.append(f"# Task 2: Bug Localization")
+    bug_localization = BugLocalization(i, data_json, lang)
+
+    # Print original code
+    out.append(f"Original Code")
+    out.append('```')
+    out.append(bug_localization.get_code())
+    out.append('```')
+    try:
+        num_of_exec = 0
+        total_time_elapsed = 0
+        print(f"No of Mutants: {len(data_json['mutants'])}")
+        for id, obj in enumerate(data_json["mutants"]):
+            num_of_exec += 1
+            print(f" Started with Mutant {id + 1}")
+
+            out.append(f"# For Mutant {id + 1}: ")
+            data_json["function"] = obj
+            start_time = time.time()
+            chat(i, bug_localization, out)
+            end_time = time.time()
+            out.append(f"---")
+
+            diff = end_time-start_time
+            total_time_elapsed += diff
+
+            if total_time_elapsed < 60 and num_of_exec >= 3:
+                num_of_exec = 0
+                time.sleep(60 - total_time_elapsed)
+                total_time_elapsed = 0
+
+            print(f" Processed Mutant {id + 1}")
+    except KeyError as key_error:
+        print(f"<ERROR> Exception thrown: Mutants not found for this object ")
+    except Exception as excp:
+        print(f"<ERROR> Exception thrown: {excp} ")
+
 
 def read_data(data_path):
     # Load Dataset
@@ -131,7 +178,6 @@ num_data_pts = args.num
 if lang not in ['java', 'python']:
     lang = 'java'
 
-
 if num_data_pts > 50:
     num_data_pts = 50
 
@@ -143,6 +189,11 @@ data_json = read_data(data_path)
 
 for i in range(num_data_pts):
     out = []
+
+    # Cache the original function
+    og_function = data_json[i]["function"]
+
+    # Task 1
     # Add code details to the md
     add_code_details(data_json[i], out)
     # Data Control Mutation
@@ -158,6 +209,12 @@ for i in range(num_data_pts):
     data_json[i]["function"] = data
     print(f'Starting REASONING task for the object #{i + 1}...')
     reasoning(i + 1, data_json[i], out, lang, "Data Flow Mutated Function")
+
+    # Task 2, from this point onwards:
+    # Reverting the data_json attribute "function" back to the original function
+    data_json[i]["function"] = og_function
+    print(f'Starting Bug localization task for the object #{i + 1}...')
+    mutation_bug_detection(i + 1, data_json[i], out, lang)
 
     print()
 
