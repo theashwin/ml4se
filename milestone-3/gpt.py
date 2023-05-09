@@ -189,7 +189,7 @@ print(f'Number of data points to run: {num_data_pts}')
 data_path = "prompt/json/" + lang + ".json"
 data_json = read_data(data_path)
 
-for i in range(23, 24): # 23, 24
+for i in range(num_data_pts): # 23, 24
     out = []
 
     # Cache the original function
@@ -197,20 +197,20 @@ for i in range(23, 24): # 23, 24
 
     # Task 1
     # Add code details to the md
-    # add_code_details(data_json[i], out)
-    # # Data Control Mutation
-    # print(f'Starting DATA CONTROL MUTATION task for the object #{i + 1}...')
-    # control, data = data_control(i + 1, data_json[i], out, lang)
-    #
-    # # Reasoning of Control Flow Mutated Function
-    # data_json[i]["function"] = control
-    # print(f'Starting REASONING task for the object #{i + 1}...')
-    # reasoning(i + 1, data_json[i], out, lang, "Control Flow Mutated Function")
-    #
-    # # Reasoning of Data Flow Mutated Function
-    # data_json[i]["function"] = data
-    # print(f'Starting REASONING task for the object #{i + 1}...')
-    # reasoning(i + 1, data_json[i], out, lang, "Data Flow Mutated Function")
+    add_code_details(data_json[i], out)
+    # Data Control Mutation
+    print(f'Starting DATA CONTROL MUTATION task for the object #{i + 1}...')
+    control, data = data_control(i + 1, data_json[i], out, lang)
+
+    # Reasoning of Control Flow Mutated Function
+    data_json[i]["function"] = control
+    print(f'Starting REASONING task for the object #{i + 1}...')
+    reasoning(i + 1, data_json[i], out, lang, "Control Flow Mutated Function")
+
+    # Reasoning of Data Flow Mutated Function
+    data_json[i]["function"] = data
+    print(f'Starting REASONING task for the object #{i + 1}...')
+    reasoning(i + 1, data_json[i], out, lang, "Data Flow Mutated Function")
 
     # Task 2, from this point onwards:
     # Reverting the data_json attribute "function" back to the original function
