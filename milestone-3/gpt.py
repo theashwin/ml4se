@@ -154,6 +154,8 @@ def mutation_bug_detection(i, data_json, out, lang):
 
             print(f" Processed Mutant {id + 1}")
     except KeyError as key_error:
+        out.append('This function does not have mutants!')
+        out.append('---')
         print(f"<ERROR> Exception thrown: Mutants not found for this object ")
     except Exception as excp:
         print(f"<ERROR> Exception thrown: {excp} ")

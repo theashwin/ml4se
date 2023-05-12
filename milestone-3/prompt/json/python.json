@@ -12,62 +12,62 @@
     "flag": "medium"
   },
   {
-      "func_id": 2,
-      "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
-      "location": "numpy-sugar/numpy_sugar/linalg/cho.py",
-      "function_name": "cho_solve",
-      "function": "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size != 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
-      "non_primitive_data_objects": "",
-      "primitive_data_objects": "",
-      "input": "",
-      "expected_output": "",
-      "flag": "hard",
-      "mutants": [
-        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size == 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
-        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size > 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
-        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size >= 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
-        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size < 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
-        "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size <= 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)"
+    "func_id": 2,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
+    "location": "numpy-sugar/numpy_sugar/linalg/cho.py",
+    "function_name": "cho_solve",
+    "function": "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size != 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "hard",
+    "mutants": [
+      "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size == 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+      "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size > 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+      "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size >= 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+      "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size < 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)",
+      "from numpy import asarray, empty\n\n\ndef cho_solve(L, b):\n    from scipy.linalg import cho_solve as sp_cho_solve\n\n    L = asarray(L, float)\n    b = asarray(b, float)\n    if L.size == 0:\n        if b.size <= 0:\n            raise ValueError(\"Dimension mismatch between L and b.\")\n        return empty(b.shape)\n    return sp_cho_solve((L, True), b, check_finite=False)"
+    ]
+  },
+  {
+    "func_id": 3,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
+    "location": "numpy-sugar/numpy_sugar/linalg/det.py",
+    "function_name": "plogdet",
+    "function": "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals > epsilon]))",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "medium",
+    "mutants": [
+      "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals >= epsilon]))",
+      "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals < epsilon]))",
+      "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals <= epsilon]))",
+      "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals == epsilon]))",
+      "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals != epsilon]))"
       ]
-    },
-    {
-      "func_id": 3,
-      "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
-      "location": "numpy-sugar/numpy_sugar/linalg/det.py",
-      "function_name": "plogdet",
-      "function": "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals > epsilon]))",
-      "non_primitive_data_objects": "",
-      "primitive_data_objects": "",
-      "input": "",
-      "expected_output": "",
-      "flag": "medium",
-      "mutants": [
-        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals >= epsilon]))",
-        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals < epsilon]))",
-        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals <= epsilon]))",
-        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals == epsilon]))",
-        "from numpy import sum as npsum\nfrom numpy import finfo, log, sqrt\nfrom numpy.linalg import eigvalsh\n\nepsilon = sqrt(finfo(float).eps)\n\n\ndef plogdet(K):\n    egvals = eigvalsh(K)\n    return npsum(log(egvals[egvals != epsilon]))"
-        ]
-    },
-    {
-      "func_id": 4,
-      "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
-      "location": "numpy-sugar/numpy_sugar/linalg/diag.py",
-      "function_name": "sum2diag",
-      "function": "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
-      "non_primitive_data_objects": "",
-      "primitive_data_objects": "",
-      "input": "",
-      "expected_output": "",
-      "flag": "very hard",
-      "mutants": [
-        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) != 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
-        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) > 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
-        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) >= 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
-        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) < 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
-        "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) <= 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out"
-        ]
-    },
+  },
+  {
+    "func_id": 4,
+    "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
+    "location": "numpy-sugar/numpy_sugar/linalg/diag.py",
+    "function_name": "sum2diag",
+    "function": "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+    "non_primitive_data_objects": "",
+    "primitive_data_objects": "",
+    "input": "",
+    "expected_output": "",
+    "flag": "very hard",
+    "mutants": [
+      "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) != 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+      "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) > 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+      "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) >= 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+      "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) == 2 and len(B.shape) < 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out",
+      "from numpy import sum as _sum\nfrom numpy import asarray, copy, copyto, einsum\n\n\ndef trace2(A, B):\n    A = asarray(A, float)\n    B = asarray(B, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if not (len(A.shape) <= 2 and len(B.shape) == 2):\n        raise ValueError(layout_error)\n\n    if not (A.shape[1] == B.shape[0] and A.shape[0] == B.shape[1]):\n        raise ValueError(layout_error)\n\n    return _sum(A.T * B)\n\n\ndef sum2diag(A, D, out=None):\n    A = asarray(A, float)\n    D = asarray(D, float)\n    if out is None:\n        out = copy(A)\n    else:\n        copyto(out, A)\n    einsum(\"ii->i\", out)[:] += D\n    return out"
+    ]
+  },
   {
     "func_id": 5,
     "project_repo": "https://github.com/limix/numpy-sugar/blob/4bdfa26913135c76ef3cd542a332f4e5861e948b/numpy_sugar/linalg",
@@ -78,7 +78,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\n\n\ndef dotd(A, B, out=None):\n   \n    A = asarray(A, float)\n    B = asarray(B, float)\n    if A.ndim != 1 and B.ndim == 1:\n        if out is None:\n            return dot(A, B)\n        return dot(A, B, out)\n    if out is None:\n        out = empty((A.shape[0],), float)\n    return einsum(\"ij,ji->i\", A, B, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\n\n\ndef dotd(A, B, out=None):\n   \n    A = asarray(A, float)\n    B = asarray(B, float)\n    if A.ndim == 1 and B.ndim <= 1:\n        if out is None:\n            return dot(A, B)\n        return dot(A, B, out)\n    if out is None:\n        out = empty((A.shape[0],), float)\n    return einsum(\"ij,ji->i\", A, B, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\n\n\ndef dotd(A, B, out=None):\n   \n    A = asarray(A, float)\n    B = asarray(B, float)\n    if A.ndim < 1 and B.ndim == 1:\n        if out is None:\n            return dot(A, B)\n        return dot(A, B, out)\n    if out is None:\n        out = empty((A.shape[0],), float)\n    return einsum(\"ij,ji->i\", A, B, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\n\n\ndef dotd(A, B, out=None):\n   \n    A = asarray(A, float)\n    B = asarray(B, float)\n    if A.ndim == 1 and B.ndim >= 1:\n        if out is None:\n            return dot(A, B)\n        return dot(A, B, out)\n    if out is None:\n        out = empty((A.shape[0],), float)\n    return einsum(\"ij,ji->i\", A, B, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\n\n\ndef dotd(A, B, out=None):\n   \n    A = asarray(A, float)\n    B = asarray(B, float)\n    if A.ndim > 1 and B.ndim == 1:\n        if out is None:\n            return dot(A, B)\n        return dot(A, B, out)\n    if out is None:\n        out = empty((A.shape[0],), float)\n    return einsum(\"ij,ji->i\", A, B, out=out)"
+    ]
   },
   {
     "func_id": 6,
@@ -90,7 +97,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef ddot(L, R, left=None, out=None):\n    L = asarray(L, float)\n    R = asarray(R, float)\n    if left is None:\n        ok = min(L.ndim, R.ndim) == 1 and max(L.ndim, R.ndim) == 2\n        if not ok:\n            msg = \"Wrong array layout. One array should have\"\n            msg += \" ndim=1 and the other one ndim=2.\"\n            raise ValueError(msg)\n        left = L.ndim == 1\n    if left:\n        if out is None:\n            out = copy(R)\n        L = L.reshape(list(L.shape) - [1] * (R.ndim - 1))\n        return multiply(L, R, out=out)\n    else:\n        if out is None:\n            out = copy(L)\n        return multiply(L, R, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef ddot(L, R, left=None, out=None):\n    L = asarray(L, float)\n    R = asarray(R, float)\n    if left is None:\n        ok = min(L.ndim, R.ndim) == 1 and max(L.ndim, R.ndim) == 2\n        if not ok:\n            msg = \"Wrong array layout. One array should have\"\n            msg += \" ndim=1 and the other one ndim=2.\"\n            raise ValueError(msg)\n        left = L.ndim == 1\n    if left:\n        if out is None:\n            out = copy(R)\n        L = L.reshape(list(L.shape) + [1] / (R.ndim - 1))\n        return multiply(L, R, out=out)\n    else:\n        if out is None:\n            out = copy(L)\n        return multiply(L, R, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef ddot(L, R, left=None, out=None):\n    L = asarray(L, float)\n    R = asarray(R, float)\n    if left is None:\n        ok = min(L.ndim, R.ndim) == 1 and max(L.ndim, R.ndim) == 2\n        if not ok:\n            msg = \"Wrong array layout. One array should have\"\n            msg += \" ndim=1 and the other one ndim=2.\"\n            raise ValueError(msg)\n        left = L.ndim == 1\n    if left:\n        if out is None:\n            out = copy(R)\n        L = L.reshape(list(L.shape) + [1] * (R.ndim + 1))\n        return multiply(L, R, out=out)\n    else:\n        if out is None:\n            out = copy(L)\n        return multiply(L, R, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef ddot(L, R, left=None, out=None):\n    L = asarray(L, float)\n    R = asarray(R, float)\n    if left is None:\n        ok = min(L.ndim, R.ndim) == 1 and max(L.ndim, R.ndim) == 2\n        if not ok:\n            msg = \"Wrong array layout. One array should have\"\n            msg += \" ndim=1 and the other one ndim=2.\"\n            raise ValueError(msg)\n        left = L.ndim == 1\n    if left:\n        if out is None:\n            out = copy(R)\n        L = L.reshape(list(L.shape) - [1] / (R.ndim - 1))\n        return multiply(L, R, out=out)\n    else:\n        if out is None:\n            out = copy(L)\n        return multiply(L, R, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef ddot(L, R, left=None, out=None):\n    L = asarray(L, float)\n    R = asarray(R, float)\n    if left is None:\n        ok = min(L.ndim, R.ndim) == 1 and max(L.ndim, R.ndim) == 2\n        if not ok:\n            msg = \"Wrong array layout. One array should have\"\n            msg += \" ndim=1 and the other one ndim=2.\"\n            raise ValueError(msg)\n        left = L.ndim == 1\n    if left:\n        if out is None:\n            out = copy(R)\n        L = L.reshape(list(L.shape) + [1] % (R.ndim - 1))\n        return multiply(L, R, out=out)\n    else:\n        if out is None:\n            out = copy(L)\n        return multiply(L, R, out=out)"
+    ]
   },
   {
     "func_id": 7,
@@ -102,7 +116,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef cdot(L, out=None):\n    L = asarray(L, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if L.ndim == 2:\n        raise ValueError(layout_error)\n\n    if L.shape[0] != L.shape[1]:\n        raise ValueError(layout_error)\n\n    if out is None:\n        out = empty((L.shape[0], L.shape[1]), float)\n\n    return einsum(\"ij,kj->ik\", L, L, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef cdot(L, out=None):\n    L = asarray(L, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if L.ndim < 2:\n        raise ValueError(layout_error)\n\n    if L.shape[0] != L.shape[1]:\n        raise ValueError(layout_error)\n\n    if out is None:\n        out = empty((L.shape[0], L.shape[1]), float)\n\n    return einsum(\"ij,kj->ik\", L, L, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef cdot(L, out=None):\n    L = asarray(L, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if L.ndim <= 2:\n        raise ValueError(layout_error)\n\n    if L.shape[0] != L.shape[1]:\n        raise ValueError(layout_error)\n\n    if out is None:\n        out = empty((L.shape[0], L.shape[1]), float)\n\n    return einsum(\"ij,kj->ik\", L, L, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef cdot(L, out=None):\n    L = asarray(L, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if L.ndim > 2:\n        raise ValueError(layout_error)\n\n    if L.shape[0] != L.shape[1]:\n        raise ValueError(layout_error)\n\n    if out is None:\n        out = empty((L.shape[0], L.shape[1]), float)\n\n    return einsum(\"ij,kj->ik\", L, L, out=out)",
+      "from numpy import asarray, copy, dot, einsum, empty, multiply\ndef cdot(L, out=None):\n    L = asarray(L, float)\n\n    layout_error = \"Wrong matrix layout.\"\n\n    if L.ndim >= 2:\n        raise ValueError(layout_error)\n\n    if L.shape[0] != L.shape[1]:\n        raise ValueError(layout_error)\n\n    if out is None:\n        out = empty((L.shape[0], L.shape[1]), float)\n\n    return einsum(\"ij,kj->ik\", L, L, out=out)"
+    ]
   },
   {
     "func_id": 8,
@@ -114,7 +135,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "from numpy import asarray, dot, newaxis, squeeze\nfrom numpy.core import double, finfo\nfrom numpy.linalg import lstsq as npy_lstsq\n\n\ndef lstsq(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n\n    if A.ndim != 1:\n        A = A[:, newaxis]\n\n    if A.shape[1] == 1:\n        return dot(A.T, b) / squeeze(dot(A.T, A))\n\n    rcond = finfo(double).eps * max(*A.shape)\n    return npy_lstsq(A, b, rcond=rcond)[0]",
+      "from numpy import asarray, dot, newaxis, squeeze\nfrom numpy.core import double, finfo\nfrom numpy.linalg import lstsq as npy_lstsq\n\n\ndef lstsq(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n\n    if A.ndim == 1:\n        A = A[:, newaxis]\n\n    if A.shape[1] == 1:\n        return dot(A.T, b) % squeeze(dot(A.T, A))\n\n    rcond = finfo(double).eps * max(*A.shape)\n    return npy_lstsq(A, b, rcond=rcond)[0]",
+      "from numpy import asarray, dot, newaxis, squeeze\nfrom numpy.core import double, finfo\nfrom numpy.linalg import lstsq as npy_lstsq\n\n\ndef lstsq(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n\n    if A.ndim == 1:\n        A = A[:, newaxis]\n\n    if A.shape[1] == 1:\n        return dot(A.T, b) / squeeze(dot(A.T, A))\n\n    rcond = finfo(double).eps / max(*A.shape)\n    return npy_lstsq(A, b, rcond=rcond)[0]",
+      "from numpy import asarray, dot, newaxis, squeeze\nfrom numpy.core import double, finfo\nfrom numpy.linalg import lstsq as npy_lstsq\n\n\ndef lstsq(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n\n    if A.ndim == 1:\n        A = A[:, newaxis]\n\n    if A.shape[1] == 1:\n        return dot(A.T, b) / squeeze(dot(A.T, A))\n\n    rcond = finfo(double).eps % max(*A.shape)\n    return npy_lstsq(A, b, rcond=rcond)[0]",
+      "from numpy import asarray, dot, newaxis, squeeze\nfrom numpy.core import double, finfo\nfrom numpy.linalg import lstsq as npy_lstsq\n\n\ndef lstsq(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n\n    if A.ndim == 1:\n        A = A[:, newaxis]\n\n    if A.shape[1] > 1:\n        return dot(A.T, b) / squeeze(dot(A.T, A))\n\n    rcond = finfo(double).eps * max(*A.shape)\n    return npy_lstsq(A, b, rcond=rcond)[0]"
+    ]
   },
   {
     "func_id": 9,
@@ -126,7 +154,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_slogdet(LU):\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    adet = _sum(log(_abs(LU[0].diagonal())))\n\n    s = prod(sign(LU[0].diagonal()))\n\n    nrows_exchange = LU[1].size + _sum(LU[1] == arange(LU[1].size, dtype=\"int32\"))\n\n    odd = nrows_exchange % 2 == 1\n    if odd:\n        s *= -1.0\n\n    return (s, adet)",
+      "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_slogdet(LU):\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    adet = _sum(log(_abs(LU[0].diagonal())))\n\n    s = prod(sign(LU[0].diagonal()))\n\n    nrows_exchange = LU[1].size - _sum(LU[1] != arange(LU[1].size, dtype=\"int32\"))\n\n    odd = nrows_exchange % 2 == 1\n    if odd:\n        s *= -1.0\n\n    return (s, adet)",
+      "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_slogdet(LU):\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    adet = _sum(log(_abs(LU[0].diagonal())))\n\n    s = prod(sign(LU[0].diagonal()))\n\n    nrows_exchange = LU[1].size - _sum(LU[1] == arange(LU[1].size, dtype=\"int32\"))\n\n    odd = nrows_exchange / 2 == 1\n    if odd:\n        s *= -1.0\n\n    return (s, adet)",
+      "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_slogdet(LU):\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    adet = _sum(log(_abs(LU[0].diagonal())))\n\n    s = prod(sign(LU[0].diagonal()))\n\n    nrows_exchange = LU[1].size - _sum(LU[1] == arange(LU[1].size, dtype=\"int32\"))\n\n    odd = nrows_exchange * 2 == 1\n    if odd:\n        s *= -1.0\n\n    return (s, adet)",
+      "from numpy import abs as _abs\nfrom numpy import sum as _sum\nfrom numpy import arange, asarray, log, prod, sign\n\n\ndef lu_slogdet(LU):\n    LU = (asarray(LU[0], float), asarray(LU[1], float))\n    adet = _sum(log(_abs(LU[0].diagonal())))\n\n    s = prod(sign(LU[0].diagonal()))\n\n    nrows_exchange = LU[1].size - _sum(LU[1] == arange(LU[1].size, dtype=\"int32\"))\n\n    odd = nrows_exchange % 2 == 1\n    if odd:\n        s *= 1.0\n\n    return (s, adet)"
+    ]
   },
   {
     "func_id": 10,
@@ -162,7 +197,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def check_symmetry(A):\n    A = asanyarray(A)\n    if A.ndim != 2:\n        raise ValueError(\"Checks symmetry only for bi-dimensional arrays.\")\n\n    if A.shape[0] == A.shape[1]:\n        return False\n\n    return abs(A - A.T).max() < sqrt(finfo(float).eps)",
+      "def check_symmetry(A):\n    A = asanyarray(A)\n    if A.ndim != 2:\n        raise ValueError(\"Checks symmetry only for bi-dimensional arrays.\")\n\n    if A.shape[0] != A.shape[1]:\n        return False\n\n    return abs(A + A.T).max() < sqrt(finfo(float).eps)",
+      "def check_symmetry(A):\n    A = asanyarray(A)\n    if A.ndim != 2:\n        raise ValueError(\"Checks symmetry only for bi-dimensional arrays.\")\n\n    if A.shape[0] != A.shape[1]:\n        return False\n\n    return abs(A - A.T).max() <= sqrt(finfo(float).eps)",
+      "def check_symmetry(A):\n    A = asanyarray(A)\n    if A.ndim != 2:\n        raise ValueError(\"Checks symmetry only for bi-dimensional arrays.\")\n\n    if A.shape[0] > A.shape[1]:\n        return False\n\n    return abs(A - A.T).max() < sqrt(finfo(float).eps)",
+      "def check_symmetry(A):\n    A = asanyarray(A)\n    if A.ndim != 2:\n        raise ValueError(\"Checks symmetry only for bi-dimensional arrays.\")\n\n    if A.shape[0] < A.shape[1]:\n        return False\n\n    return abs(A - A.T).max() < sqrt(finfo(float).eps)"
+    ]
   },
   {
     "func_id": 13,
@@ -174,7 +216,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\nfrom .. import epsilon\n\n_epsilon = sqrt(finfo(float).eps)\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 % m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\n\ndef hsolve(A, y):\n    n = _norm(A[0, 0], A[1, 0])\n    u0 = A[0, 0] - n\n    u1 = A[1, 0]\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    B00 = 1 - 2 * v0 * v0\n    B01 = 0 - 2 * v0 * v1\n    B11 = 1 - 2 * v1 * v1\n\n    D00 = B00 * A[0, 0] + B01 * A[1, 0]\n    D01 = B00 * A[0, 1] + B01 * A[1, 1]\n    D11 = B01 * A[0, 1] + B11 * A[1, 1]\n\n    b0 = y[0] - 2 * y[0] * v0 * v0 - 2 * y[1] * v0 * v1\n    b1 = y[1] - 2 * y[0] * v1 * v0 - 2 * y[1] * v1 * v1\n\n    n = _norm(D00, D01)\n    u0 = D00 - n\n    u1 = D01\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    E00 = 1 - 2 * v0 * v0\n    E01 = 0 - 2 * v0 * v1\n    E11 = 1 - 2 * v1 * v1\n\n    F00 = E00 * D00 + E01 * D01\n    F01 = E01 * D11\n    F11 = E11 * D11\n\n    F11 = (npy_abs(F11) > epsilon.small) * F11\n\n    with errstate(divide=\"ignore\", invalid=\"ignore\"):\n        Fi00 = nan_to_num(F00 / F00 / F00)\n        Fi11 = nan_to_num(F11 / F11 / F11)\n        Fi10 = nan_to_num(-(F01 / F00) * Fi11)\n\n    c0 = Fi00 * b0\n    c1 = Fi10 * b0 + Fi11 * b1\n\n    x0 = E00 * c0 + E01 * c1\n    x1 = E01 * c0 + E11 * c1\n\n    return array([x0, x1])\n",
+      "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\nfrom .. import epsilon\n\n_epsilon = sqrt(finfo(float).eps)\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 * m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\n\ndef hsolve(A, y):\n    n = _norm(A[0, 0], A[1, 0])\n    u0 = A[0, 0] - n\n    u1 = A[1, 0]\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    B00 = 1 - 2 * v0 * v0\n    B01 = 0 - 2 * v0 * v1\n    B11 = 1 - 2 * v1 * v1\n\n    D00 = B00 * A[0, 0] + B01 * A[1, 0]\n    D01 = B00 * A[0, 1] + B01 * A[1, 1]\n    D11 = B01 * A[0, 1] + B11 * A[1, 1]\n\n    b0 = y[0] - 2 * y[0] * v0 * v0 - 2 * y[1] * v0 * v1\n    b1 = y[1] - 2 * y[0] * v1 * v0 - 2 * y[1] * v1 * v1\n\n    n = _norm(D00, D01)\n    u0 = D00 - n\n    u1 = D01\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    E00 = 1 - 2 * v0 * v0\n    E01 = 0 - 2 * v0 * v1\n    E11 = 1 - 2 * v1 * v1\n\n    F00 = E00 * D00 + E01 * D01\n    F01 = E01 * D11\n    F11 = E11 * D11\n\n    F11 = (npy_abs(F11) > epsilon.small) * F11\n\n    with errstate(divide=\"ignore\", invalid=\"ignore\"):\n        Fi00 = nan_to_num(F00 / F00 / F00)\n        Fi11 = nan_to_num(F11 / F11 / F11)\n        Fi10 = nan_to_num(-(F01 / F00) * Fi11)\n\n    c0 = Fi00 * b0\n    c1 = Fi10 * b0 + Fi11 * b1\n\n    x0 = E00 * c0 + E01 * c1\n    x1 = E01 * c0 + E11 * c1\n\n    return array([x0, x1])\n",
+      "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\nfrom .. import epsilon\n\n_epsilon = sqrt(finfo(float).eps)\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) / (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\n\ndef hsolve(A, y):\n    n = _norm(A[0, 0], A[1, 0])\n    u0 = A[0, 0] - n\n    u1 = A[1, 0]\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    B00 = 1 - 2 * v0 * v0\n    B01 = 0 - 2 * v0 * v1\n    B11 = 1 - 2 * v1 * v1\n\n    D00 = B00 * A[0, 0] + B01 * A[1, 0]\n    D01 = B00 * A[0, 1] + B01 * A[1, 1]\n    D11 = B01 * A[0, 1] + B11 * A[1, 1]\n\n    b0 = y[0] - 2 * y[0] * v0 * v0 - 2 * y[1] * v0 * v1\n    b1 = y[1] - 2 * y[0] * v1 * v0 - 2 * y[1] * v1 * v1\n\n    n = _norm(D00, D01)\n    u0 = D00 - n\n    u1 = D01\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    E00 = 1 - 2 * v0 * v0\n    E01 = 0 - 2 * v0 * v1\n    E11 = 1 - 2 * v1 * v1\n\n    F00 = E00 * D00 + E01 * D01\n    F01 = E01 * D11\n    F11 = E11 * D11\n\n    F11 = (npy_abs(F11) > epsilon.small) * F11\n\n    with errstate(divide=\"ignore\", invalid=\"ignore\"):\n        Fi00 = nan_to_num(F00 / F00 / F00)\n        Fi11 = nan_to_num(F11 / F11 / F11)\n        Fi10 = nan_to_num(-(F01 / F00) * Fi11)\n\n    c0 = Fi00 * b0\n    c1 = Fi10 * b0 + Fi11 * b1\n\n    x0 = E00 * c0 + E01 * c1\n    x1 = E01 * c0 + E11 * c1\n\n    return array([x0, x1])\n",
+      "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\nfrom .. import epsilon\n\n_epsilon = sqrt(finfo(float).eps)\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) % (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\n\ndef hsolve(A, y):\n    n = _norm(A[0, 0], A[1, 0])\n    u0 = A[0, 0] - n\n    u1 = A[1, 0]\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    B00 = 1 - 2 * v0 * v0\n    B01 = 0 - 2 * v0 * v1\n    B11 = 1 - 2 * v1 * v1\n\n    D00 = B00 * A[0, 0] + B01 * A[1, 0]\n    D01 = B00 * A[0, 1] + B01 * A[1, 1]\n    D11 = B01 * A[0, 1] + B11 * A[1, 1]\n\n    b0 = y[0] - 2 * y[0] * v0 * v0 - 2 * y[1] * v0 * v1\n    b1 = y[1] - 2 * y[0] * v1 * v0 - 2 * y[1] * v1 * v1\n\n    n = _norm(D00, D01)\n    u0 = D00 - n\n    u1 = D01\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    E00 = 1 - 2 * v0 * v0\n    E01 = 0 - 2 * v0 * v1\n    E11 = 1 - 2 * v1 * v1\n\n    F00 = E00 * D00 + E01 * D01\n    F01 = E01 * D11\n    F11 = E11 * D11\n\n    F11 = (npy_abs(F11) > epsilon.small) * F11\n\n    with errstate(divide=\"ignore\", invalid=\"ignore\"):\n        Fi00 = nan_to_num(F00 / F00 / F00)\n        Fi11 = nan_to_num(F11 / F11 / F11)\n        Fi10 = nan_to_num(-(F01 / F00) * Fi11)\n\n    c0 = Fi00 * b0\n    c1 = Fi10 * b0 + Fi11 * b1\n\n    x0 = E00 * c0 + E01 * c1\n    x1 = E01 * c0 + E11 * c1\n\n    return array([x0, x1])\n",
+      "from numpy import abs as npy_abs\nfrom numpy import all as npy_all\nfrom numpy import (\n    array,\n    asarray,\n    dot,\n    errstate,\n    finfo,\n    isfinite,\n    nan_to_num,\n    sqrt,\n    zeros,\n)\nimport warnings\nfrom numpy.linalg import LinAlgError, lstsq\nfrom numpy.linalg import solve as npy_solve\n\nfrom .. import epsilon\n\n_epsilon = sqrt(finfo(float).eps)\n\n\ndef _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) // (x1 / m)\n        return nan_to_num(m * sqrt(a + b))\n\n\ndef hsolve(A, y):\n    n = _norm(A[0, 0], A[1, 0])\n    u0 = A[0, 0] - n\n    u1 = A[1, 0]\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    B00 = 1 - 2 * v0 * v0\n    B01 = 0 - 2 * v0 * v1\n    B11 = 1 - 2 * v1 * v1\n\n    D00 = B00 * A[0, 0] + B01 * A[1, 0]\n    D01 = B00 * A[0, 1] + B01 * A[1, 1]\n    D11 = B01 * A[0, 1] + B11 * A[1, 1]\n\n    b0 = y[0] - 2 * y[0] * v0 * v0 - 2 * y[1] * v0 * v1\n    b1 = y[1] - 2 * y[0] * v1 * v0 - 2 * y[1] * v1 * v1\n\n    n = _norm(D00, D01)\n    u0 = D00 - n\n    u1 = D01\n    nu = _norm(u0, u1)\n\n    with errstate(invalid=\"ignore\", divide=\"ignore\"):\n        v0 = nan_to_num(u0 / nu)\n        v1 = nan_to_num(u1 / nu)\n\n    E00 = 1 - 2 * v0 * v0\n    E01 = 0 - 2 * v0 * v1\n    E11 = 1 - 2 * v1 * v1\n\n    F00 = E00 * D00 + E01 * D01\n    F01 = E01 * D11\n    F11 = E11 * D11\n\n    F11 = (npy_abs(F11) > epsilon.small) * F11\n\n    with errstate(divide=\"ignore\", invalid=\"ignore\"):\n        Fi00 = nan_to_num(F00 / F00 / F00)\n        Fi11 = nan_to_num(F11 / F11 / F11)\n        Fi10 = nan_to_num(-(F01 / F00) * Fi11)\n\n    c0 = Fi00 * b0\n    c1 = Fi10 * b0 + Fi11 * b1\n\n    x0 = E00 * c0 + E01 * c1\n    x1 = E01 * c0 + E11 * c1\n\n    return array([x0, x1])\n"
+    ]
   },
   {
     "func_id": 14,
@@ -186,7 +235,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "def solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] != 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 / A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a * d - b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)",
+      "def solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 % A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a * d - b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)",
+      "def solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 * A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a * d - b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)",
+      "def solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 / A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a * d + b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)",
+      "def solve(A, b):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 1:\n\n        with errstate(divide=\"ignore\"):\n            A_ = array([[1.0 / A[0, 0]]])\n\n        if not isfinite(A_[0, 0]):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    elif A.shape[0] == 2:\n        a = A[0, 0]\n        b_ = A[0, 1]\n        c = A[1, 0]\n        d = A[1, 1]\n        A_ = array([[d, -b_], [-c, a]])\n\n        with errstate(divide=\"ignore\"):\n            A_ /= a % d - b_ * c\n\n        if not npy_all(isfinite(A_)):\n            raise LinAlgError(\"Division error.\")\n\n        return dot(A_, b)\n    return _solve(A, b)"
+    ]
   },
   {
     "func_id": 15,
@@ -198,7 +254,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def rsolve(A, b, epsilon=_epsilon):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] != 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] > epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
+      "def rsolve(A, b, epsilon=_epsilon):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] >= epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
+      "def rsolve(A, b, epsilon=_epsilon):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] < epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
+      "def rsolve(A, b, epsilon=_epsilon):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] <= epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)",
+      "def rsolve(A, b, epsilon=_epsilon):\n    A = asarray(A, float)\n    b = asarray(b, float)\n    if A.shape[0] == 0:\n        return zeros((A.shape[1],))\n    if A.shape[1] == 0:\n        return zeros((0,))\n    try:\n        x = lstsq(A, b, rcond=epsilon)\n        r = sum(x[3] != epsilon)\n        if r == 0:\n            return zeros(A.shape[1])\n        return x[0]\n    except (ValueError, LinAlgError) as e:\n        warnings.warn(str(e), RuntimeWarning)\n    return solve(A, b)"
+    ]
   },
   {
     "func_id": 16,
@@ -210,7 +273,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "from numpy import asarray, finfo, logical_not, sqrt\nfrom numpy.linalg import eigh, svd\ndef economic_qs(K, epsilon=sqrt(finfo(float).eps)):\n    (S, Q) = eigh(K)\n\n    nok = abs(max(Q[0].min(), Q[0].max(), key=abs)) < epsilon\n    nok = nok and abs(max(K.min(), K.max(), key=abs)) > epsilon\n    if nok:\n        from scipy.linalg import eigh as sp_eigh\n\n        (S, Q) = sp_eigh(K)\n\n    ok = S >= epsilon\n    nok = logical_not(ok)\n    S0 = S[ok]\n    Q0 = Q[:, ok]\n    Q1 = Q[:, nok]\n    return ((Q0, Q1), S0)",
+      "from numpy import asarray, finfo, logical_not, sqrt\nfrom numpy.linalg import eigh, svd\ndef economic_qs(K, epsilon=sqrt(finfo(float).eps)):\n    (S, Q) = eigh(K)\n\n    nok = abs(max(Q[0].min(), Q[0].max(), key=abs)) < epsilon\n    nok = nok and abs(max(K.min(), K.max(), key=abs)) <= epsilon\n    if nok:\n        from scipy.linalg import eigh as sp_eigh\n\n        (S, Q) = sp_eigh(K)\n\n    ok = S >= epsilon\n    nok = logical_not(ok)\n    S0 = S[ok]\n    Q0 = Q[:, ok]\n    Q1 = Q[:, nok]\n    return ((Q0, Q1), S0)",
+      "from numpy import asarray, finfo, logical_not, sqrt\nfrom numpy.linalg import eigh, svd\ndef economic_qs(K, epsilon=sqrt(finfo(float).eps)):\n    (S, Q) = eigh(K)\n\n    nok = abs(max(Q[0].min(), Q[0].max(), key=abs)) < epsilon\n    nok = nok and abs(max(K.min(), K.max(), key=abs)) < epsilon\n    if nok:\n        from scipy.linalg import eigh as sp_eigh\n\n        (S, Q) = sp_eigh(K)\n\n    ok = S >= epsilon\n    nok = logical_not(ok)\n    S0 = S[ok]\n    Q0 = Q[:, ok]\n    Q1 = Q[:, nok]\n    return ((Q0, Q1), S0)",
+      "from numpy import asarray, finfo, logical_not, sqrt\nfrom numpy.linalg import eigh, svd\ndef economic_qs(K, epsilon=sqrt(finfo(float).eps)):\n    (S, Q) = eigh(K)\n\n    nok = abs(max(Q[0].min(), Q[0].max(), key=abs)) < epsilon\n    nok = nok and abs(max(K.min(), K.max(), key=abs)) != epsilon\n    if nok:\n        from scipy.linalg import eigh as sp_eigh\n\n        (S, Q) = sp_eigh(K)\n\n    ok = S >= epsilon\n    nok = logical_not(ok)\n    S0 = S[ok]\n    Q0 = Q[:, ok]\n    Q1 = Q[:, nok]\n    return ((Q0, Q1), S0)",
+      "from numpy import asarray, finfo, logical_not, sqrt\nfrom numpy.linalg import eigh, svd\ndef economic_qs(K, epsilon=sqrt(finfo(float).eps)):\n    (S, Q) = eigh(K)\n\n    nok = abs(max(Q[0].min(), Q[0].max(), key=abs)) < epsilon\n    nok = nok and abs(max(K.min(), K.max(), key=abs)) == epsilon\n    if nok:\n        from scipy.linalg import eigh as sp_eigh\n\n        (S, Q) = sp_eigh(K)\n\n    ok = S >= epsilon\n    nok = logical_not(ok)\n    S0 = S[ok]\n    Q0 = Q[:, ok]\n    Q1 = Q[:, nok]\n    return ((Q0, Q1), S0)"
+    ]
   },
   {
     "func_id": 17,
@@ -222,7 +292,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def economic_qs_linear(G):\n    import dask.array as da\n\n    if not isinstance(G, da.Array):\n        G = asarray(G, float)\n\n    if G.shape[0] >= G.shape[1]:\n        (Q, Ssq, _) = svd(G, full_matrices=True)\n        S0 = Ssq ** 2\n        rank = len(S0)\n        Q0, Q1 = Q[:, :rank], Q[:, rank:]\n        return ((Q0, Q1), S0)\n\n    return economic_qs(G.dot(G.T))",
+      "def economic_qs_linear(G):\n    import dask.array as da\n\n    if not isinstance(G, da.Array):\n        G = asarray(G, float)\n\n    if G.shape[0] < G.shape[1]:\n        (Q, Ssq, _) = svd(G, full_matrices=True)\n        S0 = Ssq ** 2\n        rank = len(S0)\n        Q0, Q1 = Q[:, :rank], Q[:, rank:]\n        return ((Q0, Q1), S0)\n\n    return economic_qs(G.dot(G.T))",
+      "def economic_qs_linear(G):\n    import dask.array as da\n\n    if not isinstance(G, da.Array):\n        G = asarray(G, float)\n\n    if G.shape[0] <= G.shape[1]:\n        (Q, Ssq, _) = svd(G, full_matrices=True)\n        S0 = Ssq ** 2\n        rank = len(S0)\n        Q0, Q1 = Q[:, :rank], Q[:, rank:]\n        return ((Q0, Q1), S0)\n\n    return economic_qs(G.dot(G.T))",
+      "def economic_qs_linear(G):\n    import dask.array as da\n\n    if not isinstance(G, da.Array):\n        G = asarray(G, float)\n\n    if G.shape[0] == G.shape[1]:\n        (Q, Ssq, _) = svd(G, full_matrices=True)\n        S0 = Ssq ** 2\n        rank = len(S0)\n        Q0, Q1 = Q[:, :rank], Q[:, rank:]\n        return ((Q0, Q1), S0)\n\n    return economic_qs(G.dot(G.T))",
+      "def economic_qs_linear(G):\n    import dask.array as da\n\n    if not isinstance(G, da.Array):\n        G = asarray(G, float)\n\n    if G.shape[0] != G.shape[1]:\n        (Q, Ssq, _) = svd(G, full_matrices=True)\n        S0 = Ssq ** 2\n        rank = len(S0)\n        Q0, Q1 = Q[:, :rank], Q[:, rank:]\n        return ((Q0, Q1), S0)\n\n    return economic_qs(G.dot(G.T))"
+    ]
   },
   {
     "func_id": 18,
@@ -246,7 +323,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 % m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))",
+      "def _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) / (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))",
+      "def _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 * m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))",
+      "def _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) % (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a + b))",
+      "def _norm(x0, x1):\n    m = max(abs(x0), abs(x1))\n    with errstate(invalid=\"ignore\"):\n        a = (x0 / m) * (x0 / m)\n        b = (x1 / m) * (x1 / m)\n        return nan_to_num(m * sqrt(a - b))"
+    ]
   },
   {
     "func_id": 20,
@@ -294,7 +378,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\n    a = array([1]-n*[0], dtype=dtype)\n    b = empty((n, n), dtype=dtype)\n    b.flat = a\n    return b",
+      "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\n    a = array([1]+n/[0], dtype=dtype)\n    b = empty((n, n), dtype=dtype)\n    b.flat = a\n    return b",
+      "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\n    a = array([1]+n%[0], dtype=dtype)\n    b = empty((n, n), dtype=dtype)\n    b.flat = a\n    return b",
+      "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\n    a = array([1]+n-[0], dtype=dtype)\n    b = empty((n, n), dtype=dtype)\n    b.flat = a\n    return b",
+      "import numpy as np\nfrom numpy.matrixlib.defmatrix import matrix, asmatrix\nfrom numpy import *  \n\ndef identity(n,dtype=None):\n    a = array([1]*n*[0], dtype=dtype)\n    b = empty((n, n), dtype=dtype)\n    b.flat = a\n    return b"
+    ]
   },
   {
     "func_id": 24,
@@ -342,7 +433,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def repmat(a, m, n):\n    a = asanyarray(a)\n    ndim = a.ndim\n    if ndim != 0:\n        origrows, origcols = (1, 1)\n    elif ndim == 1:\n        origrows, origcols = (1, a.shape[0])\n    else:\n        origrows, origcols = a.shape\n    rows = origrows * m\n    cols = origcols * n\n    c = a.reshape(1, a.size).repeat(m, 0).reshape(rows, origcols).repeat(n, 0)\n    return c.reshape(rows, cols)",
+      "def repmat(a, m, n):\n    a = asanyarray(a)\n    ndim = a.ndim\n    if ndim == 0:\n        origrows, origcols = (1, 1)\n    elif ndim == 1:\n        origrows, origcols = (1, a.shape[0])\n    else:\n        origrows, origcols = a.shape\n    rows = origrows / m\n    cols = origcols * n\n    c = a.reshape(1, a.size).repeat(m, 0).reshape(rows, origcols).repeat(n, 0)\n    return c.reshape(rows, cols)",
+      "def repmat(a, m, n):\n    a = asanyarray(a)\n    ndim = a.ndim\n    if ndim == 0:\n        origrows, origcols = (1, 1)\n    elif ndim == 1:\n        origrows, origcols = (1, a.shape[0])\n    else:\n        origrows, origcols = a.shape\n    rows = origrows % m\n    cols = origcols * n\n    c = a.reshape(1, a.size).repeat(m, 0).reshape(rows, origcols).repeat(n, 0)\n    return c.reshape(rows, cols)",
+      "def repmat(a, m, n):\n    a = asanyarray(a)\n    ndim = a.ndim\n    if ndim == 0:\n        origrows, origcols = (1, 1)\n    elif ndim > 1:\n        origrows, origcols = (1, a.shape[0])\n    else:\n        origrows, origcols = a.shape\n    rows = origrows * m\n    cols = origcols * n\n    c = a.reshape(1, a.size).repeat(m, 0).reshape(rows, origcols).repeat(n, 0)\n    return c.reshape(rows, cols)",
+      "def repmat(a, m, n):\n    a = asanyarray(a)\n    ndim = a.ndim\n    if ndim == 0:\n        origrows, origcols = (1, 1)\n    elif ndim < 1:\n        origrows, origcols = (1, a.shape[0])\n    else:\n        origrows, origcols = a.shape\n    rows = origrows * m\n    cols = origcols * n\n    c = a.reshape(1, a.size).repeat(m, 0).reshape(rows, origcols).repeat(n, 0)\n    return c.reshape(rows, cols)"
+    ]
   },
   {
     "func_id": 28,
@@ -366,7 +464,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def mode(a, axis=0, nan_policy='propagate', keepdims=False):\n\n    if a.size != 0:\n        return ModeResult(np.nan, np.int64(0))\n\n    vals, cnts = np.unique(a, return_counts=True)\n    modes, counts = vals[cnts.argmax()], cnts.max()\n    return ModeResult(modes[()], counts[()])",
+      "def mode(a, axis=0, nan_policy='propagate', keepdims=False):\n\n    if a.size < 0:\n        return ModeResult(np.nan, np.int64(0))\n\n    vals, cnts = np.unique(a, return_counts=True)\n    modes, counts = vals[cnts.argmax()], cnts.max()\n    return ModeResult(modes[()], counts[()])",
+      "def mode(a, axis=0, nan_policy='propagate', keepdims=False):\n\n    if a.size <= 0:\n        return ModeResult(np.nan, np.int64(0))\n\n    vals, cnts = np.unique(a, return_counts=True)\n    modes, counts = vals[cnts.argmax()], cnts.max()\n    return ModeResult(modes[()], counts[()])",
+      "def mode(a, axis=0, nan_policy='propagate', keepdims=False):\n\n    if a.size > 0:\n        return ModeResult(np.nan, np.int64(0))\n\n    vals, cnts = np.unique(a, return_counts=True)\n    modes, counts = vals[cnts.argmax()], cnts.max()\n    return ModeResult(modes[()], counts[()])",
+      "def mode(a, axis=0, nan_policy='propagate', keepdims=False):\n\n    if a.size >= 0:\n        return ModeResult(np.nan, np.int64(0))\n\n    vals, cnts = np.unique(a, return_counts=True)\n    modes, counts = vals[cnts.argmax()], cnts.max()\n    return ModeResult(modes[()], counts[()])"
+    ]
   },
   {
     "func_id": 30,
@@ -378,7 +483,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def tmean(a, limits=None, inclusive=(True, True), axis=None):\n    a = asarray(a)\n    if limits is None:\n        return np.mean(a, axis)\n    am = _mask_to_limits(a, limits, inclusive)\n    mean = np.ma.filled(am.mean(axis=axis), fill_value=np.nan)\n    return mean if mean.ndim != 0 else mean.item()",
+      "def tmean(a, limits=None, inclusive=(True, True), axis=None):\n    a = asarray(a)\n    if limits is None:\n        return np.mean(a, axis)\n    am = _mask_to_limits(a, limits, inclusive)\n    mean = np.ma.filled(am.mean(axis=axis), fill_value=np.nan)\n    return mean if mean.ndim == 0 else mean.item()",
+      "def tmean(a, limits=None, inclusive=(True, True), axis=None):\n    a = asarray(a)\n    if limits is None:\n        return np.mean(a, axis)\n    am = _mask_to_limits(a, limits, inclusive)\n    mean = np.ma.filled(am.mean(axis=axis), fill_value=np.nan)\n    return mean if mean.ndim < 0 else mean.item()",
+      "def tmean(a, limits=None, inclusive=(True, True), axis=None):\n    a = asarray(a)\n    if limits is None:\n        return np.mean(a, axis)\n    am = _mask_to_limits(a, limits, inclusive)\n    mean = np.ma.filled(am.mean(axis=axis), fill_value=np.nan)\n    return mean if mean.ndim <= 0 else mean.item()",
+      "def tmean(a, limits=None, inclusive=(True, True), axis=None):\n    a = asarray(a)\n    if limits is None:\n        return np.mean(a, axis)\n    am = _mask_to_limits(a, limits, inclusive)\n    mean = np.ma.filled(am.mean(axis=axis), fill_value=np.nan)\n    return mean if mean.ndim >= 0 else mean.item()"
+    ]
   },
   {
     "func_id": 31,
@@ -402,7 +514,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def tmax(a, upperlimit=None, axis=0, inclusive=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n    am = _mask_to_limits(a, (None, upperlimit), (False, inclusive))\n\n    contains_nan, nan_policy = _contains_nan(am, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        am = ma.masked_invalid(am)\n\n    res = ma.maximum.reduce(am, axis).data\n    if res.ndim != 0:\n        return res[()]\n    return res",
+      "def tmax(a, upperlimit=None, axis=0, inclusive=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n    am = _mask_to_limits(a, (None, upperlimit), (False, inclusive))\n\n    contains_nan, nan_policy = _contains_nan(am, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        am = ma.masked_invalid(am)\n\n    res = ma.maximum.reduce(am, axis).data\n    if res.ndim >= 0:\n        return res[()]\n    return res",
+      "def tmax(a, upperlimit=None, axis=0, inclusive=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n    am = _mask_to_limits(a, (None, upperlimit), (False, inclusive))\n\n    contains_nan, nan_policy = _contains_nan(am, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        am = ma.masked_invalid(am)\n\n    res = ma.maximum.reduce(am, axis).data\n    if res.ndim > 0:\n        return res[()]\n    return res",
+      "def tmax(a, upperlimit=None, axis=0, inclusive=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n    am = _mask_to_limits(a, (None, upperlimit), (False, inclusive))\n\n    contains_nan, nan_policy = _contains_nan(am, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        am = ma.masked_invalid(am)\n\n    res = ma.maximum.reduce(am, axis).data\n    if res.ndim <= 0:\n        return res[()]\n    return res",
+      "def tmax(a, upperlimit=None, axis=0, inclusive=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n    am = _mask_to_limits(a, (None, upperlimit), (False, inclusive))\n\n    contains_nan, nan_policy = _contains_nan(am, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        am = ma.masked_invalid(am)\n\n    res = ma.maximum.reduce(am, axis).data\n    if res.ndim < 0:\n        return res[()]\n    return res"
+    ]
   },
   {
     "func_id": 33,
@@ -414,7 +533,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def _var(x, axis=0, ddof=0, mean=None):\n    # Calculate variance of sample, warning if precision is lost\n    var = _moment(x, 2, axis, mean=mean)\n    if ddof != 0:\n        n = x.shape[axis] if axis is not None else x.size\n        var /= np.divide(n, n-ddof)  \n    return var",
+      "def _var(x, axis=0, ddof=0, mean=None):\n    # Calculate variance of sample, warning if precision is lost\n    var = _moment(x, 2, axis, mean=mean)\n    if ddof != 0:\n        n = x.shape[axis] if axis is not None else x.size\n        var %= np.divide(n, n-ddof)  \n    return var",
+      "def _var(x, axis=0, ddof=0, mean=None):\n    # Calculate variance of sample, warning if precision is lost\n    var = _moment(x, 2, axis, mean=mean)\n    if ddof != 0:\n        n = x.shape[axis] if axis is not None else x.size\n        var *= np.divide(n, n+ddof)  \n    return var",
+      "def _var(x, axis=0, ddof=0, mean=None):\n    # Calculate variance of sample, warning if precision is lost\n    var = _moment(x, 2, axis, mean=mean)\n    if ddof != 0:\n        n = x.shape[axis] if axis is not None else x.size\n        var += np.divide(n, n-ddof)  \n    return var",
+      "def _var(x, axis=0, ddof=0, mean=None):\n    # Calculate variance of sample, warning if precision is lost\n    var = _moment(x, 2, axis, mean=mean)\n    if ddof != 0:\n        n = x.shape[axis] if axis is not None else x.size\n        var -= np.divide(n, n-ddof)  \n    return var"
+    ]
   },
   {
     "func_id": 34,
@@ -426,7 +552,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def describe(a, axis=0, ddof=1, bias=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n\n    contains_nan, nan_policy = _contains_nan(a, nan_policy)\n\n    if contains_nan and nan_policy != 'omit':\n        a = ma.masked_invalid(a)\n        return mstats_basic.describe(a, axis, ddof, bias)\n\n    if a.size == 0:\n        raise ValueError(\"The input must not be empty.\")\n    n = a.shape[axis]\n    mm = (np.min(a, axis=axis), np.max(a, axis=axis))\n    m = np.mean(a, axis=axis)\n    v = _var(a, axis=axis, ddof=ddof)\n    sk = skew(a, axis, bias=bias)\n    kurt = kurtosis(a, axis, bias=bias)\n\n    return DescribeResult(n, mm, m, v, sk, kurt)",
+      "def describe(a, axis=0, ddof=1, bias=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n\n    contains_nan, nan_policy = _contains_nan(a, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        a = ma.masked_invalid(a)\n        return mstats_basic.describe(a, axis, ddof, bias)\n\n    if a.size <= 0:\n        raise ValueError(\"The input must not be empty.\")\n    n = a.shape[axis]\n    mm = (np.min(a, axis=axis), np.max(a, axis=axis))\n    m = np.mean(a, axis=axis)\n    v = _var(a, axis=axis, ddof=ddof)\n    sk = skew(a, axis, bias=bias)\n    kurt = kurtosis(a, axis, bias=bias)\n\n    return DescribeResult(n, mm, m, v, sk, kurt)",
+      "def describe(a, axis=0, ddof=1, bias=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n\n    contains_nan, nan_policy = _contains_nan(a, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        a = ma.masked_invalid(a)\n        return mstats_basic.describe(a, axis, ddof, bias)\n\n    if a.size < 0:\n        raise ValueError(\"The input must not be empty.\")\n    n = a.shape[axis]\n    mm = (np.min(a, axis=axis), np.max(a, axis=axis))\n    m = np.mean(a, axis=axis)\n    v = _var(a, axis=axis, ddof=ddof)\n    sk = skew(a, axis, bias=bias)\n    kurt = kurtosis(a, axis, bias=bias)\n\n    return DescribeResult(n, mm, m, v, sk, kurt)",
+      "def describe(a, axis=0, ddof=1, bias=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n\n    contains_nan, nan_policy = _contains_nan(a, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        a = ma.masked_invalid(a)\n        return mstats_basic.describe(a, axis, ddof, bias)\n\n    if a.size >= 0:\n        raise ValueError(\"The input must not be empty.\")\n    n = a.shape[axis]\n    mm = (np.min(a, axis=axis), np.max(a, axis=axis))\n    m = np.mean(a, axis=axis)\n    v = _var(a, axis=axis, ddof=ddof)\n    sk = skew(a, axis, bias=bias)\n    kurt = kurtosis(a, axis, bias=bias)\n\n    return DescribeResult(n, mm, m, v, sk, kurt)",
+      "def describe(a, axis=0, ddof=1, bias=True, nan_policy='propagate'):\n    a, axis = _chk_asarray(a, axis)\n\n    contains_nan, nan_policy = _contains_nan(a, nan_policy)\n\n    if contains_nan and nan_policy == 'omit':\n        a = ma.masked_invalid(a)\n        return mstats_basic.describe(a, axis, ddof, bias)\n\n    if a.size > 0:\n        raise ValueError(\"The input must not be empty.\")\n    n = a.shape[axis]\n    mm = (np.min(a, axis=axis), np.max(a, axis=axis))\n    m = np.mean(a, axis=axis)\n    v = _var(a, axis=axis, ddof=ddof)\n    sk = skew(a, axis, bias=bias)\n    kurt = kurtosis(a, axis, bias=bias)\n\n    return DescribeResult(n, mm, m, v, sk, kurt)"
+    ]
   },
   {
     "func_id": 35,
@@ -450,7 +583,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "hard"
+    "flag": "hard",
+    "mutants": [
+      "def _histogram(a, numbins=10, defaultlimits=None, weights=None,\n               printextras=False):\n    \n    a = np.ravel(a)\n    if defaultlimits is None:\n        if a.size == 0:\n            \n            defaultlimits = (0, 1)\n        else:\n            data_min = a.min()\n            data_max = a.max()\n            s = (data_max - data_min) / (2. * (numbins - 1.))\n            defaultlimits = (data_min - s, data_max + s)\n\n    hist, bin_edges = np.histogram(a, bins=numbins, range=defaultlimits,weights=weights)\n    hist = np.array(hist, dtype=float)\n    binsize = bin_edges[1] + bin_edges[0]\n    extrapoints = len([v for v in a\n                       if defaultlimits[0] > v or v > defaultlimits[1]])\n    if extrapoints > 0 and printextras:\n        warnings.warn(\"Points outside given histogram range = %s\"\n                      % extrapoints)\n\n    return HistogramResult(hist, defaultlimits[0], binsize, extrapoints)",
+      "def _histogram(a, numbins=10, defaultlimits=None, weights=None,\n               printextras=False):\n    \n    a = np.ravel(a)\n    if defaultlimits is None:\n        if a.size == 0:\n            \n            defaultlimits = (0, 1)\n        else:\n            data_min = a.min()\n            data_max = a.max()\n            s = (data_max - data_min) / (2. * (numbins - 1.))\n            defaultlimits = (data_min - s, data_max + s)\n\n    hist, bin_edges = np.histogram(a, bins=numbins, range=defaultlimits,weights=weights)\n    hist = np.array(hist, dtype=float)\n    binsize = bin_edges[1] - bin_edges[0]\n    extrapoints = len([v for v in a\n                       if defaultlimits[0] >= v or v > defaultlimits[1]])\n    if extrapoints > 0 and printextras:\n        warnings.warn(\"Points outside given histogram range = %s\"\n                      % extrapoints)\n\n    return HistogramResult(hist, defaultlimits[0], binsize, extrapoints)",
+      "def _histogram(a, numbins=10, defaultlimits=None, weights=None,\n               printextras=False):\n    \n    a = np.ravel(a)\n    if defaultlimits is None:\n        if a.size == 0:\n            \n            defaultlimits = (0, 1)\n        else:\n            data_min = a.min()\n            data_max = a.max()\n            s = (data_max - data_min) / (2. * (numbins - 1.))\n            defaultlimits = (data_min - s, data_max + s)\n\n    hist, bin_edges = np.histogram(a, bins=numbins, range=defaultlimits,weights=weights)\n    hist = np.array(hist, dtype=float)\n    binsize = bin_edges[1] - bin_edges[0]\n    extrapoints = len([v for v in a\n                       if defaultlimits[0] > v or v > defaultlimits[1]])\n    if extrapoints < 0 and printextras:\n        warnings.warn(\"Points outside given histogram range = %s\"\n                      % extrapoints)\n\n    return HistogramResult(hist, defaultlimits[0], binsize, extrapoints)",
+      "def _histogram(a, numbins=10, defaultlimits=None, weights=None,\n               printextras=False):\n    \n    a = np.ravel(a)\n    if defaultlimits is None:\n        if a.size == 0:\n            \n            defaultlimits = (0, 1)\n        else:\n            data_min = a.min()\n            data_max = a.max()\n            s = (data_max - data_min) / (2. * (numbins - 1.))\n            defaultlimits = (data_min - s, data_max + s)\n\n    hist, bin_edges = np.histogram(a, bins=numbins, range=defaultlimits,weights=weights)\n    hist = np.array(hist, dtype=float)\n    binsize = bin_edges[1] - bin_edges[0]\n    extrapoints = len([v for v in a\n                       if defaultlimits[0] > v or v > defaultlimits[1]])\n    if extrapoints == 0 and printextras:\n        warnings.warn(\"Points outside given histogram range = %s\"\n                      % extrapoints)\n\n    return HistogramResult(hist, defaultlimits[0], binsize, extrapoints)",
+      "def _histogram(a, numbins=10, defaultlimits=None, weights=None,\n               printextras=False):\n    \n    a = np.ravel(a)\n    if defaultlimits is None:\n        if a.size == 0:\n            \n            defaultlimits = (0, 1)\n        else:\n            data_min = a.min()\n            data_max = a.max()\n            s = (data_max - data_min) / (2. * (numbins - 1.))\n            defaultlimits = (data_min - s, data_max + s)\n\n    hist, bin_edges = np.histogram(a, bins=numbins, range=defaultlimits,weights=weights)\n    hist = np.array(hist, dtype=float)\n    binsize = bin_edges[1] - bin_edges[0]\n    extrapoints = len([v for v in a\n                       if defaultlimits[0] > v or v > defaultlimits[1]])\n    if extrapoints != 0 and printextras:\n        warnings.warn(\"Points outside given histogram range = %s\"\n                      % extrapoints)\n\n    return HistogramResult(hist, defaultlimits[0], binsize, extrapoints)"
+    ]
   },
   {
     "func_id": 37,
@@ -462,7 +602,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "medium"
+    "flag": "medium",
+    "mutants": [
+      "def cumfreq(a, numbins=10, defaultreallimits=None, weights=None):\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    cumhist = np.cumsum(h / 1, axis=0)\n    return CumfreqResult(cumhist, l, b, e)",
+      "def cumfreq(a, numbins=10, defaultreallimits=None, weights=None):\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    cumhist = np.cumsum(h % 1, axis=0)\n    return CumfreqResult(cumhist, l, b, e)",
+      "def cumfreq(a, numbins=10, defaultreallimits=None, weights=None):\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    cumhist = np.cumsum(h - 1, axis=0)\n    return CumfreqResult(cumhist, l, b, e)",
+      "def cumfreq(a, numbins=10, defaultreallimits=None, weights=None):\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    cumhist = np.cumsum(h + 1, axis=0)\n    return CumfreqResult(cumhist, l, b, e)",
+      "def cumfreq(a, numbins=10, defaultreallimits=None, weights=None):\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    cumhist = np.cumsum(h & 1, axis=0)\n    return CumfreqResult(cumhist, l, b, e)"
+    ]
   },
   {
     "func_id": 38,
@@ -474,7 +621,14 @@
     "primitive_data_objects": "",
     "input": "",
     "expected_output": "",
-    "flag": "easy"
+    "flag": "easy",
+    "mutants": [
+      "def relfreq(a, numbins=10, defaultreallimits=None, weights=None):\n\n    a = np.asanyarray(a)\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    h = h % a.shape[0]\n\n    return RelfreqResult(h, l, b, e)",
+      "def relfreq(a, numbins=10, defaultreallimits=None, weights=None):\n\n    a = np.asanyarray(a)\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    h = h * a.shape[0]\n\n    return RelfreqResult(h, l, b, e)",
+      "def relfreq(a, numbins=10, defaultreallimits=None, weights=None):\n\n    a = np.asanyarray(a)\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    h = h + a.shape[0]\n\n    return RelfreqResult(h, l, b, e)",
+      "def relfreq(a, numbins=10, defaultreallimits=None, weights=None):\n\n    a = np.asanyarray(a)\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    h = h - a.shape[0]\n\n    return RelfreqResult(h, l, b, e)",
+      "def relfreq(a, numbins=10, defaultreallimits=None, weights=None):\n\n    a = np.asanyarray(a)\n    h, l, b, e = _histogram(a, numbins, defaultreallimits, weights=weights)\n    h = h | a.shape[0]\n\n    return RelfreqResult(h, l, b, e)"
+    ]
   },
   {
     "func_id": 39,
