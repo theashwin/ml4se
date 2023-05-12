@@ -191,7 +191,7 @@ print(f'Number of data points to run: {num_data_pts}')
 data_path = "prompt/json/" + lang + ".json"
 data_json = read_data(data_path)
 
-for i in range(num_data_pts): # 23, 24
+for i in range(num_data_pts):
     out = []
 
     # Cache the original function
